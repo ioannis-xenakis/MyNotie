@@ -660,7 +660,7 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
             displaySelectedNotesCount()
         }
 
-        fillFoldersFromNotes(foldersFromNewNotes)
+        fillFoldersFromNotes(foldersFromNewNotes, changedNotes)
 
         adapter!!.updateNoteListAndNotesFull(changedNotes, foldersFromOldNotes, foldersFromNewNotes)
     }
@@ -760,11 +760,12 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
     /**
      * Fills the foldersFromNotes list.
      * @param foldersFromNotes The foldersFromNotes list.
+     * @param notesToFillFrom The notes list to fill/copy from.
      */
-    private fun fillFoldersFromNotes(foldersFromNotes: ArrayList<List<Folder>>) {
-        if (adapter?.notes != null) {
+    private fun fillFoldersFromNotes(foldersFromNotes: ArrayList<List<Folder>>, notesToFillFrom: ArrayList<Note>?) {
+        if (notesToFillFrom != null) {
             foldersFromNotes.clear()
-            for (note in adapter!!.notes) {
+            for (note in notesToFillFrom) {
                 val foldersFromNote =
                     NotesDB.getInstance(this)!!.notesFoldersJoinDAO()?.getFoldersFromNote(note.id)
 
@@ -841,7 +842,8 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
      */
     override fun onPause() {
         super.onPause()
-        fillFoldersFromNotes(foldersFromOldNotes)
+        fillFoldersFromNotes(foldersFromOldNotes, adapter?.notes)
+        fillFoldersFromNotes(foldersFromNewNotes, adapter?.notes)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

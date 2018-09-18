@@ -1,7 +1,9 @@
 *.iml
+.gradle
 /local.properties
 /.idea
 .DS_Store
+/build
 /captures
 .externalNativeBuild
 
@@ -11,10 +13,10 @@
 
 .gradle/
 build/
-release/
 local.properties
 *.log
 
 # Android Studio specific files
+*.iml
 *.ipr
 *.iws
