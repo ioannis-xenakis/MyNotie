@@ -8,4 +8,20 @@
     tools:context=".MainActivity"
     tools:showIn="@layout/activity_main">
 
+    <EditText
+        android:id="@+id/Write_Text"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/write_text_height"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@color/background_write_text"
+        android:ems="10"
+        android:gravity="start"
+        android:inputType="textMultiLine"
+        android:scrollbars="vertical"
+        android:hint="@string/write_text_hint"
+        android:text="@string/write_text_hint"
+        android:textColor="@color/colorPrimary"
+        android:importantForAutofill="no"
+        tools:targetApi="o" />
 </RelativeLayout>
