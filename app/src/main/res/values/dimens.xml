@@ -1,5 +1,5 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="top_bar_height">40dp</dimen>
-    <dimen name="write_text_height">327dp</dimen>
+    <dimen name="write_text_height">470dp</dimen>
 </resources>

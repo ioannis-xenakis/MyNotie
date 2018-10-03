@@ -20,8 +20,34 @@
         android:inputType="textMultiLine"
         android:scrollbars="vertical"
         android:hint="@string/write_text_hint"
-        android:text="@string/write_text_hint"
+        android:text=""
         android:textColor="@color/colorPrimary"
         android:importantForAutofill="no"
         tools:targetApi="o" />
+
+    <View xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/line1"
+        android:layout_alignParentTop="true"
+        android:layout_width="300dp"
+        android:layout_centerInParent="true"
+        android:layout_height="1dp"
+        android:background="@color/color_line"
+        android:padding="5dp"
+        android:scrollbars="vertical"
+        android:fadingEdge="vertical"
+        android:gravity="top"
+        android:textSize="22sp" />
+
+    <View xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/line2"
+        android:layout_above="@id/Write_Text"
+        android:layout_width="300dp"
+        android:layout_centerInParent="true"
+        android:layout_height="1dp"
+        android:background="@color/color_line"
+        android:padding="5dp"
+        android:scrollbars="vertical"
+        android:fadingEdge="vertical"
+        android:gravity="top"
+        android:textSize="22sp" />
 </RelativeLayout>
