@@ -1,15 +1,24 @@
 package com.example.fanatic_coder.mynotepad;
 
+import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.os.Bundle;
 // import android.support.design.widget.FloatingActionButton;
 // import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-//import android.view.View;
+import android.util.AttributeSet;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +36,51 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         */
+        new_note_button();
+    }
+
+    public static class LineEditText extends android.support.v7.widget.AppCompatEditText {
+        public LineEditText(Context context, AttributeSet attrs) {
+            super(context, attrs);
+                myRect = new Rect();
+                myPaint = new Paint();
+                myPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+                myPaint.setColor(Color.BLACK);
+        }
+
+        private Rect myRect;
+        private Paint myPaint;
+
+        @Override
+        protected  void onDraw(Canvas myCanvas) {
+            int height = getHeight();
+            int lineHeight = getLineHeight();
+
+            int count = height / lineHeight;
+
+            Rect recting = myRect;
+            Paint paintOn = myPaint;
+            int baseline = getLineBounds(0, recting);//0 is representing the first line and recting is for bounds
+
+            for (int i = 0; i < count; i++) {
+                myCanvas.drawLine(recting.left, baseline + 1, recting.right, baseline + 1, paintOn);
+                baseline += getLineHeight();//continue to next line
+            }
+
+            super.onDraw(myCanvas);
+        }
+    }
+
+    private void new_note_button(){
+        final String clear_text = "";
+        final EditText write_text = findViewById(R.id.Write_Note); //The actual EditText which you write notes
+        final Button new_note = findViewById(R.id.NewNote); //The button to create a new Note
+        new_note.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                write_text.setText(clear_text);
+            }
+        });
     }
 
     @Override

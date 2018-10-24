@@ -4,6 +4,6 @@
     <color name="colorPrimaryDark">#090909</color>
     <color name="colorAccent">#FF4081</color>
     <color name="color_top_bar">#FC1E0D</color>
-    <color name="background_write_text">#FFFFFF</color>
+    <color name="background_write_text">#FFAA00</color>
     <color name="color_line">#090909</color>
 </resources>

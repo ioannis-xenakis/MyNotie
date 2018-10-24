@@ -8,22 +8,6 @@
     tools:context=".MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <EditText
-        android:id="@+id/Write_Text"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/write_text_height"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:background="@color/background_write_text"
-        android:ems="10"
-        android:gravity="start"
-        android:inputType="textMultiLine"
-        android:scrollbars="vertical"
-        android:hint="@string/write_text_hint"
-        android:text=""
-        android:textColor="@color/colorPrimary"
-        android:importantForAutofill="no"
-        tools:targetApi="o" />
 
     <View xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/line1"
@@ -40,7 +24,7 @@
 
     <View xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/line2"
-        android:layout_above="@id/Write_Text"
+        android:layout_above="@id/Write_Note"
         android:layout_width="300dp"
         android:layout_centerInParent="true"
         android:layout_height="1dp"
@@ -50,4 +34,32 @@
         android:fadingEdge="vertical"
         android:gravity="top"
         android:textSize="22sp" />
+
+    <view xmlns:android="http://schemas.android.com/apk/res/android"
+        class="com.example.fanatic_coder.mynotepad.MainActivity$LineEditText"
+        android:id="@+id/Write_Note"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/write_text_height"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@color/background_write_text"
+        android:ems="10"
+        android:gravity="start"
+        android:inputType="textMultiLine"
+        android:scrollbars="vertical"
+        android:hint="@string/write_text_hint"
+        android:textColor="@color/colorPrimary"
+        android:importantForAutofill="no"
+        tools:targetApi="o" />
+
+    <Button
+        android:id="@+id/NewNote"
+        android:layout_width="@dimen/bar_buttons_width"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/line2"
+        android:layout_alignStart="@+id/line1"
+        android:layout_alignLeft="@+id/line1"
+        android:layout_alignParentTop="true"
+        android:text="@string/new_button_text"
+        android:textSize="@dimen/text_size_button" />
 </RelativeLayout>
