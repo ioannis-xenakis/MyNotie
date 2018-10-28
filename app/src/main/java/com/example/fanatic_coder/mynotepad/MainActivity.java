@@ -60,8 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
             Rect recting = myRect;
             Paint paintOn = myPaint;
-            int baseline = getLineBounds(0, recting);//0 is representing the first line and recting is for bounds
-
+            int baseline = getLineBounds(0, recting);//first line
             for (int i = 0; i < count; i++) {
                 myCanvas.drawLine(recting.left, baseline + 1, recting.right, baseline + 1, paintOn);
                 baseline += getLineHeight();//continue to next line
