@@ -111,7 +111,29 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void saveNoteButton(View view) {
+        final EditText write_text = findViewById(R.id.Write_Note);
+        String str_write_text = write_text.getText().toString();
+        FileOutputStream fos;
+        DataOutputStream dos;
 
+        try {
+            File f = this.getFilesDir();
+            String s = f.getCanonicalPath();
+            String FILE_NAME = "myNotesFile.txt";
+            File file = new File(s + FILE_NAME);
+            if(!file.exists()){
+                boolean newFile = file.createNewFile();
+            }
+            fos = new FileOutputStream(file);
+            dos = new DataOutputStream(fos);
+            dos.write(str_write_text.getBytes());
+            dos.writeChars("\n \n");
+            Toast.makeText(this, "Note Saved Succesfully!", Toast.LENGTH_SHORT).show();
+
+        } catch (Exception e) {
+            Snackbar.make(view, "Saving Note Failed!", Snackbar.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
     }
 
     @Override
