@@ -13,14 +13,11 @@ import android.util.AttributeSet;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -76,26 +73,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void newNoteButton(View view) {
-        /*final String clear_text = "";
-        final EditText write_text = findViewById(R.id.Write_Note); //The actual EditText which you write notes
-        final Button new_note = findViewById(R.id.NewNote); //The button to create a new Note
-        new_note.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                write_text.setText(clear_text);
-            }
-        }); */
+
         final EditText write_text = findViewById(R.id.Write_Note); //The actual EditText which you write notes
         String clear_text = "";
         FileOutputStream fos;
         DataOutputStream dos;
+        boolean newFile;
+
         try {
             File f = this.getFilesDir();
             String s = f.getCanonicalPath();
             String FILE_NAME = "myNotesFile.txt";
             File file = new File(s + FILE_NAME);
             if(!file.exists()){
-                boolean newFile = file.createNewFile();
+                newFile = file.createNewFile();
+                if(newFile){
+                    System.out.print("File Created Succesfully!");
+                }
             }
             // create new note and then save that note.
             fos = new FileOutputStream(file);
@@ -115,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
         String str_write_text = write_text.getText().toString();
         FileOutputStream fos;
         DataOutputStream dos;
+        boolean newFile;
 
         try {
             File f = this.getFilesDir();
@@ -122,13 +117,17 @@ public class MainActivity extends AppCompatActivity {
             String FILE_NAME = "myNotesFile.txt";
             File file = new File(s + FILE_NAME);
             if(!file.exists()){
-                boolean newFile = file.createNewFile();
+                newFile = file.createNewFile();
+                if(newFile){
+                    System.out.print("File Created Succesfully!");
+                }
             }
             fos = new FileOutputStream(file);
             dos = new DataOutputStream(fos);
             dos.write(str_write_text.getBytes());
             dos.writeChars("\n \n");
-            Toast.makeText(this, "Note Saved Succesfully!", Toast.LENGTH_SHORT).show();
+
+            Toast.makeText(this, "Note Saved Succesfully!", Toast.LENGTH_LONG).show();
 
         } catch (Exception e) {
             Snackbar.make(view, "Saving Note Failed!", Snackbar.LENGTH_LONG).show();
