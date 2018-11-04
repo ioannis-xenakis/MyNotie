@@ -6,8 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Bundle;
-// import android.support.design.widget.FloatingActionButton;
-// import android.support.design.widget.Snackbar;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
@@ -16,6 +15,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         */
-        new_note_button();
+
     }
 
     public static class LineEditText extends android.support.v7.widget.AppCompatEditText {
@@ -70,8 +75,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void new_note_button(){
-        final String clear_text = "";
+    public void newNoteButton(View view) {
+        /*final String clear_text = "";
         final EditText write_text = findViewById(R.id.Write_Note); //The actual EditText which you write notes
         final Button new_note = findViewById(R.id.NewNote); //The button to create a new Note
         new_note.setOnClickListener(new View.OnClickListener(){
@@ -79,7 +84,34 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 write_text.setText(clear_text);
             }
-        });
+        }); */
+        final EditText write_text = findViewById(R.id.Write_Note); //The actual EditText which you write notes
+        String clear_text = "";
+        FileOutputStream fos;
+        DataOutputStream dos;
+        try {
+            File f = this.getFilesDir();
+            String s = f.getCanonicalPath();
+            String FILE_NAME = "myNotesFile.txt";
+            File file = new File(s + FILE_NAME);
+            if(!file.exists()){
+                boolean newFile = file.createNewFile();
+            }
+            // create new note and then save that note.
+            fos = new FileOutputStream(file);
+            dos = new DataOutputStream(fos);
+            dos.write(clear_text.getBytes());
+            dos.writeChars("\n \n");
+            write_text.setText(clear_text);
+            Toast.makeText(this, "New Note Created Successfully!", Toast.LENGTH_LONG).show();
+        } catch (Exception e) {
+            Snackbar.make(view, "Note Creation Failed!", Snackbar.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
+    }
+
+    public void saveNoteButton(View view) {
+
     }
 
     @Override
