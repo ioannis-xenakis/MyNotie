@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#090909</color>
+    <color name="colorPrimary">#FC1E0D</color>
     <color name="colorPrimaryDark">#090909</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="color_top_bar">#FC1E0D</color>
     <color name="background_write_text">#FFAA00</color>
     <color name="color_line">#090909</color>
 </resources>
