@@ -22,4 +22,6 @@ local.properties
 *.iml
 *.ipr
 *.iws
-/.idea/
+
+/.idea
+/.idea/misc.xml
