@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    //LineEditText class is for drawing lines under text, for the edittext(view) with id, Write_Note, inside content_main.xml
     public static class LineEditText extends android.support.v7.widget.AppCompatEditText {
         public LineEditText(Context context, AttributeSet attrs) {
             super(context, attrs);
@@ -72,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //newNoteButton method is called from onClick for the new note button inside content_main.xml
     public void newNoteButton(View view) {
 
         final EditText write_text = findViewById(R.id.Write_Note); //The actual EditText which you write notes
@@ -104,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //saveNoteButton method is called from onClick for the save note button in content_main.xml
     public void saveNoteButton(View view) {
         final EditText write_text = findViewById(R.id.Write_Note);
         String str_write_text = write_text.getText().toString();

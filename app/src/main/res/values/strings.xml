@@ -5,4 +5,5 @@
     <string name="write_text_text"> </string>
     <string name="new_note_text">New Note</string>
     <string name="save_note_text">Save Note</string>
+    <string name="open_note_text">Open Note</string>
 </resources>

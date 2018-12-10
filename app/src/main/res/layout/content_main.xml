@@ -76,4 +76,15 @@
         android:text="@string/save_note_text"
         android:textSize="@dimen/text_size_button" />
 
+    <Button
+        android:id="@+id/openNote"
+        android:layout_width="@dimen/bar_buttons_width"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/line2"
+        android:layout_toEndOf="@id/saveNote"
+        android:layout_toRightOf="@+id/saveNote"
+        android:layout_alignParentTop="true"
+        android:text="@string/open_note_text"
+        android:textSize="@dimen/text_size_button" />
+
 </RelativeLayout>
