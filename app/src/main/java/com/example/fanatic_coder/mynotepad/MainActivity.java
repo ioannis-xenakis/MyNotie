@@ -138,6 +138,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //openNoteButton method is for the openNote button in content_main.xml
+    public void openNoteButton(View view) {
+        //opens notes_layout.xml for the user to open a note he desires.
+        setContentView(R.layout.notes_layout);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

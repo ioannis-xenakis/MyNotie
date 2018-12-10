@@ -5,4 +5,5 @@
     <color name="colorAccent">#FF4081</color>
     <color name="background_write_text">#FFAA00</color>
     <color name="color_line">#090909</color>
+    <color name="color_write_text">#0000c0</color>
 </resources>

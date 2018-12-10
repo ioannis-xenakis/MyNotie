@@ -48,7 +48,7 @@
         android:inputType="textMultiLine"
         android:scrollbars="vertical"
         android:hint="@string/write_text_hint"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/color_write_text"
         android:importantForAutofill="no"
         tools:targetApi="o" />
 
@@ -84,6 +84,7 @@
         android:layout_toEndOf="@id/saveNote"
         android:layout_toRightOf="@+id/saveNote"
         android:layout_alignParentTop="true"
+        android:onClick="openNoteButton"
         android:text="@string/open_note_text"
         android:textSize="@dimen/text_size_button" />
 
