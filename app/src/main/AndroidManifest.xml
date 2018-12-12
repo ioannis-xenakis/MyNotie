@@ -19,6 +19,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!-- The MainNotesActivity with the Main Note List layout (activity_main_notes.xml) -->
+        <activity android:name=".MainNotesActivity"></activity>
     </application>
 
 </manifest>
