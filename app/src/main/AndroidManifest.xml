@@ -8,19 +8,50 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:fullBackupContent="">
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.BROWSABLE" />
 
+                <!-- Accepts URIs that begin with:  http://www.example.com/mynotepad -->
+                <data android:scheme="http"
+                    android:host="www.example.com"
+                    android:pathPrefix="/mynotepad"/>
+
+                <!-- Accepts URIs that begin with:  example://mynotepad -->
+                <data android:scheme="example"
+                    android:host="mynotepad"/>
+
+                <!-- The LAUNCHER category is when the app is launched, the first activity that is launched first is this. -->
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <!-- The MainNotesActivity with the Main Note List layout (activity_main_notes.xml) -->
-        <activity android:name=".MainNotesActivity"></activity>
+        <activity android:name=".MainNotesActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <!-- The BROWSABLE category is for being accesible from a web browser. Without this, clicking links at a web browser, wont direct the user to the app-->
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <!-- Accepts URIs that begin with:  http://www.example.com/mynotepad/main_notes_activity -->
+                <data android:scheme="http"
+                    android:host="www.example.com"
+                    android:pathPrefix="/mynotepad/main_notes_activity" />
+
+                <!-- Accepts URIs that begin with:   example://mynotepad/main_notes_activity -->
+                <data android:scheme="example"
+                    android:host="mynotepad"
+                    android:pathPrefix="/main_notes_activity" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
