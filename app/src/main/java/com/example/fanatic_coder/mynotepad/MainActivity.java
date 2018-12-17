@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
             Paint paintOn = myPaint;
             int baseline = getLineBounds(0, recting);//first line
             for (int i = 0; i < count; i++) {
-                myCanvas.drawLine(recting.left, baseline + 1, recting.right, baseline + 1, paintOn);
+                myCanvas.drawLine(recting.left + 30, baseline + 1, recting.right - 30, baseline + 1, paintOn);
                 baseline += getLineHeight();//continue to next line
             }
 
