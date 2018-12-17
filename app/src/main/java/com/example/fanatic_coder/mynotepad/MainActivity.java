@@ -56,10 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected  void onDraw(Canvas myCanvas) {
-            int height = getHeight();
-            int lineHeight = getLineHeight();
-
-            int count = height / lineHeight;
+            int count = getBaseline();
 
             Rect recting = myRect;
             Paint paintOn = myPaint;
