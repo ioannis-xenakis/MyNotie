@@ -6,4 +6,6 @@
     <string name="new_note_text">New Note</string>
     <string name="save_note_text">Save Note</string>
     <string name="open_note_text">Open Note</string>
+    <string name="note_title">This is a Notepad Demo. This is a Notepad Demo. This is a Notepad Demo. This is a Notepad Demo. This is a Notepad Demo…</string>
+    <string name="note_date">12/03/2018</string>
 </resources>

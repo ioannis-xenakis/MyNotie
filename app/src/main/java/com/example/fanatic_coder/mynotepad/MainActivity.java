@@ -139,7 +139,6 @@ public class MainActivity extends AppCompatActivity {
     //openNoteButton method is for the openNote button in content_main.xml
     public void openNoteButton(View view) {
         //opens notes_layout.xml for the user to open a note he desires.
-        //setContentView(R.layout.activity_main_notes);
         startActivity(new Intent(MainActivity.this, MainNotesActivity.class));
     }
 

@@ -1,5 +1,6 @@
 package com.example.fanatic_coder.mynotepad.adapters;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,16 +17,18 @@ import java.util.ArrayList;
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteHolder>{
 
     private ArrayList<Note> notes;
+    private Context context;
 
-    public NotesAdapter(ArrayList<Note> notes) {
+    public NotesAdapter(ArrayList<Note> notes, Context context) {
         this.notes = notes;
+        this.context = context;
     }
 
     //method onCreateViewHolder is called when a new view is created
     @NonNull
     @Override
     public NoteHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.notes_layout,parent, false);
+        View v = LayoutInflater.from(context).inflate(R.layout.notes_layout, parent, false);
         return new NoteHolder(v);
     }
 
@@ -53,8 +56,10 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteHolder>{
     class NoteHolder extends RecyclerView.ViewHolder{
         TextView noteTitle, noteDate;
 
-        public NoteHolder(@NonNull View itemView) {
+        NoteHolder(@NonNull View itemView) {
             super(itemView);
+            noteDate = itemView.findViewById(R.id.noteDate);
+            noteTitle = itemView.findViewById(R.id.noteTitle);
         }
     }
 }

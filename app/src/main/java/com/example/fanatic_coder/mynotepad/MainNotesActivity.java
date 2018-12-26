@@ -52,7 +52,7 @@ public class MainNotesActivity extends AppCompatActivity {
         for (int i = 0; i < 12; i++) {
             notes.add(new Note("This is a Notepad Demo. This is a Notepad Demo. This is a Notepad Demo. This is a Notepad Demo. This is a Notepad Demo...", new Date().getTime()));
         }
-        adapter = new NotesAdapter(notes);
+        adapter = new NotesAdapter(notes, this);
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }
