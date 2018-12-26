@@ -1,6 +1,7 @@
 package com.example.fanatic_coder.mynotepad;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -138,7 +139,8 @@ public class MainActivity extends AppCompatActivity {
     //openNoteButton method is for the openNote button in content_main.xml
     public void openNoteButton(View view) {
         //opens notes_layout.xml for the user to open a note he desires.
-        setContentView(R.layout.notes_layout);
+        //setContentView(R.layout.activity_main_notes);
+        startActivity(new Intent(MainActivity.this, MainNotesActivity.class));
     }
 
     @Override
