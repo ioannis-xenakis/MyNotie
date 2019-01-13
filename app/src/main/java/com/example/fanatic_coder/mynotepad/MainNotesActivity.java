@@ -33,9 +33,16 @@ public class MainNotesActivity extends AppCompatActivity {
         add_new_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                scrollToNewNote();
                 onAddNewNote();
             }
         });
+    }
+
+    private void scrollToNewNote() {
+
+        recyclerView.scrollToPosition(adapter.getItemCount());
+
     }
 
     private void onAddNewNote() {
