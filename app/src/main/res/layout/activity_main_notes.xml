@@ -44,14 +44,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/delete_icon" />
 
-    <RelativeLayout
-        android:layout_width="200dp"
-        android:layout_height="57dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:background="@drawable/oval_top_bar">
-
-    </RelativeLayout>
-
 </android.support.constraint.ConstraintLayout>
