@@ -16,12 +16,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.example.fanatic_coder.mynotepad.db.NotesDAO;
+import com.example.fanatic_coder.mynotepad.db.NotesDB;
+import com.example.fanatic_coder.mynotepad.model.Note;
+
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
+    private EditText write_text;
+    private NotesDAO dao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         */
+        dao = NotesDB.getInstance(this).notesDAO(); //Builds a database and references to it
 
     }
 
@@ -74,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
     //newNoteButton method is called from onClick for the new note button inside content_main.xml
     public void newNoteButton(View view) {
 
-        final EditText write_text = findViewById(R.id.Write_Note); //The actual EditText which you write notes
+        write_text = findViewById(R.id.Write_Note); //The actual EditText which you write notes
         String clear_text = "";
         FileOutputStream fos;
         DataOutputStream dos;
@@ -106,33 +115,27 @@ public class MainActivity extends AppCompatActivity {
 
     //saveNoteButton method is called from onClick for the save note button in content_main.xml
     public void saveNoteButton(View view) {
-        final EditText write_text = findViewById(R.id.Write_Note);
-        String str_write_text = write_text.getText().toString();
-        FileOutputStream fos;
-        DataOutputStream dos;
-        boolean newFile;
 
         try {
-            File f = this.getFilesDir();
-            String s = f.getCanonicalPath();
-            String FILE_NAME = "myNotesFile.txt";
-            File file = new File(s + FILE_NAME);
-            if(!file.exists()){
-                newFile = file.createNewFile();
-                if(newFile){
-                    System.out.print("File Created Succesfully!");
-                }
+            // Get the text from the write_text field convert them all to String and assign them to text variable
+            String text = write_text.getText().toString();
+
+            // If the text from write_text field is not empty, and has something in it, do this
+            if (!text.isEmpty()) {
+                long date = new Date().getTime(); //Get Current date
+                Note note = new Note(text, date); //Create a note
+                dao.insertNote(note); //Insert the new note to database
+
+                // Popup a window to user, saying: Note Saved Successfully!
+                Toast.makeText(this, "Note Saved Successfully!", Toast.LENGTH_LONG).show();
+
             }
-            fos = new FileOutputStream(file);
-            dos = new DataOutputStream(fos);
-            dos.write(str_write_text.getBytes());
-            dos.writeChars("\n \n");
-
-            Toast.makeText(this, "Note Saved Succesfully!", Toast.LENGTH_LONG).show();
-
-        } catch (Exception e) {
-            Snackbar.make(view, "Saving Note Failed!", Snackbar.LENGTH_LONG).show();
+        } catch (Exception e) { // If something gone wrong and get an error ...
+            // Popup a window to user, saying: Saving Note Failed!
+            Toast.makeText(this, "Saving Note Failed!", Toast.LENGTH_LONG).show();
+            // Print everything about the error at Logcat/Default console window
             e.printStackTrace();
+
         }
     }
 
