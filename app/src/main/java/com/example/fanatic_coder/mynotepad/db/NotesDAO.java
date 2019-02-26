@@ -10,7 +10,7 @@ import android.arch.persistence.room.Update;
 
 import com.example.fanatic_coder.mynotepad.model.Note;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @Dao
 public interface NotesDAO {
@@ -24,8 +24,9 @@ public interface NotesDAO {
     @Update
     void updateNote(Note note);
 
-    @Query("SELECT * FROM notes") // Show all notes from database
-    ArrayList<Note> getNotes();
+    // Show all notes from database
+    @Query("SELECT * FROM notes")
+    List<Note> getNotes();
 
     @Query("SELECT * FROM notes WHERE id = :noteId") // Get the notes by their id
     Note getNoteById(int noteId);

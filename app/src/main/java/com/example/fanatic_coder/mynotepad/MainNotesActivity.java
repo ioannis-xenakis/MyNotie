@@ -15,6 +15,7 @@ import com.example.fanatic_coder.mynotepad.model.Note;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class MainNotesActivity extends AppCompatActivity {
 
@@ -65,7 +66,8 @@ public class MainNotesActivity extends AppCompatActivity {
 
     private void loadNotes() {
         this.notes = new ArrayList<>();
-        this.notes = dao.getNotes(); //Get all notes from database
+        List<Note> list = dao.getNotes(); //Get all notes from database
+        this.notes.addAll(list);
         this.adapter = new NotesAdapter(notes, this);
         this.recyclerView.setAdapter(adapter);
     }

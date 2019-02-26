@@ -117,6 +117,8 @@ public class MainActivity extends AppCompatActivity {
     public void saveNoteButton(View view) {
 
         try {
+            write_text = findViewById(R.id.Write_Note);
+
             // Get the text from the write_text field convert them all to String and assign them to text variable
             String text = write_text.getText().toString();
 
