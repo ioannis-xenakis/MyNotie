@@ -1,5 +1,6 @@
 package com.example.fanatic_coder.mynotepad;
 
+import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,6 +9,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.example.fanatic_coder.mynotepad.adapters.NotesAdapter;
+import com.example.fanatic_coder.mynotepad.db.NotesDAO;
+import com.example.fanatic_coder.mynotepad.db.NotesDB;
 import com.example.fanatic_coder.mynotepad.model.Note;
 
 import java.util.ArrayList;
@@ -18,6 +21,7 @@ public class MainNotesActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ArrayList<Note> notes;
     private NotesAdapter adapter;
+    private NotesDAO dao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +41,7 @@ public class MainNotesActivity extends AppCompatActivity {
                 onAddNewNote();
             }
         });
+        dao = NotesDB.getInstance(this).notesDAO();
     }
 
     private void scrollToNewNote() {
@@ -46,22 +51,23 @@ public class MainNotesActivity extends AppCompatActivity {
     }
 
     private void onAddNewNote() {
+        //Open MainActivity for start writing the new note
+        startActivity(new Intent(this, MainActivity.class));
+
+        /* Commented for future reference
         if (notes != null) {
             notes.add(new Note("This is new note.", new Date().getTime()));
         }
         if (adapter != null) {
             adapter.notifyDataSetChanged();
-        }
+        } */
     }
 
     private void loadNotes() {
         this.notes = new ArrayList<>();
-        for (int i = 0; i < 12; i++) {
-            notes.add(new Note("This is a Notepad Demo. This is a Notepad Demo. This is a Notepad Demo. This is a Notepad Demo. This is a Notepad Demo...", new Date().getTime()));
-        }
-        adapter = new NotesAdapter(notes, this);
-        recyclerView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+        this.notes = dao.getNotes(); //Get all notes from database
+        this.adapter = new NotesAdapter(notes, this);
+        this.recyclerView.setAdapter(adapter);
     }
 
     @Override
