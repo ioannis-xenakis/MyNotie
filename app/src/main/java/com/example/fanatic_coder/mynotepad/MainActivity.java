@@ -132,6 +132,10 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "Note Saved Successfully!", Toast.LENGTH_LONG).show();
 
             }
+            else {
+                Toast.makeText(this, "Your note is empty! Please write something to be saved!", Toast.LENGTH_LONG).show();
+            }
+
         } catch (Exception e) { // If something gone wrong and get an error ...
             // Popup a window to user, saying: Saving Note Failed!
             Toast.makeText(this, "Saving Note Failed!", Toast.LENGTH_LONG).show();
