@@ -3,6 +3,7 @@ package com.example.fanatic_coder.mynotepad.model;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
 
 @Entity(tableName = "notes")
 public class Note {
@@ -40,5 +41,15 @@ public class Note {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "Note{" +
+                "id=" + id +
+                ", noteDate=" + noteDate +
+                '}';
     }
 }

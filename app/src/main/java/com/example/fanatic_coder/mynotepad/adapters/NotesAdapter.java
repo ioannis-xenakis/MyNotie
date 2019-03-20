@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.fanatic_coder.mynotepad.R;
+import com.example.fanatic_coder.mynotepad.callbacks.NoteEventListener;
 import com.example.fanatic_coder.mynotepad.model.Note;
 import com.example.fanatic_coder.mynotepad.utils.NoteUtils;
 
@@ -18,6 +19,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteHolder>{
 
     private ArrayList<Note> notes;
     private Context context;
+    private NoteEventListener listener;
 
     public NotesAdapter(ArrayList<Note> notes, Context context) {
         this.notes = notes;
@@ -35,10 +37,18 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteHolder>{
     //method onBindViewHolder displays data at specified position
     @Override
     public void onBindViewHolder(@NonNull NoteHolder holder, int position) {
-        Note note = getNote(position);
+        final Note note = getNote(position);
         if(note != null) {
             holder.noteTitle.setText(note.getWriteText());
             holder.noteDate.setText(NoteUtils.dateFromLong(note.getNoteDate()));
+
+            //init note click event
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onNoteClick(note);
+                }
+            });
         }
     }
 
@@ -62,4 +72,9 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteHolder>{
             noteTitle = itemView.findViewById(R.id.noteTitle);
         }
     }
+
+    public void setListener(NoteEventListener listener) {
+        this.listener = listener;
+    }
+
 }
