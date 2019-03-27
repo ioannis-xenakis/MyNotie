@@ -8,11 +8,14 @@ import android.support.annotation.NonNull;
 @Entity(tableName = "notes")
 public class Note {
     @PrimaryKey(autoGenerate = true)
-    private int id;
+    private int id = -1; // -1 is the default value
     @ColumnInfo(name = "text")
     private String writeText;
     @ColumnInfo(name = "date")
     private long noteDate;
+
+    public Note() {
+    }
 
     public Note(String writeText, long noteDate) {
         this.writeText = writeText;

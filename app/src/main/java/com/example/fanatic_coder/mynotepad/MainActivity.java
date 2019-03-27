@@ -30,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
 
     private EditText write_text;
     private NotesDAO dao;
+    private Note temp;
+    public static final String NOTE_EXTRA_KEY = "note_id";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +49,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         */
+        write_text = findViewById(R.id.Write_Note);
         dao = NotesDB.getInstance(this).notesDAO(); //Builds a database and references to it
+
+        if (getIntent().getExtras() != null) {
+            int id = getIntent().getExtras().getInt(NOTE_EXTRA_KEY, 0);
+            temp = dao.getNoteById(id);
+            write_text.setText(temp.getWriteText());
+        } else {
+            temp = new Note();
+        }
 
     }
 
@@ -125,8 +136,18 @@ public class MainActivity extends AppCompatActivity {
             // If the text from write_text field is not empty, and has something in it, do this
             if (!text.isEmpty()) {
                 long date = new Date().getTime(); //Get Current date
-                Note note = new Note(text, date); //Create a note
-                dao.insertNote(note); //Insert the new note to database
+
+                //if note doesn't exist create new, else if it exists update
+                temp.setNoteDate(date);
+                temp.setWriteText(text);
+
+                if (temp.getId() == -1) {
+                    dao.insertNote(temp); //insert new note and save to database
+                } else {
+                    dao.updateNote(temp); //else if it exists update note
+                }
+
+                dao.insertNote(temp); //Insert the new note to database
 
                 // Popup a window to user, saying: Note Saved Successfully!
                 Toast.makeText(this, "Note Saved Successfully!", Toast.LENGTH_LONG).show();

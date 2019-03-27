@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static com.example.fanatic_coder.mynotepad.MainActivity.NOTE_EXTRA_KEY;
+
 public class MainNotesActivity extends AppCompatActivity implements NoteEventListener {
 
     private static final String TAG = "MainActivity";
@@ -84,7 +86,9 @@ public class MainNotesActivity extends AppCompatActivity implements NoteEventLis
 
     public void onNoteClick(Note note){
         // TODO: 20/03/2019 When note clicked, edit note
-        Log.d(TAG, "onNoteClick: " + note.toString()); //Show id and noteDate to Logcat, for testing, when note clicked.
+        Intent edit = new Intent(this, MainActivity.class);
+        edit.putExtra(NOTE_EXTRA_KEY, note.getId());
+        startActivity(edit);
     }
 
 }
