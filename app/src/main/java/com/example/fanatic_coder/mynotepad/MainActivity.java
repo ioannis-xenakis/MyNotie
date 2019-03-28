@@ -141,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
                 temp.setNoteDate(date);
                 temp.setWriteText(text);
 
-                if (temp.getId() == -1) {
+                if (temp.getId() < 0) {
                     dao.insertNote(temp); //insert new note and save to database
                 } else {
                     dao.updateNote(temp); //else if it exists update note
