@@ -55,14 +55,6 @@ public class MainNotesActivity extends AppCompatActivity implements NoteEventLis
     private void onAddNewNote() {
         //Open MainActivity for start writing the new note
         startActivity(new Intent(this, MainActivity.class));
-
-        /* Commented for future reference
-        if (notes != null) {
-            notes.add(new Note("This is new note.", new Date().getTime()));
-        }
-        if (adapter != null) {
-            adapter.notifyDataSetChanged();
-        } */
     }
 
     private void loadNotes() {
