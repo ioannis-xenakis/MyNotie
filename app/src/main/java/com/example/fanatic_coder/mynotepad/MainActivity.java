@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
@@ -21,9 +20,6 @@ import com.example.fanatic_coder.mynotepad.db.NotesDAO;
 import com.example.fanatic_coder.mynotepad.db.NotesDB;
 import com.example.fanatic_coder.mynotepad.model.Note;
 
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
