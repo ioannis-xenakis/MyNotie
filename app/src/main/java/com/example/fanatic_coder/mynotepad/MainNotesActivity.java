@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 
 import com.example.fanatic_coder.mynotepad.adapters.NotesAdapter;
@@ -16,16 +15,13 @@ import com.example.fanatic_coder.mynotepad.db.NotesDB;
 import com.example.fanatic_coder.mynotepad.model.Note;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static com.example.fanatic_coder.mynotepad.MainActivity.NOTE_EXTRA_KEY;
 
 public class MainNotesActivity extends AppCompatActivity implements NoteEventListener {
 
-    private static final String TAG = "MainActivity";
     private RecyclerView recyclerView;
-    private ArrayList<Note> notes;
     private NotesAdapter adapter;
     private NotesDAO dao;
 
@@ -70,9 +66,8 @@ public class MainNotesActivity extends AppCompatActivity implements NoteEventLis
     }
 
     private void loadNotes() {
-        this.notes = new ArrayList<>();
         List<Note> list = dao.getNotes(); //Get all notes from database
-        this.notes.addAll(list);
+        ArrayList<Note> notes = new ArrayList<>(list);
         this.adapter = new NotesAdapter(notes, this);
         this.adapter.setListener(this); //set listener to adapter
         this.recyclerView.setAdapter(adapter);
