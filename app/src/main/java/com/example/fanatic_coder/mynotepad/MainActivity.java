@@ -91,35 +91,17 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //newNoteButton method is called from onClick for the new note button inside content_main.xml
-    public void newNoteButton(View view) {
-
-        write_text = findViewById(R.id.Write_Note); //The actual EditText which you write notes
-        String clear_text = "";
-        FileOutputStream fos;
-        DataOutputStream dos;
-        boolean newFile;
-
+    //clearTextButton method, clears the note text in write_text field
+    public void clearTextButton(View view) {
         try {
-            File f = this.getFilesDir();
-            String s = f.getCanonicalPath();
-            String FILE_NAME = "myNotesFile.txt";
-            File file = new File(s + FILE_NAME);
-            if(!file.exists()){
-                newFile = file.createNewFile();
-                if(newFile){
-                    System.out.print("File Created Succesfully!");
-                }
-            }
-            // create new note and then save that note.
-            fos = new FileOutputStream(file);
-            dos = new DataOutputStream(fos);
-            dos.write(clear_text.getBytes());
-            dos.writeChars("\n \n");
+            String clear_text = "";
+            write_text = findViewById(R.id.Write_Note);
             write_text.setText(clear_text);
-            Toast.makeText(this, "New Note Created Successfully!", Toast.LENGTH_LONG).show();
-        } catch (Exception e) {
-            Snackbar.make(view, "Note Creation Failed!", Snackbar.LENGTH_LONG).show();
+
+        } catch (Exception e) { // If something gone wrong and get an error ...
+            // Popup a window to user, saying: Clearing Note Text Failed!
+            Toast.makeText(this, "Clearing Note Text Failed!", Toast.LENGTH_LONG).show();
+            // Print everything about the error at Logcat/Default console window
             e.printStackTrace();
         }
     }

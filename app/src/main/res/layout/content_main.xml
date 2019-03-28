@@ -53,15 +53,15 @@
         tools:targetApi="o" />
 
     <Button
-        android:id="@+id/newNote"
+        android:id="@+id/clearText"
         android:layout_width="@dimen/bar_buttons_width"
         android:layout_height="wrap_content"
         android:layout_above="@id/line2"
         android:layout_alignStart="@+id/line1"
         android:layout_alignLeft="@+id/line1"
         android:layout_alignParentTop="true"
-        android:onClick="newNoteButton"
-        android:text="@string/new_note_text"
+        android:onClick="clearTextButton"
+        android:text="@string/clear_text"
         android:textSize="@dimen/text_size_button" />
 
     <Button
@@ -70,8 +70,8 @@
         android:layout_height="wrap_content"
         android:layout_above="@id/line2"
         android:layout_alignParentTop="true"
-        android:layout_toEndOf="@id/newNote"
-        android:layout_toRightOf="@+id/newNote"
+        android:layout_toEndOf="@id/clearText"
+        android:layout_toRightOf="@+id/clearText"
         android:onClick="saveNoteButton"
         android:text="@string/save_note_text"
         android:textSize="@dimen/text_size_button" />
