@@ -45,6 +45,8 @@
         android:background="@color/background_write_text"
         android:ems="10"
         android:gravity="start"
+        android:paddingStart="@dimen/write_text_padding"
+        android:paddingEnd="@dimen/write_text_padding"
         android:hint="@string/write_text_hint"
         android:importantForAutofill="no"
         android:inputType="textMultiLine"
