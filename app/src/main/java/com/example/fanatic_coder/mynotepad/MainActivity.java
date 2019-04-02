@@ -92,6 +92,8 @@ public class MainActivity extends AppCompatActivity {
             String clear_text = "";
             write_text = findViewById(R.id.Write_Note);
             write_text.setText(clear_text);
+            // Popup a window to user, saying: Text Cleared!
+            Toast.makeText(this, "Text Cleared!", Toast.LENGTH_LONG).show();
 
         } catch (Exception e) { // If something gone wrong and get an error ...
             // Popup a window to user, saying: Clearing Note Text Failed!
