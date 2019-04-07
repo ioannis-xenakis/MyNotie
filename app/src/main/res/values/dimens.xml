@@ -10,5 +10,8 @@
     <dimen name="line_width">300dp</dimen>
     <dimen name="text_size_button">13sp</dimen>
     <dimen name="write_text_padding">15dp</dimen>
+    <dimen name="corner_radius_default">7dp</dimen>
+    <dimen name="corner_radius_pressed">20dp</dimen>
+    <dimen name="delete_this_note_margin">1dp</dimen>
 
 </resources>

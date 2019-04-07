@@ -12,9 +12,10 @@
 
     <LinearLayout
         android:id="@+id/note"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_weight="6">
 
         <TextView
             android:id="@+id/noteTitle"
@@ -41,5 +42,27 @@
             android:layout_marginLeft="10dp" />
 
     </LinearLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/delete_only_this_note"
+        android:layout_width="45dp"
+        android:layout_height="match_parent"
+
+        android:clickable="true"
+        android:focusable="true"
+        android:background="@drawable/delete_button_animation"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/delete_this_note_margin"
+        android:layout_marginBottom="@dimen/delete_this_note_margin"
+        android:contentDescription="@string/delete_note_description" >
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/delete_icon"
+            android:contentDescription="@string/delete_note_description" />
+
+    </RelativeLayout>
 
 </LinearLayout>

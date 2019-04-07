@@ -8,4 +8,5 @@
     <string name="open_note_text">Open Note</string>
     <string name="note_title">This is a Notepad Demo. This is a Notepad Demo. This is a Notepad Demo. This is a Notepad Demo. This is a Notepad Demo…</string>
     <string name="note_date">12/03/2018</string>
+    <string name="delete_note_description">Delete only this note.</string>
 </resources>
