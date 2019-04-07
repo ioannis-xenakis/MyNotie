@@ -4,12 +4,14 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
+    <!-- CheckBox for selecting each note -->
     <android.support.v7.widget.AppCompatCheckBox
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:visibility="visible" />
 
+    <!-- The actual note and its text -->
     <LinearLayout
         android:id="@+id/note"
         android:layout_width="0dp"
@@ -17,6 +19,7 @@
         android:orientation="vertical"
         android:layout_weight="6">
 
+        <!-- The note title -->
         <TextView
             android:id="@+id/noteTitle"
             android:layout_width="match_parent"
@@ -24,6 +27,7 @@
             android:text="@string/note_title"
             android:textSize="18sp" />
 
+        <!-- The date when the note was created/changed -->
         <TextView
             android:id="@+id/noteDate"
             android:layout_width="wrap_content"
@@ -33,6 +37,7 @@
             android:text="@string/note_date"
             android:textSize="12sp" />
 
+        <!-- The separator line between each note -->
         <View
             android:id="@+id/line4"
             android:layout_width="match_parent"
@@ -43,7 +48,7 @@
 
     </LinearLayout>
 
-
+    <!-- Delete only this note button, deletes only the note next to button -->
     <RelativeLayout
         android:id="@+id/delete_only_this_note"
         android:layout_width="45dp"
