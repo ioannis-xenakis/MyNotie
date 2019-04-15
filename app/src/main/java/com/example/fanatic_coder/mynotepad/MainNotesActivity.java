@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.example.fanatic_coder.mynotepad.adapters.NotesAdapter;
+import com.example.fanatic_coder.mynotepad.callbacks.DeleteThisNoteListener;
 import com.example.fanatic_coder.mynotepad.callbacks.NoteEventListener;
 import com.example.fanatic_coder.mynotepad.db.NotesDAO;
 import com.example.fanatic_coder.mynotepad.db.NotesDB;
@@ -19,7 +20,7 @@ import java.util.List;
 
 import static com.example.fanatic_coder.mynotepad.MainActivity.NOTE_EXTRA_KEY;
 
-public class MainNotesActivity extends AppCompatActivity implements NoteEventListener {
+public class MainNotesActivity extends AppCompatActivity implements NoteEventListener, DeleteThisNoteListener {
 
     private RecyclerView recyclerView;
     private NotesAdapter adapter;
@@ -60,8 +61,8 @@ public class MainNotesActivity extends AppCompatActivity implements NoteEventLis
     private void loadNotes() {
         List<Note> list = dao.getNotes(); //Get all notes from database
         ArrayList<Note> notes = new ArrayList<>(list);
-        this.adapter = new NotesAdapter(notes, this);
-        this.adapter.setListener(this); //set listener to adapter
+        this.adapter = new NotesAdapter(notes, this, this);
+        this.adapter.setListener(this, this); //set listener to adapter
         this.recyclerView.setAdapter(adapter);
     }
 
@@ -76,6 +77,12 @@ public class MainNotesActivity extends AppCompatActivity implements NoteEventLis
         Intent edit = new Intent(this, MainActivity.class);
         edit.putExtra(NOTE_EXTRA_KEY, note.getId());
         startActivity(edit);
+    }
+
+    @Override
+    public void onDeleteThisNoteClick(Note note) {
+        dao.deleteNote(note);
+        loadNotes();
     }
 
 }

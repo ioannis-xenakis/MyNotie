@@ -6,9 +6,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.fanatic_coder.mynotepad.R;
+import com.example.fanatic_coder.mynotepad.callbacks.DeleteThisNoteListener;
 import com.example.fanatic_coder.mynotepad.callbacks.NoteEventListener;
 import com.example.fanatic_coder.mynotepad.model.Note;
 import com.example.fanatic_coder.mynotepad.utils.NoteUtils;
@@ -20,10 +22,12 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteHolder>{
     private ArrayList<Note> notes;
     private Context context;
     private NoteEventListener listener;
+    private DeleteThisNoteListener deleteThisNoteListener;
 
-    public NotesAdapter(ArrayList<Note> notes, Context context) {
+    public NotesAdapter(ArrayList<Note> notes, Context context, DeleteThisNoteListener deleteThisNoteListener) {
         this.notes = notes;
         this.context = context;
+        this.deleteThisNoteListener = deleteThisNoteListener;
     }
 
     //method onCreateViewHolder is called when a new view is created
@@ -49,6 +53,13 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteHolder>{
                     listener.onNoteClick(note);
                 }
             });
+
+            holder.deleteOnlyNote.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    deleteThisNoteListener.onDeleteThisNoteClick(note);
+                }
+            });
         }
     }
 
@@ -65,16 +76,19 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteHolder>{
 
     class NoteHolder extends RecyclerView.ViewHolder{
         TextView noteTitle, noteDate;
+        RelativeLayout deleteOnlyNote;
 
         NoteHolder(@NonNull View itemView) {
             super(itemView);
             noteDate = itemView.findViewById(R.id.noteDate);
             noteTitle = itemView.findViewById(R.id.noteTitle);
+            deleteOnlyNote = itemView.findViewById(R.id.delete_only_this_note);
         }
     }
 
-    public void setListener(NoteEventListener listener) {
+    public void setListener(NoteEventListener listener, DeleteThisNoteListener deleteThisNoteListener) {
         this.listener = listener;
+        this.deleteThisNoteListener = deleteThisNoteListener;
     }
 
 }
