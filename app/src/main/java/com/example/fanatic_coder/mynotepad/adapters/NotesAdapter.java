@@ -50,13 +50,16 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteHolder>{
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    //listener for when clicking on noteTitle and noteDate.
                     listener.onNoteClick(note);
                 }
             });
 
+            //init deleteOnlyNote button click event
             holder.deleteOnlyNote.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    //deleteThisNoteListener object is a listener when clicking on deleteThisNote button and deletes the particular note.
                     deleteThisNoteListener.onDeleteThisNoteClick(note);
                 }
             });
@@ -74,18 +77,24 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteHolder>{
         return notes.size();
     }
 
+    //Holder class for the whole note
     class NoteHolder extends RecyclerView.ViewHolder{
         TextView noteTitle, noteDate;
+        //The actual button to delete the note
         RelativeLayout deleteOnlyNote;
 
         NoteHolder(@NonNull View itemView) {
             super(itemView);
+            //assigning note Date and finding View by id.
             noteDate = itemView.findViewById(R.id.noteDate);
+            //assigning written note and finding View by id.
             noteTitle = itemView.findViewById(R.id.noteTitle);
+            //assigning delete Only This Note button and finding View by id.
             deleteOnlyNote = itemView.findViewById(R.id.delete_only_this_note);
         }
     }
 
+    //method to set all the Listeners
     public void setListener(NoteEventListener listener, DeleteThisNoteListener deleteThisNoteListener) {
         this.listener = listener;
         this.deleteThisNoteListener = deleteThisNoteListener;
