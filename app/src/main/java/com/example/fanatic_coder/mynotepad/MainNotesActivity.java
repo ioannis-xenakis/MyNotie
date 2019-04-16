@@ -48,9 +48,7 @@ public class MainNotesActivity extends AppCompatActivity implements NoteEventLis
     }
 
     private void scrollToNewNote() {
-
         recyclerView.scrollToPosition(adapter.getItemCount());
-
     }
 
     private void onAddNewNote() {
@@ -67,7 +65,7 @@ public class MainNotesActivity extends AppCompatActivity implements NoteEventLis
     }
 
     @Override
-    protected void onResume () {
+    protected void onResume() {
         super.onResume();
         loadNotes();
     }
