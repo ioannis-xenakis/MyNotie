@@ -125,7 +125,8 @@ public class MainActivity extends AppCompatActivity {
                     //setting the IsNewNote to false, saying that note is no longer new and is old.
                     temp.setIsNewNote(false);
                 } else if (!temp.getIsNewNote()) {
-                    dao.updateNote(temp); //else if it exists update note
+                    //else if it exists update note
+                    dao.updateNote(temp);
                     temp.setIsNewNote(false);
                 }
 
