@@ -70,13 +70,13 @@
 
             <!-- A button that opens the Layout/Activity for the notes -->
             <Button
-                android:id="@+id/openNote"
+                android:id="@+id/noteManager"
                 android:layout_width="@dimen/bar_buttons_width"
                 android:layout_height="@dimen/bar_buttons_height"
                 android:layout_toEndOf="@id/saveNote"
                 android:layout_toRightOf="@+id/saveNote"
-                android:onClick="openNoteButton"
-                android:text="@string/open_note_text"
+                android:onClick="NoteManager"
+                android:text="@string/note_manager_text"
                 android:textSize="@dimen/text_size_button" />
 
         </RelativeLayout>
