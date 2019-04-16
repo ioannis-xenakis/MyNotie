@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -107,8 +108,6 @@ public class MainActivity extends AppCompatActivity {
     public void saveNoteButton(View view) {
 
         try {
-            write_text = findViewById(R.id.Write_Note);
-
             // Get the text from the write_text field convert them all to String and assign them to text variable
             String text = write_text.getText().toString();
 
@@ -116,21 +115,24 @@ public class MainActivity extends AppCompatActivity {
             if (!text.isEmpty()) {
                 long date = new Date().getTime(); //Get Current date
 
-                //if note doesn't exist create new, else if it exists update
                 temp.setNoteDate(date);
                 temp.setWriteText(text);
 
-                if (temp.getId() < 0) {
-                    dao.insertNote(temp); //insert new note and save to database
-                } else {
+                //if note doesn't exist and is new, create, else if it is no new and exists, update
+                if (temp.getIsNewNote()) {
+                    //insert new note and save to database
+                    dao.insertNote(temp);
+                    //setting the IsNewNote to false, saying that note is no longer new and is old.
+                    temp.setIsNewNote(false);
+                } else if (!temp.getIsNewNote()) {
                     dao.updateNote(temp); //else if it exists update note
+                    temp.setIsNewNote(false);
                 }
 
-                dao.insertNote(temp); //Insert the new note to database
+                //Popup a window to user, saying: Note Saved!
+                Toast.makeText(this, "Note Saved!", Toast.LENGTH_LONG).show();
 
-                // Popup a window to user, saying: Note Saved Successfully!
-                Toast.makeText(this, "Note Saved Successfully!", Toast.LENGTH_LONG).show();
-
+                finish();
             }
             else {
                 Toast.makeText(this, "Your note is empty! Please write something to be saved!", Toast.LENGTH_LONG).show();
