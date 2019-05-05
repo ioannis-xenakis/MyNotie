@@ -17,7 +17,7 @@
         android:layout_centerInParent="true">
 
         <!-- Top line -->
-        <View xmlns:android="http://schemas.android.com/apk/res/android"
+        <View
             android:id="@+id/line1"
             android:layout_width="@dimen/line_width"
             android:layout_height="@dimen/line_height"
@@ -30,7 +30,7 @@
             android:textSize="22sp" />
 
         <!-- Bottom Line -->
-        <View xmlns:android="http://schemas.android.com/apk/res/android"
+        <View
             android:id="@+id/line2"
             android:layout_width="@dimen/line_width"
             android:layout_height="@dimen/line_height"
@@ -83,7 +83,7 @@
     </RelativeLayout>
 
     <!-- The actual main text to write in Note -->
-    <view xmlns:android="http://schemas.android.com/apk/res/android"
+    <view
         android:id="@+id/Write_Note"
         class="com.example.fanatic_coder.mynotepad.MainActivity$LineEditText"
         android:layout_width="match_parent"
