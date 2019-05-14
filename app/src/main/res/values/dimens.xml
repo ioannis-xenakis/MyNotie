@@ -13,5 +13,6 @@
     <dimen name="corner_radius_default">7dp</dimen>
     <dimen name="corner_radius_pressed">20dp</dimen>
     <dimen name="delete_this_note_margin">1dp</dimen>
+    <dimen name="bar_buttons_space">8dp</dimen>
 
 </resources>
