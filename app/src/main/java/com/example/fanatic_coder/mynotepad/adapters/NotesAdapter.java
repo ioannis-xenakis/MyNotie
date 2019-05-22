@@ -6,6 +6,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -16,6 +18,7 @@ import com.example.fanatic_coder.mynotepad.model.Note;
 import com.example.fanatic_coder.mynotepad.utils.NoteUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteHolder>{
 
@@ -63,7 +66,25 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteHolder>{
                     deleteThisNoteListener.onDeleteThisNoteClick(note);
                 }
             });
+
+            holder.noteCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    note.setChecked(isChecked);
+                }
+            });
+
         }
+    }
+
+    public List<Note> getCheckedNotes() {
+        List<Note> checkedNotes = new ArrayList<>();
+        for (Note n : this.notes) {
+            if (n.isChecked()){
+                checkedNotes.add(n);
+            }
+        }
+        return checkedNotes;
     }
 
     //method getNote gets the notes position
@@ -82,6 +103,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteHolder>{
         TextView noteTitle, noteDate;
         //The actual button to delete the note
         RelativeLayout deleteOnlyNote;
+        CheckBox noteCheck;
 
         NoteHolder(@NonNull View itemView) {
             super(itemView);
@@ -91,6 +113,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteHolder>{
             noteTitle = itemView.findViewById(R.id.noteTitle);
             //assigning delete Only This Note button and finding View by id.
             deleteOnlyNote = itemView.findViewById(R.id.delete_only_this_note);
+            noteCheck = itemView.findViewById(R.id.noteCheckbox);
         }
     }
 

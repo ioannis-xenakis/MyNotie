@@ -6,6 +6,7 @@
 
     <!-- CheckBox for selecting each note -->
     <android.support.v7.widget.AppCompatCheckBox
+        android:id="@+id/noteCheckbox"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="center"

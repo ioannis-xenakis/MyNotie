@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.fanatic_coder.mynotepad.adapters.NotesAdapter;
 import com.example.fanatic_coder.mynotepad.callbacks.DeleteThisNoteListener;
@@ -45,6 +46,15 @@ public class MainNotesActivity extends AppCompatActivity implements NoteEventLis
             }
         });
         dao = NotesDB.getInstance(this).notesDAO();
+
+        FloatingActionButton delete_multi_note_button = findViewById(R.id.delete_note);
+        delete_multi_note_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onDeleteMultiNotes();
+            }
+        });
+
     }
 
     private void scrollToNewNote() {
@@ -81,6 +91,20 @@ public class MainNotesActivity extends AppCompatActivity implements NoteEventLis
     public void onDeleteThisNoteClick(Note note) {
         dao.deleteNote(note);
         loadNotes();
+    }
+
+    public void onDeleteMultiNotes() {
+        List<Note> checkedNotes = adapter.getCheckedNotes();
+        if (checkedNotes.size() != 0) {
+            for (Note note : checkedNotes) {
+                dao.deleteNote(note);
+            }
+
+            loadNotes();
+            Toast.makeText(this, checkedNotes.size()+" Note(s) deleted!", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "No note selected.", Toast.LENGTH_SHORT).show();
+        }
     }
 
 }

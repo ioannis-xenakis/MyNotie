@@ -2,6 +2,7 @@ package com.example.fanatic_coder.mynotepad.model;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
@@ -15,6 +16,8 @@ public class Note {
     private String writeText;
     @ColumnInfo(name = "date")
     private long noteDate;
+    @Ignore
+    private boolean isChecked;
 
     public Note() {
     }
@@ -57,6 +60,13 @@ public class Note {
         isNewNote = newNote;
     }
 
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean checked) {
+        isChecked = checked;
+    }
 
     @NonNull
     @Override
