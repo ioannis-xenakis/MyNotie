@@ -19,6 +19,7 @@
         android:id="@+id/buttons_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/bar"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <android.support.design.widget.FloatingActionButton
@@ -26,8 +27,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/bar_buttons_space"
-            android:layout_marginEnd="@dimen/bar_buttons_space"
-            android:layout_marginRight="@dimen/bar_buttons_space"
+            android:layout_marginEnd="28dp"
+            android:layout_marginRight="28dp"
             android:layout_marginBottom="@dimen/bar_buttons_space"
             android:clickable="true"
             android:focusable="true"
