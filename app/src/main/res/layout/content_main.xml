@@ -11,62 +11,33 @@
     <!-- A group with all the buttons and lines. Full bar_buttons -->
     <RelativeLayout
         android:id="@+id/bar_buttons"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="@dimen/layout_bar_buttons_height"
+        android:background="@drawable/bar_no_shadows"
         android:layout_alignParentTop="true"
         android:layout_centerInParent="true">
-
-        <!-- Top line -->
-        <View
-            android:id="@+id/line1"
-            android:layout_width="@dimen/line_width"
-            android:layout_height="@dimen/line_height"
-            android:layout_alignParentTop="true"
-            android:background="@color/color_line"
-            android:fadingEdge="vertical"
-            android:gravity="top"
-            android:padding="5dp"
-            android:scrollbars="vertical"
-            android:textSize="22sp" />
-
-        <!-- Bottom Line -->
-        <View
-            android:id="@+id/line2"
-            android:layout_width="@dimen/line_width"
-            android:layout_height="@dimen/line_height"
-            android:layout_alignParentBottom="true"
-            android:background="@color/color_line"
-            android:fadingEdge="vertical"
-            android:padding="5dp"
-            android:scrollbars="vertical"
-            android:textSize="22sp" />
-
-        <!-- A group or Layout of only the buttons -->
-        <RelativeLayout
-            android:id="@+id/buttons"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true">
 
             <!-- A button that clears all the text in note -->
             <Button
                 android:id="@+id/clearText"
                 android:layout_width="@dimen/bar_buttons_width"
                 android:layout_height="@dimen/bar_buttons_height"
+                android:layout_toLeftOf="@id/saveNote"
+                android:layout_toStartOf="@id/saveNote"
                 android:onClick="clearTextButton"
                 android:text="@string/clear_text"
-                android:textSize="@dimen/text_size_button" />
+                android:textSize="@dimen/text_size_button"
+                />
 
             <!-- A button that saves the note -->
             <Button
                 android:id="@+id/saveNote"
                 android:layout_width="@dimen/bar_buttons_width"
                 android:layout_height="@dimen/bar_buttons_height"
-                android:layout_toEndOf="@id/clearText"
-                android:layout_toRightOf="@+id/clearText"
+                android:layout_centerInParent="true"
                 android:onClick="saveNoteButton"
                 android:text="@string/save_note_text"
-                android:textSize="@dimen/text_size_button" />
+                android:textSize="@dimen/text_size_button"/>
 
             <!-- A button that opens the Layout/Activity for the notes -->
             <Button
@@ -77,9 +48,8 @@
                 android:layout_toRightOf="@+id/saveNote"
                 android:onClick="NoteManager"
                 android:text="@string/note_manager_text"
-                android:textSize="@dimen/text_size_button" />
+                android:textSize="@dimen/text_size_button"/>
 
-        </RelativeLayout>
     </RelativeLayout>
 
     <!-- The actual main text to write in Note -->
