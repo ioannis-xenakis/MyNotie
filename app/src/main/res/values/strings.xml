@@ -5,7 +5,7 @@
     <string name="write_text_text"> </string>
     <string name="clear_text">Clear Text</string>
     <string name="save_note_text">Save Note</string>
-    <string name="note_manager_text">Note Manager</string>
+    <string name="go_back_text">Go Back</string>
     <string name="note_title">This is a Notepad Demo. This is a Notepad Demo. This is a Notepad Demo. This is a Notepad Demo. This is a Notepad Demo…</string>
     <string name="note_date">12/03/2018</string>
     <string name="delete_note_description">Delete only this note.</string>

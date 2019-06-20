@@ -149,8 +149,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //NoteManager method is for the openNote button in content_main.xml
-    public void NoteManager(View view) {
+    //GoBack method is for the openNote button in content_main.xml
+    public void GoBack(View view) {
         //goes back to notes_layout.xml for the user to open a note he desires.
         finish();
     }
