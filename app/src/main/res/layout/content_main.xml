@@ -17,38 +17,38 @@
         android:layout_alignParentTop="true"
         android:layout_centerInParent="true">
 
-            <!-- A button that clears all the text in note -->
-            <Button
-                android:id="@+id/clearText"
-                android:layout_width="@dimen/bar_buttons_width"
-                android:layout_height="@dimen/bar_buttons_height"
-                android:layout_toLeftOf="@id/saveNote"
-                android:layout_toStartOf="@id/saveNote"
-                android:onClick="clearTextButton"
-                android:text="@string/clear_text"
-                android:textSize="@dimen/text_size_button"
-                />
+        <!-- A button that opens the Layout/Activity for the notes -->
+        <Button
+            android:id="@+id/goBack"
+            android:layout_width="@dimen/bar_buttons_width"
+            android:layout_height="@dimen/bar_buttons_height"
+            android:layout_toStartOf="@id/saveNote"
+            android:layout_toLeftOf="@+id/saveNote"
+            android:onClick="GoBack"
+            android:text="@string/go_back_text"
+            android:textSize="@dimen/text_size_button"/>
 
-            <!-- A button that saves the note -->
-            <Button
-                android:id="@+id/saveNote"
-                android:layout_width="@dimen/bar_buttons_width"
-                android:layout_height="@dimen/bar_buttons_height"
-                android:layout_centerInParent="true"
-                android:onClick="saveNoteButton"
-                android:text="@string/save_note_text"
-                android:textSize="@dimen/text_size_button"/>
+        <!-- A button that clears all the text in note -->
+        <Button
+            android:id="@+id/clearText"
+            android:layout_width="@dimen/bar_buttons_width"
+            android:layout_height="@dimen/bar_buttons_height"
+            android:layout_toRightOf="@id/saveNote"
+            android:layout_toEndOf="@id/saveNote"
+            android:onClick="clearTextButton"
+            android:text="@string/clear_text"
+            android:textSize="@dimen/text_size_button"
+            />
 
-            <!-- A button that opens the Layout/Activity for the notes -->
-            <Button
-                android:id="@+id/goBack"
-                android:layout_width="@dimen/bar_buttons_width"
-                android:layout_height="@dimen/bar_buttons_height"
-                android:layout_toEndOf="@id/saveNote"
-                android:layout_toRightOf="@+id/saveNote"
-                android:onClick="GoBack"
-                android:text="@string/go_back_text"
-                android:textSize="@dimen/text_size_button"/>
+        <!-- A button that saves the note -->
+        <Button
+            android:id="@+id/saveNote"
+            android:layout_width="@dimen/bar_buttons_width"
+            android:layout_height="@dimen/bar_buttons_height"
+            android:layout_centerInParent="true"
+            android:onClick="saveNoteButton"
+            android:text="@string/save_note_text"
+            android:textSize="@dimen/text_size_button"/>
 
     </RelativeLayout>
 
