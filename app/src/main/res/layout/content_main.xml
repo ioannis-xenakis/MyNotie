@@ -26,7 +26,7 @@
             android:layout_toLeftOf="@+id/saveNote"
             android:onClick="GoBack"
             android:text="@string/go_back_text"
-            android:textSize="@dimen/text_size_button"/>
+            android:textSize="@dimen/text_size_button" />
 
         <!-- A button that clears all the text in note -->
         <Button
@@ -37,8 +37,7 @@
             android:layout_toEndOf="@id/saveNote"
             android:onClick="clearTextButton"
             android:text="@string/clear_text"
-            android:textSize="@dimen/text_size_button"
-            />
+            android:textSize="@dimen/text_size_button" />
 
         <!-- A button that saves the note -->
         <Button
@@ -48,7 +47,7 @@
             android:layout_centerInParent="true"
             android:onClick="saveNoteButton"
             android:text="@string/save_note_text"
-            android:textSize="@dimen/text_size_button"/>
+            android:textSize="@dimen/text_size_button" />
 
     </RelativeLayout>
 
