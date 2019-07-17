@@ -26,6 +26,8 @@
             android:layout_toLeftOf="@+id/saveNote"
             android:onClick="GoBack"
             android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/bar_buttons_space"
+            android:layout_marginRight="@dimen/bar_buttons_space"
             app:fabCustomSize="@dimen/fab_size"
             app:srcCompat="@drawable/go_back_icon" />
 
@@ -36,6 +38,8 @@
             android:layout_height="@dimen/bar_buttons_height"
             android:layout_toRightOf="@id/saveNote"
             android:layout_toEndOf="@id/saveNote"
+            android:layout_marginStart="@dimen/bar_buttons_space"
+            android:layout_marginLeft="@dimen/bar_buttons_space"
             android:onClick="clearTextButton"
             android:layout_centerVertical="true"
             app:fabCustomSize="@dimen/fab_size"
