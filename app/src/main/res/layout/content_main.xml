@@ -20,13 +20,13 @@
         <!-- A button that opens the Layout/Activity for the notes -->
         <Button
             android:id="@+id/goBack"
-            android:layout_width="@dimen/bar_buttons_width"
-            android:layout_height="@dimen/bar_buttons_height"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:background="@drawable/go_back_icon"
             android:layout_toStartOf="@id/saveNote"
             android:layout_toLeftOf="@+id/saveNote"
             android:onClick="GoBack"
-            android:text="@string/go_back_text"
-            android:textSize="@dimen/text_size_button" />
+            android:layout_centerVertical="true" />
 
         <!-- A button that clears all the text in note -->
         <Button
