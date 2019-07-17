@@ -91,6 +91,7 @@ public class MainNotesActivity extends AppCompatActivity implements NoteEventLis
     public void onDeleteThisNoteClick(Note note) {
         dao.deleteNote(note);
         loadNotes();
+        Toast.makeText(this, "Note deleted!", Toast.LENGTH_SHORT).show();
     }
 
     public void onDeleteMultiNotes() {
