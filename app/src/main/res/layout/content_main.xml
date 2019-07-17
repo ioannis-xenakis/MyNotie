@@ -18,15 +18,16 @@
         android:layout_centerInParent="true">
 
         <!-- A button that opens the Layout/Activity for the notes -->
-        <Button
+        <android.support.design.widget.FloatingActionButton
             android:id="@+id/goBack"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:background="@drawable/go_back_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_toStartOf="@id/saveNote"
             android:layout_toLeftOf="@+id/saveNote"
             android:onClick="GoBack"
-            android:layout_centerVertical="true" />
+            android:layout_centerVertical="true"
+            app:fabCustomSize="@dimen/fab_size"
+            app:srcCompat="@drawable/go_back_icon" />
 
         <!-- A button that clears all the text in note -->
         <Button
