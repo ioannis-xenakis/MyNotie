@@ -30,15 +30,16 @@
             app:srcCompat="@drawable/go_back_icon" />
 
         <!-- A button that clears all the text in note -->
-        <Button
+        <android.support.design.widget.FloatingActionButton
             android:id="@+id/clearText"
             android:layout_width="@dimen/bar_buttons_width"
             android:layout_height="@dimen/bar_buttons_height"
             android:layout_toRightOf="@id/saveNote"
             android:layout_toEndOf="@id/saveNote"
             android:onClick="clearTextButton"
-            android:text="@string/clear_text"
-            android:textSize="@dimen/text_size_button" />
+            android:layout_centerVertical="true"
+            app:fabCustomSize="@dimen/fab_size"
+            app:srcCompat="@drawable/clear_text_icon"/>
 
         <!-- A button that saves the note -->
         <android.support.design.widget.FloatingActionButton
