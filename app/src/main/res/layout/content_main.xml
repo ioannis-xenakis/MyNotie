@@ -41,13 +41,14 @@
             android:textSize="@dimen/text_size_button" />
 
         <!-- A button that saves the note -->
-        <Button
+        <android.support.design.widget.FloatingActionButton
             android:id="@+id/saveNote"
-            android:layout_width="@dimen/bar_buttons_width"
-            android:layout_height="@dimen/bar_buttons_height"
-            android:background="@drawable/save_note_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:onClick="saveNoteButton"
-            android:layout_centerInParent="true" />
+            android:layout_centerInParent="true"
+            app:fabCustomSize="@dimen/fab_size"
+            app:srcCompat="@drawable/save_note_icon" />
 
     </RelativeLayout>
 
