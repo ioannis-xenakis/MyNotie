@@ -44,10 +44,9 @@
             android:id="@+id/saveNote"
             android:layout_width="@dimen/bar_buttons_width"
             android:layout_height="@dimen/bar_buttons_height"
-            android:layout_centerInParent="true"
+            android:background="@drawable/save_note_icon"
             android:onClick="saveNoteButton"
-            android:text="@string/save_note_text"
-            android:textSize="@dimen/text_size_button" />
+            android:layout_centerInParent="true" />
 
     </RelativeLayout>
 
