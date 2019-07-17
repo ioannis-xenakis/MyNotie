@@ -31,6 +31,16 @@
             app:fabCustomSize="@dimen/fab_size"
             app:srcCompat="@drawable/go_back_icon" />
 
+        <!-- A button that saves the note -->
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/saveNote"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="saveNoteButton"
+            android:layout_centerInParent="true"
+            app:fabCustomSize="@dimen/fab_size"
+            app:srcCompat="@drawable/save_note_icon" />
+
         <!-- A button that clears all the text in note -->
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/clearText"
@@ -44,16 +54,6 @@
             android:layout_centerVertical="true"
             app:fabCustomSize="@dimen/fab_size"
             app:srcCompat="@drawable/clear_text_icon"/>
-
-        <!-- A button that saves the note -->
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/saveNote"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="saveNoteButton"
-            android:layout_centerInParent="true"
-            app:fabCustomSize="@dimen/fab_size"
-            app:srcCompat="@drawable/save_note_icon" />
 
     </RelativeLayout>
 
