@@ -6,10 +6,9 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -59,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //LineEditText class is for drawing lines under text, for the edittext(view) with id, Write_Note, inside content_main.xml
-    public static class LineEditText extends android.support.v7.widget.AppCompatEditText {
+    public static class LineEditText extends androidx.appcompat.widget.AppCompatEditText {
         public LineEditText(Context context, AttributeSet attrs) {
             super(context, attrs);
                 myRect = new Rect();

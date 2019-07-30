@@ -18,7 +18,7 @@
         android:layout_centerInParent="true">
 
         <!-- A button that opens the Layout/Activity for the notes -->
-        <android.support.design.widget.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/goBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -32,7 +32,7 @@
             app:srcCompat="@drawable/go_back_icon" />
 
         <!-- A button that saves the note -->
-        <android.support.design.widget.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/saveNote"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -42,7 +42,7 @@
             app:srcCompat="@drawable/save_note_icon" />
 
         <!-- A button that clears all the text in note -->
-        <android.support.design.widget.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/clearText"
             android:layout_width="@dimen/bar_buttons_width"
             android:layout_height="@dimen/bar_buttons_height"
