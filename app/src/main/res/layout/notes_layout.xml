@@ -28,6 +28,16 @@
             android:text="@string/note_title"
             android:textSize="18sp" />
 
+        <!-- The note body text -->
+        <TextView
+            android:id="@+id/noteBodyText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="@string/note_body_text"
+            android:textSize="13sp" />
+
         <!-- The date when the note was created/changed -->
         <TextView
             android:id="@+id/noteDate"
