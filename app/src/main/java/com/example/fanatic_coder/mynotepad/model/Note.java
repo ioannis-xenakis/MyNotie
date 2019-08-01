@@ -22,11 +22,6 @@ public class Note {
     public Note() {
     }
 
-    public Note(String writeText, long noteDate) {
-        this.writeText = writeText;
-        this.noteDate = noteDate;
-    }
-
     public String getWriteText() {
         return writeText;
     }
