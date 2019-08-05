@@ -57,13 +57,33 @@
 
     </RelativeLayout>
 
+    <view
+        android:id="@+id/noteTitle"
+        class="com.example.fanatic_coder.mynotepad.MainActivity$LineEditText"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:layout_below="@id/bar_buttons"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/note_title_space"
+        android:layout_marginTop="@dimen/note_title_space"
+        android:background="@drawable/note_title_background"
+        android:gravity="start"
+        android:paddingStart="@dimen/write_text_padding"
+        android:paddingEnd="@dimen/write_text_padding"
+        android:hint="@string/note_title_hint"
+        android:importantForAutofill="no"
+        android:inputType="textMultiLine"
+        android:scrollbars="vertical"
+        android:textColor="@color/color_write_text"
+        tools:targetApi="o" />
+
     <!-- The actual main text to write in Note -->
     <view
         android:id="@+id/Write_Note"
         class="com.example.fanatic_coder.mynotepad.MainActivity$LineEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/bar_buttons"
+        android:layout_below="@id/noteTitle"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:background="@color/background_write_text"
