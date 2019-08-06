@@ -46,14 +46,15 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteHolder>{
     public void onBindViewHolder(@NonNull NoteHolder holder, int position) {
         final Note note = getNote(position);
         if(note != null) {
-            holder.noteTitle.setText(note.getWriteText());
+
+            holder.noteBodyText.setText(note.getWriteText());
             holder.noteDate.setText(NoteUtils.dateFromLong(note.getNoteDate()));
 
             //init note click event
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //listener for when clicking on noteTitle and noteDate.
+                    //listener for when clicking on noteBodyText and noteDate.
                     listener.onNoteClick(note);
                 }
             });
@@ -100,7 +101,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteHolder>{
 
     //Holder class for the whole note
     class NoteHolder extends RecyclerView.ViewHolder{
-        TextView noteTitle, noteDate;
+        TextView noteBodyText, noteDate;
         //The actual button to delete the note
         RelativeLayout deleteOnlyNote;
         CheckBox noteCheck;
@@ -110,7 +111,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteHolder>{
             //assigning note Date and finding View by id.
             noteDate = itemView.findViewById(R.id.noteDate);
             //assigning written note and finding View by id.
-            noteTitle = itemView.findViewById(R.id.noteTitle);
+            noteBodyText = itemView.findViewById(R.id.noteBodyText);
             //assigning delete Only This Note button and finding View by id.
             deleteOnlyNote = itemView.findViewById(R.id.delete_only_this_note);
             noteCheck = itemView.findViewById(R.id.noteCheckbox);
