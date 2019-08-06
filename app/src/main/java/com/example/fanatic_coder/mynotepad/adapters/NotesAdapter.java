@@ -47,6 +47,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteHolder>{
         final Note note = getNote(position);
         if(note != null) {
 
+            holder.noteTitle.setText(note.getNoteTitle());
             holder.noteBodyText.setText(note.getWriteText());
             holder.noteDate.setText(NoteUtils.dateFromLong(note.getNoteDate()));
 
@@ -101,13 +102,15 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteHolder>{
 
     //Holder class for the whole note
     class NoteHolder extends RecyclerView.ViewHolder{
-        TextView noteBodyText, noteDate;
+        TextView noteTitle, noteBodyText, noteDate;
         //The actual button to delete the note
         RelativeLayout deleteOnlyNote;
         CheckBox noteCheck;
 
         NoteHolder(@NonNull View itemView) {
             super(itemView);
+            //assigning note Title and finding View by id.
+            noteTitle = itemView.findViewById(R.id.noteTitle);
             //assigning note Date and finding View by id.
             noteDate = itemView.findViewById(R.id.noteDate);
             //assigning written note and finding View by id.

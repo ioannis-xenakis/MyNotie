@@ -12,6 +12,8 @@ public class Note {
     private int id;
     @ColumnInfo(name = "isNewNote")
     private Boolean isNewNote = true;
+    @ColumnInfo(name = "noteTitle")
+    private String noteTitle;
     @ColumnInfo(name = "text")
     private String writeText;
     @ColumnInfo(name = "date")
@@ -20,6 +22,14 @@ public class Note {
     private boolean isChecked;
 
     public Note() {
+    }
+
+    public String getNoteTitle() {
+        return noteTitle;
+    }
+
+    public void setNoteTitle(String noteTitle) {
+        this.noteTitle = noteTitle;
     }
 
     public String getWriteText() {

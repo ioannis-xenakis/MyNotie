@@ -24,6 +24,7 @@ import java.util.Date;
 public class MainActivity extends AppCompatActivity {
 
     private EditText write_text;
+    private EditText note_title;
     private NotesDAO dao;
     private Note temp;
     public static final String NOTE_EXTRA_KEY = "note_id";
@@ -44,12 +45,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         */
+        note_title = findViewById(R.id.noteTitle);
         write_text = findViewById(R.id.Write_Note);
         dao = NotesDB.getInstance(this).notesDAO(); //Builds a database and references to it
 
         if (getIntent().getExtras() != null) {
             int id = getIntent().getExtras().getInt(NOTE_EXTRA_KEY, 0);
             temp = dao.getNoteById(id);
+            note_title.setText(temp.getNoteTitle());
             write_text.setText(temp.getWriteText());
         } else {
             temp = new Note();
@@ -107,13 +110,16 @@ public class MainActivity extends AppCompatActivity {
     public void saveNoteButton(View view) {
 
         try {
+            // Get the text from the note_title field convert them all to String and assign them to noteTitle variable
+            String noteTitle =  note_title.getText().toString();
             // Get the text from the write_text field convert them all to String and assign them to text variable
             String text = write_text.getText().toString();
 
-            // If the text from write_text field is not empty, and has something in it, do this
-            if (!text.isEmpty()) {
+            // If the text from write_text or note_title field are not empty, and one or the other have something in it, do this
+            if (!text.isEmpty() || !noteTitle.isEmpty()) {
                 long date = new Date().getTime(); //Get Current date
 
+                temp.setNoteTitle(noteTitle);
                 temp.setNoteDate(date);
                 temp.setWriteText(text);
 
