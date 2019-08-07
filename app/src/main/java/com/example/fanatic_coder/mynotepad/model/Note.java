@@ -15,7 +15,7 @@ public class Note {
     @ColumnInfo(name = "noteTitle")
     private String noteTitle;
     @ColumnInfo(name = "text")
-    private String writeText;
+    private String noteBodyText;
     @ColumnInfo(name = "date")
     private long noteDate;
     @Ignore
@@ -32,12 +32,12 @@ public class Note {
         this.noteTitle = noteTitle;
     }
 
-    public String getWriteText() {
-        return writeText;
+    public String getNoteBodyText() {
+        return noteBodyText;
     }
 
-    public void setWriteText(String writeText) {
-        this.writeText = writeText;
+    public void setNoteBodyText(String noteBodyText) {
+        this.noteBodyText = noteBodyText;
     }
 
     public long getNoteDate() {

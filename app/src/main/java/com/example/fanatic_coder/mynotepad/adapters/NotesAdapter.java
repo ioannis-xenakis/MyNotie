@@ -48,7 +48,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteHolder>{
         if(note != null) {
 
             holder.noteTitle.setText(note.getNoteTitle());
-            holder.noteBodyText.setText(note.getWriteText());
+            holder.noteBodyText.setText(note.getNoteBodyText());
             holder.noteDate.setText(NoteUtils.dateFromLong(note.getNoteDate()));
 
             //init note click event

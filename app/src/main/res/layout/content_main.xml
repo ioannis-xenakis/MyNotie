@@ -79,7 +79,7 @@
 
     <!-- The actual main text to write in Note -->
     <view
-        android:id="@+id/Write_Note"
+        android:id="@+id/noteBodyText"
         class="com.example.fanatic_coder.mynotepad.MainActivity$LineEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
