@@ -4,7 +4,7 @@
     <color name="colorPrimaryDark">#090909</color>
     <color name="colorAccent">#FF0000</color>
     <color name="colorNoteTitle">#FFAA00</color>
-    <color name="background_write_text">#FFAA00</color>
+    <color name="background_note_body_text">#FFAA00</color>
     <color name="color_line">#090909</color>
     <color name="color_write_text">#0000c0</color>
     <color name="colorDelNoteButtonDefault">#303030</color>

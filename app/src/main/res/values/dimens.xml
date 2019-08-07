@@ -10,6 +10,8 @@
     <dimen name="corner_radius_default">7dp</dimen>
     <dimen name="corner_radius_pressed">20dp</dimen>
     <dimen name="note_title_corner_radius">10dp</dimen>
+    <dimen name="note_body_text_corner_radius">10dp</dimen>
+    <dimen name="note_body_text_margin">17dp</dimen>
     <dimen name="delete_this_note_margin">1dp</dimen>
     <dimen name="bar_buttons_space">8dp</dimen>
     <dimen name="note_title_space">2dp</dimen>
