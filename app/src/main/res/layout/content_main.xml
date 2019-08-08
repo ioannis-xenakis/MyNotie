@@ -21,8 +21,8 @@
         <!-- A button that opens the Layout/Activity for the notes -->
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/goBack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/bar_buttons_width"
+            android:layout_height="@dimen/bar_buttons_height"
             android:layout_toStartOf="@id/saveNote"
             android:layout_toLeftOf="@+id/saveNote"
             android:onClick="GoBack"
@@ -35,8 +35,8 @@
         <!-- A button that saves the note -->
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/saveNote"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/bar_buttons_width"
+            android:layout_height="@dimen/bar_buttons_height"
             android:onClick="saveNoteButton"
             android:layout_centerInParent="true"
             app:fabCustomSize="@dimen/fab_size"
