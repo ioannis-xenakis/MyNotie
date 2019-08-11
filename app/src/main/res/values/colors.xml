@@ -9,5 +9,7 @@
     <color name="color_write_text">#0000c0</color>
     <color name="colorDelNoteButtonDefault">#303030</color>
     <color name="colorDelNoteButtonPressed">#505050</color>
+    <color name="colorNoteBackground2">#99DADADA</color>
+    <color name="colorNoteCheckbox2">#99EAEAEA</color>
 
 </resources>
