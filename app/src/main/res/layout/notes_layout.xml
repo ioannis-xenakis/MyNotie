@@ -9,6 +9,7 @@
         android:id="@+id/noteCheckbox"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:background="@drawable/note_checkbox_background1"
         android:layout_gravity="center"
         android:visibility="visible" />
 
@@ -17,6 +18,7 @@
         android:id="@+id/note"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:background="@drawable/note_background1"
         android:orientation="vertical"
         android:layout_weight="6">
 

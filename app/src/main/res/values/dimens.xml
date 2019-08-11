@@ -15,6 +15,6 @@
     <dimen name="delete_this_note_margin">1dp</dimen>
     <dimen name="bar_buttons_space">8dp</dimen>
     <dimen name="note_title_space">2dp</dimen>
-    <dimen name="note2_corner_radius">10dp</dimen>
+    <dimen name="note_corner_radius">10dp</dimen>
 
 </resources>

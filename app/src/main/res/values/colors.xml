@@ -11,5 +11,7 @@
     <color name="colorDelNoteButtonPressed">#505050</color>
     <color name="colorNoteBackground2">#99DADADA</color>
     <color name="colorNoteCheckbox2">#99EAEAEA</color>
+    <color name="colorNoteBackground1">#99EAEAEA</color>
+    <color name="colorNoteCheckbox1">#99DADADA</color>
 
 </resources>
