@@ -125,40 +125,6 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
             default:
                 break;
         }
-        /*
-        final Note note = getNote(position);
-        if(note != null) {
-
-            holder.noteTitle.setText(note.getNoteTitle());
-            holder.noteBodyText.setText(note.getNoteBodyText());
-            holder.noteDate.setText(NoteUtils.dateFromLong(note.getNoteDate()));
-
-            //init note click event
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //listener for when clicking on noteBodyText and noteDate.
-                    listener.onNoteClick(note);
-                }
-            });
-
-            //init deleteOnlyNote button click event
-            holder.deleteOnlyNote.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //deleteThisNoteListener object is a listener when clicking on deleteThisNote button and deletes the particular note.
-                    deleteThisNoteListener.onDeleteThisNoteClick(note);
-                }
-            });
-
-            holder.noteCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    note.setChecked(isChecked);
-                }
-            });
-
-        } */
     }
 
     //Holder class for the whole note
