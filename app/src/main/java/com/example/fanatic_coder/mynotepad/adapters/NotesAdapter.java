@@ -20,7 +20,7 @@ import com.example.fanatic_coder.mynotepad.utils.NoteUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteHolder>{
+public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     private ArrayList<Note> notes;
     private Context context;
@@ -36,14 +36,96 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteHolder>{
     //method onCreateViewHolder is called when a new view is created
     @NonNull
     @Override
-    public NoteHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(context).inflate(R.layout.notes_layout, parent, false);
-        return new NoteHolder(v);
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        if (viewType == 0) {
+            View v = LayoutInflater.from(context).inflate(R.layout.notes_layout, parent, false);
+            return new FirstNoteHolder(v);
+        }
+        else {
+            View v = LayoutInflater.from(context).inflate(R.layout.note2_layout, parent, false);
+            return new SecondNoteHolder(v);
+        }
     }
 
     //method onBindViewHolder displays data at specified position
     @Override
-    public void onBindViewHolder(@NonNull NoteHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+
+        switch(holder.getItemViewType()) {
+            case 0: {
+                FirstNoteHolder firstNoteHolder = (FirstNoteHolder)holder;
+                final Note note = getNote(position);
+                if (note != null) {
+                    firstNoteHolder.noteTitle.setText(note.getNoteTitle());
+                    firstNoteHolder.noteBodyText.setText(note.getNoteBodyText());
+                    firstNoteHolder.noteDate.setText(NoteUtils.dateFromLong(note.getNoteDate()));
+
+                    //init note click event
+                    firstNoteHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            //listener for when clicking on noteBodyText and noteDate.
+                            listener.onNoteClick(note);
+                        }
+                    });
+
+                    //init deleteOnlyNote button click event
+                    firstNoteHolder.deleteOnlyNote.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            //deleteThisNoteListener object is a listener when clicking on deleteThisNote button and deletes the particular note.
+                            deleteThisNoteListener.onDeleteThisNoteClick(note);
+                        }
+                    });
+
+                    firstNoteHolder.noteCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                            note.setChecked(isChecked);
+                        }
+                    });
+                }
+            }
+            break;
+            case 1: {
+                SecondNoteHolder secondNoteHolder = (SecondNoteHolder)holder;
+                final Note note = getNote(position);
+                if (note != null) {
+                    secondNoteHolder.noteTitle.setText(note.getNoteTitle());
+                    secondNoteHolder.noteBodyText.setText(note.getNoteBodyText());
+                    secondNoteHolder.noteDate.setText(NoteUtils.dateFromLong(note.getNoteDate()));
+
+                    //init note click event
+                    secondNoteHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            //listener for when clicking on noteBodyText and noteDate.
+                            listener.onNoteClick(note);
+                        }
+                    });
+
+                    //init deleteOnlyNote button click event
+                    secondNoteHolder.deleteOnlyNote.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            //deleteThisNoteListener object is a listener when clicking on deleteThisNote button and deletes the particular note.
+                            deleteThisNoteListener.onDeleteThisNoteClick(note);
+                        }
+                    });
+
+                    secondNoteHolder.noteCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                            note.setChecked(isChecked);
+                        }
+                    });
+                }
+            }
+            break;
+            default:
+                break;
+        }
+        /*
         final Note note = getNote(position);
         if(note != null) {
 
@@ -76,6 +158,47 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteHolder>{
                 }
             });
 
+        } */
+    }
+
+    //Holder class for the whole note
+    class FirstNoteHolder extends RecyclerView.ViewHolder{
+        TextView noteTitle, noteBodyText, noteDate;
+        //The actual button to delete the note
+        RelativeLayout deleteOnlyNote;
+        CheckBox noteCheck;
+
+        FirstNoteHolder(@NonNull View itemView) {
+            super(itemView);
+            //assigning note Title and finding View by id.
+            noteTitle = itemView.findViewById(R.id.noteTitle);
+            //assigning note Date and finding View by id.
+            noteDate = itemView.findViewById(R.id.noteDate);
+            //assigning written note and finding View by id.
+            noteBodyText = itemView.findViewById(R.id.noteBodyText);
+            //assigning delete Only This Note button and finding View by id.
+            deleteOnlyNote = itemView.findViewById(R.id.delete_only_this_note);
+            noteCheck = itemView.findViewById(R.id.noteCheckbox);
+        }
+    }
+
+    class SecondNoteHolder extends RecyclerView.ViewHolder{
+        TextView noteTitle, noteBodyText, noteDate;
+        //The actual button to delete the note
+        RelativeLayout deleteOnlyNote;
+        CheckBox noteCheck;
+
+        SecondNoteHolder(@NonNull View itemView) {
+            super(itemView);
+            //assigning note Title and finding View by id.
+            noteTitle = itemView.findViewById(R.id.noteTitle);
+            //assigning note Date and finding View by id.
+            noteDate = itemView.findViewById(R.id.noteDate);
+            //assigning written note and finding View by id.
+            noteBodyText = itemView.findViewById(R.id.noteBodyText);
+            //assigning delete Only This Note button and finding View by id.
+            deleteOnlyNote = itemView.findViewById(R.id.delete_only_this_note);
+            noteCheck = itemView.findViewById(R.id.noteCheckbox);
         }
     }
 
@@ -94,31 +217,22 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteHolder>{
         return notes.get(position);
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        //if note position is an even number then choose first note view
+        //if it isnt and it is an odd number then choose second note view
+        if (position % 2 == 0) {
+            return 0;
+        }
+        else {
+            return 1;
+        }
+    }
+
     //method getItemCount gets how many notes will be created
     @Override
     public int getItemCount() {
         return notes.size();
-    }
-
-    //Holder class for the whole note
-    class NoteHolder extends RecyclerView.ViewHolder{
-        TextView noteTitle, noteBodyText, noteDate;
-        //The actual button to delete the note
-        RelativeLayout deleteOnlyNote;
-        CheckBox noteCheck;
-
-        NoteHolder(@NonNull View itemView) {
-            super(itemView);
-            //assigning note Title and finding View by id.
-            noteTitle = itemView.findViewById(R.id.noteTitle);
-            //assigning note Date and finding View by id.
-            noteDate = itemView.findViewById(R.id.noteDate);
-            //assigning written note and finding View by id.
-            noteBodyText = itemView.findViewById(R.id.noteBodyText);
-            //assigning delete Only This Note button and finding View by id.
-            deleteOnlyNote = itemView.findViewById(R.id.delete_only_this_note);
-            noteCheck = itemView.findViewById(R.id.noteCheckbox);
-        }
     }
 
     //method to set all the Listeners
