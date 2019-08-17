@@ -13,5 +13,6 @@
     <color name="colorNoteCheckbox2">#EEE9E9E9</color>
     <color name="colorNoteBackground1">#EEE9E9E9</color>
     <color name="colorNoteCheckbox1">#EEFAFAFA</color>
+    <color name="colorCbAllNotes">#0081FF</color>
 
 </resources>
