@@ -26,6 +26,7 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     private Context context;
     private NoteEventListener listener;
     private DeleteThisNoteListener deleteThisNoteListener;
+    private boolean isCheckedAll;
 
     public NotesAdapter(ArrayList<Note> notes, Context context, DeleteThisNoteListener deleteThisNoteListener) {
         this.notes = notes;
@@ -84,11 +85,14 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
                             note.setChecked(isChecked);
                         }
                     });
+
+                    if (!isCheckedAll) firstNoteHolder.noteCheck.setChecked(false);
+                    else firstNoteHolder.noteCheck.setChecked(true);
                 }
             }
             break;
             case 1: {
-                SecondNoteHolder secondNoteHolder = (SecondNoteHolder)holder;
+                final SecondNoteHolder secondNoteHolder = (SecondNoteHolder)holder;
                 final Note note = getNote(position);
                 if (note != null) {
                     secondNoteHolder.noteTitle.setText(note.getNoteTitle());
@@ -119,6 +123,9 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
                             note.setChecked(isChecked);
                         }
                     });
+
+                    if (!isCheckedAll) secondNoteHolder.noteCheck.setChecked(false);
+                    else secondNoteHolder.noteCheck.setChecked(true);
                 }
             }
             break;
@@ -127,12 +134,23 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         }
     }
 
+    public void unselectAllNotes() {
+        isCheckedAll = false;
+        notifyDataSetChanged();
+    }
+
+    public void selectAllNotes() {
+        isCheckedAll = true;
+        notifyDataSetChanged();
+    }
+
     //Holder class for the whole note
     class FirstNoteHolder extends RecyclerView.ViewHolder{
         TextView noteTitle, noteBodyText, noteDate;
         //The actual button to delete the note
         RelativeLayout deleteOnlyNote;
         CheckBox noteCheck;
+        CheckBox cbAllNotes;
 
         FirstNoteHolder(@NonNull View itemView) {
             super(itemView);
@@ -145,6 +163,7 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
             //assigning delete Only This Note button and finding View by id.
             deleteOnlyNote = itemView.findViewById(R.id.delete_only_this_note);
             noteCheck = itemView.findViewById(R.id.noteCheckbox);
+            cbAllNotes = itemView.findViewById(R.id.cbAllNotes);
         }
     }
 
@@ -153,6 +172,7 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         //The actual button to delete the note
         RelativeLayout deleteOnlyNote;
         CheckBox noteCheck;
+        CheckBox cbAllNotes;
 
         SecondNoteHolder(@NonNull View itemView) {
             super(itemView);
@@ -165,6 +185,7 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
             //assigning delete Only This Note button and finding View by id.
             deleteOnlyNote = itemView.findViewById(R.id.delete_only_this_note);
             noteCheck = itemView.findViewById(R.id.noteCheckbox);
+            cbAllNotes = itemView.findViewById(R.id.cbAllNotes);
         }
     }
 

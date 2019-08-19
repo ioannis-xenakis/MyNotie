@@ -7,6 +7,8 @@ import android.os.Bundle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import com.example.fanatic_coder.mynotepad.adapters.NotesAdapter;
@@ -54,6 +56,16 @@ public class MainNotesActivity extends AppCompatActivity implements NoteEventLis
                 onDeleteMultiNotes();
             }
         });
+
+        final CheckBox cbAllNotes = findViewById(R.id.cbAllNotes);
+        cbAllNotes.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if (cbAllNotes.isChecked())adapter.selectAllNotes();
+                else adapter.unselectAllNotes();
+            }
+        });
+        Toast.makeText(this, "All notes chosen!", Toast.LENGTH_SHORT).show();
 
     }
 
