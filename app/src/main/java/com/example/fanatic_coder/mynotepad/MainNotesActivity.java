@@ -65,8 +65,6 @@ public class MainNotesActivity extends AppCompatActivity implements NoteEventLis
                 else adapter.unselectAllNotes();
             }
         });
-        Toast.makeText(this, "All notes chosen!", Toast.LENGTH_SHORT).show();
-
     }
 
     private void scrollToNewNote() {
