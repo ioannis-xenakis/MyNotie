@@ -34,9 +34,11 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/buttons_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/layout2_bar_buttons_height"
         android:background="@drawable/bar"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <!-- Add_new_note button, adds a new note, to the notes list. -->
         <com.google.android.material.floatingactionbutton.FloatingActionButton

@@ -6,6 +6,7 @@
     <dimen name="bar_buttons_width">50dp</dimen>
     <dimen name="bar_buttons_height">50dp</dimen>
     <dimen name="layout_bar_buttons_height">55dp</dimen>
+    <dimen name="layout2_bar_buttons_height">66dp</dimen>
     <dimen name="write_text_padding">15dp</dimen>
     <dimen name="corner_radius_default">7dp</dimen>
     <dimen name="corner_radius_pressed">20dp</dimen>
