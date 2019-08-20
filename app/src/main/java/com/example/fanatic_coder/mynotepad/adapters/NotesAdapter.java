@@ -79,6 +79,7 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
                         }
                     });
 
+                    //init each notes checkbox, check event
                     firstNoteHolder.noteCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                         @Override
                         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -86,8 +87,9 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
                         }
                     });
 
-                    if (!isCheckedAll) firstNoteHolder.noteCheck.setChecked(false);
-                    else firstNoteHolder.noteCheck.setChecked(true);
+                    //Code for the checkbox, for checking all notes (cbAllNotes). Used for first note holder, first note view (notes_layout).
+                    if (!isCheckedAll) firstNoteHolder.noteCheck.setChecked(false); //If not all notes are checked, do not check notes checkboxes.
+                    else firstNoteHolder.noteCheck.setChecked(true); //Else if all notes are checked, check their checkboxes(noteCheck) too.
                 }
             }
             break;
@@ -117,6 +119,7 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
                         }
                     });
 
+                    //init each notes checkbox, check event
                     secondNoteHolder.noteCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                         @Override
                         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -124,8 +127,9 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
                         }
                     });
 
-                    if (!isCheckedAll) secondNoteHolder.noteCheck.setChecked(false);
-                    else secondNoteHolder.noteCheck.setChecked(true);
+                    //Code for the checkbox, for checking all notes (cbAllNotes). Used for second note holder, second note view (note2_layout).
+                    if (!isCheckedAll) secondNoteHolder.noteCheck.setChecked(false); //If not all notes are checked, do not check notes checkboxes.
+                    else secondNoteHolder.noteCheck.setChecked(true); //Else if all notes are checked, check their checkboxes(noteCheck) too.
                 }
             }
             break;
@@ -133,23 +137,26 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
                 break;
         }
     }
-
+    //Method for unselecting/unchecking all notes.
     public void unselectAllNotes() {
         isCheckedAll = false;
         notifyDataSetChanged();
     }
 
+    //Method for selecting/checking all notes.
     public void selectAllNotes() {
         isCheckedAll = true;
         notifyDataSetChanged();
     }
 
-    //Holder class for the whole note
+    //First note holder for the first note view.
     class FirstNoteHolder extends RecyclerView.ViewHolder{
         TextView noteTitle, noteBodyText, noteDate;
-        //The actual button to delete the note
+        //The actual button to delete the note.
         RelativeLayout deleteOnlyNote;
+        //The checkbox for each note.
         CheckBox noteCheck;
+        //The checkbox which checks/selects all notes.
         CheckBox cbAllNotes;
 
         FirstNoteHolder(@NonNull View itemView) {
@@ -162,16 +169,21 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
             noteBodyText = itemView.findViewById(R.id.noteBodyText);
             //assigning delete Only This Note button and finding View by id.
             deleteOnlyNote = itemView.findViewById(R.id.delete_only_this_note);
+            //assigning note check box and finding View by id.
             noteCheck = itemView.findViewById(R.id.noteCheckbox);
+            //assigning check box for checking all notes  and finding View by id.
             cbAllNotes = itemView.findViewById(R.id.cbAllNotes);
         }
     }
 
+    //Second note holder for the second note view.
     class SecondNoteHolder extends RecyclerView.ViewHolder{
         TextView noteTitle, noteBodyText, noteDate;
-        //The actual button to delete the note
+        //The actual button to delete the note.
         RelativeLayout deleteOnlyNote;
+        //The checkbox for each note.
         CheckBox noteCheck;
+        //The checkbox which checks/selects all notes.
         CheckBox cbAllNotes;
 
         SecondNoteHolder(@NonNull View itemView) {
@@ -184,19 +196,22 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
             noteBodyText = itemView.findViewById(R.id.noteBodyText);
             //assigning delete Only This Note button and finding View by id.
             deleteOnlyNote = itemView.findViewById(R.id.delete_only_this_note);
+            //assigning note check box and finding View by id.
             noteCheck = itemView.findViewById(R.id.noteCheckbox);
+            //assigning check box for checking all notes  and finding View by id.
             cbAllNotes = itemView.findViewById(R.id.cbAllNotes);
         }
     }
 
+    //Gets all the checked notes in a List and returns the List.
     public List<Note> getCheckedNotes() {
-        List<Note> checkedNotes = new ArrayList<>();
-        for (Note n : this.notes) {
-            if (n.isChecked()){
-                checkedNotes.add(n);
+        List<Note> checkedNotes = new ArrayList<>(); //New note List called checkedNotes
+        for (Note n : this.notes) { // For every note
+            if (n.isChecked()){ // If the note n is checked
+                checkedNotes.add(n); //Add the note (n) to the List checkedNotes
             }
         }
-        return checkedNotes;
+        return checkedNotes; //Return List checkedNotes.
     }
 
     //method getNote gets the notes position
@@ -204,6 +219,7 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         return notes.get(position);
     }
 
+    //Gets the note view type. Method for using different note views.
     @Override
     public int getItemViewType(int position) {
         //if note position is an even number then choose first note view
