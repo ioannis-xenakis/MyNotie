@@ -15,6 +15,10 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/layout_bar_buttons_height"
         android:background="@drawable/bar_no_shadows"
+        android:layout_marginStart="@dimen/screen_edge_space"
+        android:layout_marginLeft="@dimen/screen_edge_space"
+        android:layout_marginEnd="@dimen/screen_edge_space"
+        android:layout_marginRight="@dimen/screen_edge_space"
         android:layout_alignParentTop="true"
         android:layout_centerInParent="true">
 
@@ -66,6 +70,10 @@
         android:layout_below="@id/bar_buttons"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/note_title_space"
+        android:layout_marginStart="@dimen/screen_edge_space"
+        android:layout_marginLeft="@dimen/screen_edge_space"
+        android:layout_marginEnd="@dimen/screen_edge_space"
+        android:layout_marginRight="@dimen/screen_edge_space"
         android:background="@drawable/note_title_background"
         android:gravity="start"
         android:paddingStart="@dimen/write_text_padding"
