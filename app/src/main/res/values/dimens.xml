@@ -18,5 +18,6 @@
     <dimen name="note_title_space">2dp</dimen>
     <dimen name="note_corner_radius">10dp</dimen>
     <dimen name="screen_edge_space">3dp</dimen>
+    <dimen name="app_name_text_size">19sp</dimen>
 
 </resources>
