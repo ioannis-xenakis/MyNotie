@@ -30,6 +30,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- The top title bar with app name -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/title_bar"
         android:layout_width="wrap_content"
@@ -38,6 +39,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" >
 
+        <!-- The title bar backround -->
         <ImageView
             android:id="@+id/title_bar_background"
             android:layout_width="300dp"
@@ -48,6 +50,7 @@
             app:layout_constraintTop_toTopOf="parent"
             android:contentDescription="@string/app_name" />
 
+        <!-- The app name text -->
         <TextView
             android:id="@+id/title_text"
             android:layout_width="wrap_content"
