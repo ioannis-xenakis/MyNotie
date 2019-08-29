@@ -9,17 +9,49 @@
     tools:context=".MainActivity"
     tools:showIn="@layout/activity_main">
 
+    <!-- The top title bar with app name -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/title_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="28dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" >
+
+        <!-- The title bar backround -->
+        <ImageView
+            android:id="@+id/title_bar_background"
+            android:layout_width="300dp"
+            android:layout_height="21dp"
+            android:background="@drawable/top_bar_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/app_name" />
+
+        <!-- The app name text -->
+        <TextView
+            android:id="@+id/title_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_name"
+            android:textSize="@dimen/app_name_text_size"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <!-- The bar with buttons -->
     <RelativeLayout
         android:id="@+id/bar_buttons"
         android:layout_width="match_parent"
         android:layout_height="@dimen/layout_bar_buttons_height"
+        android:layout_below="@id/title_bar"
         android:background="@drawable/bar_no_shadows"
         android:layout_marginStart="@dimen/screen_edge_space"
         android:layout_marginLeft="@dimen/screen_edge_space"
         android:layout_marginEnd="@dimen/screen_edge_space"
         android:layout_marginRight="@dimen/screen_edge_space"
-        android:layout_alignParentTop="true"
         android:layout_centerInParent="true">
 
         <!-- A button that opens the Layout/Activity for the notes -->
