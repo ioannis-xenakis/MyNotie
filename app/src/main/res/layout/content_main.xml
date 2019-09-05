@@ -132,7 +132,7 @@
         android:gravity="start"
         android:paddingStart="@dimen/write_text_padding"
         android:paddingEnd="@dimen/write_text_padding"
-        android:hint="@string/write_text_hint"
+        android:hint="@string/note_body_text_hint"
         android:importantForAutofill="no"
         android:inputType="textMultiLine"
         android:scrollbars="vertical"

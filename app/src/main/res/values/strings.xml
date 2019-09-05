@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">My Notepad</string>
     <string name="action_settings">Settings</string>
-    <string name="write_text_hint">Write Here…</string>
+    <string name="note_body_text_hint">Note Body Text:</string>
     <string name="note_title_hint">Note Title:</string>
     <string name="write_text_text"> </string>
     <string name="note_title">This is a Notepad Demo. This is a Notepad Demo. This is a Notepad Demo. This is a Notepad Demo. This is a Notepad Demo…</string>
