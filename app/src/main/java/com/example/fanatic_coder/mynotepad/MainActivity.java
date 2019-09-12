@@ -7,6 +7,8 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -54,6 +56,24 @@ public class MainActivity extends AppCompatActivity {
         } else {
             temp = new Note();
         }
+
+        //Listener for note_title field. Functionality for limiting writing not more than 2 lines in field. Every text beyond 2 lines is deleted.
+        note_title.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (null != note_title.getLayout() && note_title.getLayout().getLineCount() > 2) {
+                    note_title.getText().delete(note_title.getText().length() - 1, note_title.getText().length());
+                }
+            }
+        });
 
     }
 

@@ -106,6 +106,7 @@
         android:layout_marginLeft="@dimen/screen_edge_space"
         android:layout_marginEnd="@dimen/screen_edge_space"
         android:layout_marginRight="@dimen/screen_edge_space"
+        android:maxLines="2"
         android:background="@drawable/note_title_background"
         android:gravity="start"
         android:paddingStart="@dimen/write_text_padding"
