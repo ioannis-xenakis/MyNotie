@@ -98,7 +98,7 @@
         android:id="@+id/noteTitle"
         class="com.example.fanatic_coder.mynotepad.MainActivity$LineEditText"
         android:layout_width="match_parent"
-        android:layout_height="25dp"
+        android:layout_height="50dp"
         android:layout_below="@id/bar_buttons"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/note_title_space"
