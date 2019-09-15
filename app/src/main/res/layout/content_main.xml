@@ -59,38 +59,32 @@
             android:id="@+id/goBack"
             android:layout_width="@dimen/bar_buttons_width"
             android:layout_height="@dimen/bar_buttons_height"
-            android:layout_toStartOf="@id/saveNote"
-            android:layout_toLeftOf="@+id/saveNote"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:onClick="GoBack"
             android:layout_centerVertical="true"
+            android:layout_marginStart="23dp"
+            android:layout_marginLeft="23dp"
             android:layout_marginEnd="@dimen/bar_buttons_space"
             android:layout_marginRight="@dimen/bar_buttons_space"
             app:fabCustomSize="@dimen/fab_size"
             app:srcCompat="@drawable/go_back_icon" />
-
-        <!-- A button that saves the note -->
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/saveNote"
-            android:layout_width="@dimen/bar_buttons_width"
-            android:layout_height="@dimen/bar_buttons_height"
-            android:onClick="saveNoteButton"
-            android:layout_centerInParent="true"
-            app:fabCustomSize="@dimen/fab_size"
-            app:srcCompat="@drawable/save_note_icon" />
 
         <!-- A button that clears all the text in note -->
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/clearText"
             android:layout_width="@dimen/bar_buttons_width"
             android:layout_height="@dimen/bar_buttons_height"
-            android:layout_toRightOf="@id/saveNote"
-            android:layout_toEndOf="@id/saveNote"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="23dp"
+            android:layout_marginEnd="23dp"
             android:layout_marginStart="@dimen/bar_buttons_space"
             android:layout_marginLeft="@dimen/bar_buttons_space"
             android:onClick="clearTextButton"
             android:layout_centerVertical="true"
             app:fabCustomSize="@dimen/fab_size"
-            app:srcCompat="@drawable/clear_text_icon"/>
+            app:srcCompat="@drawable/clear_text_icon" />
 
     </RelativeLayout>
 

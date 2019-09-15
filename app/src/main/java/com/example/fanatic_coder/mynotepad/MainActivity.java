@@ -26,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
 
     private EditText note_body_text;
     private EditText note_title;
+    private String oldNoteTitle;
+    private String oldBodyText;
     private NotesDAO dao;
     private Note temp;
     public static final String NOTE_EXTRA_KEY = "note_id";
@@ -75,6 +77,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //Capturing initial note title text and body text when firstly opening a note.
+        oldNoteTitle = note_title.getText().toString();
+        oldBodyText = note_body_text.getText().toString();
     }
 
     //LineEditText class is for drawing lines under text, for the edittext(view) with id, noteBodyText, inside content_main.xml
@@ -123,58 +128,71 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //saveNoteButton method is called from onClick for the save note button in content_main.xml
-    public void saveNoteButton(View view) {
-
+    //GoBack method is for the goBack button in content_main.xml
+    public void GoBack(View view) {
         try {
-            // Get the text from the note_title field convert them all to String and assign them to noteTitle variable
-            String noteTitle =  note_title.getText().toString();
-            // Get the text from the note_body_text field convert them all to String and assign them to text variable
-            String text = note_body_text.getText().toString();
+            saveNote();
 
-            // If the text from note_body_text or note_title field are not empty, and one or the other have something in it, do this
-            if (!text.isEmpty() || !noteTitle.isEmpty()) {
-                long date = new Date().getTime(); //Get Current date
-
-                temp.setNoteTitle(noteTitle);
-                temp.setNoteDate(date);
-                temp.setNoteBodyText(text);
-
-                //if note doesn't exist and is new, create, else if it is no new and exists, update
-                if (temp.getIsNewNote()) {
-                    //insert new note and save to database
-                    dao.insertNote(temp);
-                    //setting the IsNewNote to false, saying that note is no longer new and is old.
-                    temp.setIsNewNote(false);
-                } else if (!temp.getIsNewNote()) {
-                    //else if it exists update note
-                    dao.updateNote(temp);
-                    //setting the IsNewNote to false, saying that note is no longer new and is old.
-                    temp.setIsNewNote(false);
-                }
-
-                //Popup a window to user, saying: Note Saved!
-                Toast.makeText(this, "Note Saved!", Toast.LENGTH_LONG).show();
-
-                finish();
-            }
-            else {
-                Toast.makeText(this, "Your note is empty! Please write something to be saved!", Toast.LENGTH_LONG).show();
-            }
-
-        } catch (Exception e) { // If something gone wrong and get an error ...
+        } catch (Exception e) { // If something gone wrong, user will get an error ...
             // Popup a window to user, saying: Saving Note Failed!
             Toast.makeText(this, "Saving Note Failed!", Toast.LENGTH_LONG).show();
             // Print everything about the error at Logcat/Default console window
             e.printStackTrace();
 
+            finish2();
         }
     }
 
-    //GoBack method is for the openNote button in content_main.xml
-    public void GoBack(View view) {
-        //goes back to notes_layout.xml for the user to open a note he desires.
-        finish();
+    //saveNote is a method for saving note.
+    private void saveNote() {
+        // Get the text from the note_title field convert them all to String and assign them to noteTitle variable
+        String noteTitle =  note_title.getText().toString();
+        // Get the text from the note_body_text field convert them all to String and assign them to text variable
+        String text = note_body_text.getText().toString();
+
+        //Controlling if user changed initial/old note title or body text, only then save the note, else do nothing and go back to activity_main_notes.xml
+        if (!oldNoteTitle.equals(noteTitle) || !oldBodyText.equals(text)) {
+            long date = new Date().getTime(); //Get Current date
+
+            temp.setNoteTitle(noteTitle);
+            temp.setNoteDate(date);
+            temp.setNoteBodyText(text);
+
+            //if note doesn't exist and is new, create, else if it is no new and exists, update
+            if (temp.getIsNewNote()) {
+                //insert new note and save to database
+                dao.insertNote(temp);
+                //setting the IsNewNote to false, saying that note is no longer new and is old.
+                temp.setIsNewNote(false);
+            } else if (!temp.getIsNewNote()) {
+                //else if it exists update note
+                dao.updateNote(temp);
+                //setting the IsNewNote to false, saying that note is no longer new and is old.
+                temp.setIsNewNote(false);
+            }
+
+            //Popup a window to user, saying: Note Saved!
+            Toast.makeText(this, "Note Saved!", Toast.LENGTH_LONG).show();
+
+            //After saving, goes back to activity_main_notes.xml for the user to open a note he desires.
+            finish2();
+
+        }
+        else {
+            finish2();
+        }
+    }
+
+    //Overrided finish() method so when user hits cancel button from the android screen Or goBack button, both will save Note or if not made any change just go back to content_main.xml
+    @Override
+    public void finish() {
+        saveNote();
+        super.finish();
+    }
+
+    //finish2() method should be used in this activity when not wanted to save note too.
+    public void finish2() {
+        super.finish();
     }
 
     @Override
