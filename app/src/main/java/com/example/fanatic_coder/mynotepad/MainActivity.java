@@ -149,15 +149,23 @@ public class MainActivity extends AppCompatActivity {
         String noteTitle =  note_title.getText().toString();
         // Get the text from the note_body_text field convert them all to String and assign them to text variable
         String text = note_body_text.getText().toString();
+        long date = new Date().getTime(); //Get Current date
 
+        temp.setNoteTitle(noteTitle);
+        temp.setNoteDate(date);
+        temp.setNoteBodyText(text);
+
+        if (noteTitle.equals("") && text.equals("")) {
+            if (temp.getIsNewNote()) {
+                dao.deleteNote(temp);
+                Toast.makeText(this, "Note Deleted!", Toast.LENGTH_LONG).show();
+                finish2();
+            }
+            else if (!temp.getIsNewNote())
+                finish2();
+        }
         //Controlling if user changed initial/old note title or body text, only then save the note, else do nothing and go back to activity_main_notes.xml
-        if (!oldNoteTitle.equals(noteTitle) || !oldBodyText.equals(text)) {
-            long date = new Date().getTime(); //Get Current date
-
-            temp.setNoteTitle(noteTitle);
-            temp.setNoteDate(date);
-            temp.setNoteBodyText(text);
-
+        else if (!oldNoteTitle.equals(noteTitle) || !oldBodyText.equals(text)) {
             //if note doesn't exist and is new, create, else if it is no new and exists, update
             if (temp.getIsNewNote()) {
                 //insert new note and save to database
@@ -176,7 +184,6 @@ public class MainActivity extends AppCompatActivity {
 
             //After saving, goes back to activity_main_notes.xml for the user to open a note he desires.
             finish2();
-
         }
         else {
             finish2();
