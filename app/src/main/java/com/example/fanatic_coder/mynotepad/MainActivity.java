@@ -115,7 +115,9 @@ public class MainActivity extends AppCompatActivity {
     public void clearTextButton(View view) {
         try {
             String clear_text = "";
+            note_title = findViewById(R.id.noteTitle);
             note_body_text = findViewById(R.id.noteBodyText);
+            note_title.setText(clear_text);
             note_body_text.setText(clear_text);
             // Popup a window to user, saying: Text Cleared!
             Toast.makeText(this, "Text Cleared!", Toast.LENGTH_LONG).show();
