@@ -187,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //Overrided finish() method so when user hits cancel button from the android screen Or goBack button, both will save Note or if not made any change just go back to content_main.xml
+    //Overrided finish() method so when user hits cancel button from the android screen Or goBack button, both will save Note and just go back to content_main.xml
     @Override
     public void finish() {
         saveNote();
