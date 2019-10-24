@@ -107,6 +107,22 @@
             app:layout_constraintEnd_toStartOf="@id/add_new_note"
             app:srcCompat="@drawable/delete_icon" />
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/folder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/bar_buttons_space"
+            android:layout_marginEnd="@dimen/bar_buttons_space"
+            android:layout_marginRight="@dimen/bar_buttons_space"
+            android:layout_marginBottom="@dimen/bar_buttons_space"
+            android:clickable="true"
+            android:focusable="true"
+            app:fabCustomSize="@dimen/fab_size"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/delete_note"
+            app:srcCompat="@drawable/folder_icon" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
