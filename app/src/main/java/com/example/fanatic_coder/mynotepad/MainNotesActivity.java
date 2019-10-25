@@ -57,6 +57,15 @@ public class MainNotesActivity extends AppCompatActivity implements NoteEventLis
             }
         });
 
+        FloatingActionButton folder_button = findViewById(R.id.folder);
+        folder_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), FolderActivity.class);
+                startActivity(i);
+            }
+        });
+
         final CheckBox cbAllNotes = findViewById(R.id.cbAllNotes);
         cbAllNotes.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
