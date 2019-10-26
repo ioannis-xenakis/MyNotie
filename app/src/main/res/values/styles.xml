@@ -9,7 +9,9 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorOnPrimary">@color/colorBlack</item>
-        <item name="popupMenuStyle">@style/PopupMenu</item>
+        <item name="textAppearanceLargePopupMenu">@style/TextAppearance.MyNotie.Subtitle1</item>
+        <item name="textAppearanceSmallPopupMenu">@style/TextAppearance.MyNotie.Subtitle1</item>
+        <item name="popupMenuBackground">@drawable/popup_menu_background</item>
     </style>
     
     <style name="ShapeAppearance.Notes.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">
@@ -20,8 +22,18 @@
         <item name="cornerSizeTopRight">40dp</item>
     </style>
 
-    <style name="PopupMenu" parent="Widget.MaterialComponents.PopupMenu">
-        <item name="android:popupBackground">@drawable/popup_menu_background</item>
+    <style name="ShapeAppearance.NoteEdittext.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeBottomLeft">9dp</item>
+        <item name="cornerSizeBottomRight">9dp</item>
+        <item name="cornerSizeTopLeft">9dp</item>
+        <item name="cornerSizeTopRight">40dp</item>
+    </style>
+
+    <style name="TextAppearance.MyNotie.Subtitle1" parent="TextAppearance.MaterialComponents.Subtitle1">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textColor">@color/colorBlack</item>
     </style>
     
     <style name="FontStyleRobotoRegular">

@@ -49,4 +49,12 @@ public interface NotesDAO {
     @Query("SELECT * FROM notes")
     List<Note> getNotes();
 
+    /**
+     * Gets a specific note, by specifying its id.
+     * @param noteId the note id.
+     * @return the note.
+     */
+    @Query("SELECT * FROM notes WHERE id = :noteId")
+    Note getNoteById(int noteId);
+
 }

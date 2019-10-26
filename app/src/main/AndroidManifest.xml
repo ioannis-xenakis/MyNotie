@@ -10,6 +10,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <!-- The EditNoteActivity is responsible for editing new/existing note. -->
+        <activity
+            android:name=".EditNoteActivity"
+            android:windowSoftInputMode="stateHidden|adjustPan">
+        </activity>
+
         <!-- The MainNotesActivity with the Main Note List layout (activity_my_notes.xml) -->
         <activity
             android:name=".MyNotesActivity"

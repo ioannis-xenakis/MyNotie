@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!-- Menu buttons, that is displayed on top app bar,
+     in Edit Note Activity -->
+
+    <!-- The Add To Folders button, to open the Add To Folders Activity,
+     to add the note to one or multiple folders. -->
+    <item
+        android:id="@+id/add_to_folders_button_edit_note"
+        android:orderInCategory="100"
+        android:title="@string/add_to_folder_button_edit_note"
+        android:icon="@drawable/folder_icon"
+        android:contentDescription="@string/content_description_add_to_folders_button"
+        app:showAsAction="ifRoom" />
+
+    <!-- The Revert Changes button, to revert changes,
+     back to previous state. -->
+    <item
+        android:id="@+id/revert_changes_button"
+        android:orderInCategory="200"
+        android:title="@string/revert_changes_button_edit_note"
+        android:onClick="onRevertChangesClick"
+        app:showAsAction="withText" />
+
+    <!-- The Delete Note button, to delete the note,
+     that the user is working. -->
+    <item
+        android:id="@+id/delete_note_button"
+        android:orderInCategory="300"
+        android:title="@string/delete_note_button_edit_note"
+        android:onClick="onDeleteNoteClick"
+        app:showAsAction="withText" />
+</menu>

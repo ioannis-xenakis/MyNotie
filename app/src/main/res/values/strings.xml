@@ -28,5 +28,15 @@
     <string name="close_nav_drawer">Close navigation drawer</string>
     <string name="content_description_app_logo">My Notie</string>
     <string name="content_description_add_new_note">Add new note</string>
+    <string name="note_title_hint">Title</string>
+    <string name="content_description_note_title_clear_text_button">clear note title text</string>
+    <string name="content_description_note_body_text_clear_text_button">clear note body text</string>
+    <string name="note_body_text_hint">Note</string>
+    <string name="page_title_edit_note">Edit note</string>
+    <string name="content_description_edit_note_navigation">Go back</string>
+    <string name="content_description_add_to_folders_button">Add to folders.</string>
+    <string name="add_to_folder_button_edit_note">Add to folders.</string>
+    <string name="revert_changes_button_edit_note">Revert changes.</string>
+    <string name="delete_note_button_edit_note">Delete note.</string>
 
 </resources>

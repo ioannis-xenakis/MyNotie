@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import android.text.Editable;
@@ -36,6 +37,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.fanatic_coder.mynotepad.EditNoteActivity.NOTE_EXTRA_KEY;
 
 /**
  * <h2>MyNotesActivity</h2> is the starting home page when <b>My Notie</b> starts
@@ -133,7 +136,7 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
           which closes Search Top Bar.
          */
         selectNotesTopBar = findViewById(R.id.top_app_bar_select_notes);
-        pageTitleTopBar = findViewById(R.id.top_app_bar);
+        pageTitleTopBar = findViewById(R.id.top_app_bar_my_notes);
         searchTopBar = findViewById(R.id.top_app_bar_search);
         searchTopBar.setNavigationOnClickListener(view -> {
             closeKeyboard();
@@ -158,7 +161,8 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
         //Add new note button, which adds/creates new note.
         FloatingActionButton add_new_note_button = findViewById(R.id.add_new_note);
         add_new_note_button.setOnClickListener(v -> {
-            //TODO Add new note functionality.
+            Intent editNoteActivityIntent = new Intent(getApplicationContext(), EditNoteActivity.class);
+            startActivity(editNoteActivityIntent);
         });
 
         //Listens to scrolling at RecyclerView(notes list).
@@ -222,7 +226,7 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
      */
     private void showSelectNotesTopBar() {
         searchTopBar = findViewById(R.id.top_app_bar_search);
-        pageTitleTopBar = findViewById(R.id.top_app_bar);
+        pageTitleTopBar = findViewById(R.id.top_app_bar_my_notes);
         selectNotesTopBar = findViewById(R.id.top_app_bar_select_notes);
 
         pageTitleTopBar.setVisibility(View.GONE);
@@ -236,7 +240,7 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
      */
     private void showPageTitleTopBar() {
         searchTopBar = findViewById(R.id.top_app_bar_search);
-        pageTitleTopBar = findViewById(R.id.top_app_bar);
+        pageTitleTopBar = findViewById(R.id.top_app_bar_my_notes);
         selectNotesTopBar = findViewById(R.id.top_app_bar_select_notes);
 
         selectNotesTopBar.setVisibility(View.GONE);
@@ -249,7 +253,7 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
      */
     private void showSearchTopBar() {
         searchTopBar = findViewById(R.id.top_app_bar_search);
-        pageTitleTopBar = findViewById(R.id.top_app_bar);
+        pageTitleTopBar = findViewById(R.id.top_app_bar_my_notes);
         selectNotesTopBar = findViewById(R.id.top_app_bar_select_notes);
 
         selectNotesTopBar.setVisibility(View.GONE);
@@ -370,6 +374,15 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
     }
 
     /**
+     * openNote, opens an existing note, to edit, in EditNoteActivity.java
+     */
+    private void openNote(Note note) {
+        Intent edit = new Intent(this, EditNoteActivity.class);
+        edit.putExtra(NOTE_EXTRA_KEY, note.getId());
+        startActivity(edit);
+    }
+
+    /**
      * onResume, runs/is called, when resuming the app(MyNotie),
      * while android device is on sleep, or opening/switching to/from the app.
      */
@@ -397,9 +410,11 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
      */
     @Override
     public void onNoteClick(Note note, NotesAdapter.NoteHolder noteHolder) {
-        //TODO Add onNoteClick code(When note is clicked, open MainActivity to edit note).
         if (adapter.getCheckedNotes().size() > 0 || selectNotesTopBar.getVisibility() == View.VISIBLE)
             selectNote(note, noteHolder);
+        else {
+            openNote(note);
+        }
     }
 
     /**
