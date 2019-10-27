@@ -1,9 +1,8 @@
 package com.example.fanatic_coder.mynotepad;
 
 import android.content.Context;
-
+import androidx.test.InstrumentationRegistry;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
 import org.junit.Rule;
@@ -32,7 +31,7 @@ public class InstrumentedTests {
     @Test
     public void useAppContext() {
         // Context of the app under test.
-        Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        Context appContext = InstrumentationRegistry.getTargetContext();
 
         assertEquals("com.example.fanatic_coder.mynotepad", appContext.getPackageName());
     }
