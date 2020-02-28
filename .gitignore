@@ -13,7 +13,6 @@
 
 .gradle/
 build/
-gradle.properties
 local.properties
 *.log
 
