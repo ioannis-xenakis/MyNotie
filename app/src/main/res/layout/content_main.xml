@@ -17,7 +17,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" >
 
-        <!-- The title bar backround -->
+        <!-- The title bar background -->
         <ImageView
             android:id="@+id/title_bar_background"
             android:layout_width="300dp"
