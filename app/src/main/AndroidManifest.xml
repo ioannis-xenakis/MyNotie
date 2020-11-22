@@ -14,7 +14,7 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateHidden|adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -32,12 +32,12 @@
                     android:host="mynotepad"
                     android:scheme="example" />
             </intent-filter>
-        </activity> <!-- The MainNotesActivity with the Main Note List layout (activity_main_notes.xml) -->
+        </activity> <!-- The MainNotesActivity with the Main Note List layout (activity_my_notes.xml) -->
         <activity
-            android:name=".MainNotesActivity"
+            android:name=".MyNotesActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateAlwaysHidden">
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateHidden|adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

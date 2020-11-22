@@ -182,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
             //Popup a window to user, saying: Note Saved!
             Toast.makeText(this, "Note Saved!", Toast.LENGTH_LONG).show();
 
-            //After saving, goes back to activity_main_notes.xml for the user to open a note he desires.
+            //After saving, goes back to activity_my_notes.xml for the user to open a note he desires.
             finish2();
         }
     }
@@ -199,10 +199,11 @@ public class MainActivity extends AppCompatActivity {
         super.finish();
     }
 
+    /* Commented old code for future reference, for new code.
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_bottom_bar, menu);
         return true;
     }
 
@@ -214,10 +215,12 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.search_button) {
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
+    */
+
 }

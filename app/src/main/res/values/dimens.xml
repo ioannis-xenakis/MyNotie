@@ -1,4 +1,7 @@
 <resources>
+    <dimen name="note_title_text_size">20sp</dimen>
+    <dimen name="note_body_text_size">14sp</dimen>
+    <dimen name="note_date_text_size">12sp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="fab_size">50dp</dimen>
     <dimen name="notes_list_margin">1dp</dimen>
@@ -18,6 +21,10 @@
     <dimen name="note_title_space">2dp</dimen>
     <dimen name="note_corner_radius">10dp</dimen>
     <dimen name="screen_edge_space">3dp</dimen>
-    <dimen name="app_name_text_size">19sp</dimen>
+    <dimen name="app_name_text_size">20sp</dimen>
+    <dimen name="note_horizontal_edges_space">18.5dp</dimen>
+    <dimen name="note_top_edge_space">69.5dp</dimen>
+    <dimen name="note_bot_edge_space">108.5dp</dimen>
+    <dimen name="note_between_space">16dp</dimen>
 
 </resources>

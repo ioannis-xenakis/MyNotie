@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!-- Menu buttons that is displayed
+    on top app bar select notes(Toolbar). -->
+
+    <!-- Select all notes button for selecting all notes
+    in notes list(RecyclerView called notes_list). -->
+    <item
+        android:id="@+id/select_all_notes"
+        android:orderInCategory="100"
+        android:title="@string/select_all_notes_button"
+        android:icon="@drawable/select_all_icon"
+        android:onClick="onSelectAllNotesButtonClick"
+        android:contentDescription="@string/content_description_select_all_notes"
+        app:showAsAction="always" />
+
+    <!-- Delete selected notes button for deleting
+    the already selected notes
+    from notes list(RecyclerView called notes_list). -->
+    <item
+        android:id="@+id/delete_selected_notes"
+        android:orderInCategory="200"
+        android:title="@string/delete_selected_notes_button"
+        android:icon="@drawable/delete_icon"
+        android:onClick="onDeleteSelectedNotesButtonClick"
+        android:contentDescription="@string/content_description_delete_selected_notes"
+        app:showAsAction="ifRoom" />
+
+</menu>

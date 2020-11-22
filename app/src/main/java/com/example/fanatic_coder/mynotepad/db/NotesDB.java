@@ -26,4 +26,12 @@ public abstract class NotesDB extends RoomDatabase {
         return instance;
     }
 
+    public static NotesDB getNoSaveInstance(Context context){
+        if( instance == null){
+            instance = Room.inMemoryDatabaseBuilder(context, NotesDB.class)
+                    .build();
+        }
+        return instance;
+    }
+
 }
