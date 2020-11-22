@@ -7,7 +7,7 @@ import java.util.Locale;
 
 public class NoteUtils {
     public static String dateFromLong (long time) {
-        DateFormat format = new SimpleDateFormat("EEE, dd MMM yyyy 'at' hh:mm aaa", Locale.US);
+        DateFormat format = new SimpleDateFormat("'Last edited: ' dd/MMM/yyyy ' ' hh:mm", Locale.US);
         return format.format(new Date(time));
     }
 }

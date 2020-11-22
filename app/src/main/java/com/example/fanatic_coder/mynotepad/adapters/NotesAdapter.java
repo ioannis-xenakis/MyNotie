@@ -6,242 +6,175 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.RelativeLayout;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import com.example.fanatic_coder.mynotepad.R;
-import com.example.fanatic_coder.mynotepad.callbacks.DeleteThisNoteListener;
+import com.example.fanatic_coder.mynotepad.callbacks.MoreMenuButtonListener;
 import com.example.fanatic_coder.mynotepad.callbacks.NoteEventListener;
 import com.example.fanatic_coder.mynotepad.model.Note;
 import com.example.fanatic_coder.mynotepad.utils.NoteUtils;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.card.MaterialCardView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements Filterable {
 
-    private ArrayList<Note> notes;
+    public ArrayList<Note> notes;
+    public ArrayList<Note> notesFull;
     private Context context;
     private NoteEventListener listener;
-    private DeleteThisNoteListener deleteThisNoteListener;
-    private boolean isCheckedAll;
+    private MoreMenuButtonListener moreMenuButtonListener;
 
-    public NotesAdapter(ArrayList<Note> notes, Context context, DeleteThisNoteListener deleteThisNoteListener) {
+    public NotesAdapter(ArrayList<Note> notes, Context context, MoreMenuButtonListener moreMenuButtonListener) {
         this.notes = notes;
         this.context = context;
-        this.deleteThisNoteListener = deleteThisNoteListener;
+        this.moreMenuButtonListener = moreMenuButtonListener;
+        notesFull = new ArrayList<>(notes);
     }
 
-    //method onCreateViewHolder is called when a new view is created
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if (viewType == 0) {
-            View v = LayoutInflater.from(context).inflate(R.layout.notes_layout, parent, false);
-            return new FirstNoteHolder(v);
-        }
-        else {
-            View v = LayoutInflater.from(context).inflate(R.layout.note2_layout, parent, false);
-            return new SecondNoteHolder(v);
-        }
+        View v = LayoutInflater.from(context).inflate(R.layout.note_layout, parent, false);
+        return new NoteHolder(v);
     }
 
-    //method onBindViewHolder displays data at specified position
+    //Displays data at specified position.
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, int position) {
+        final NoteHolder noteHolder = (NoteHolder) holder;
+        final Note note = getNote(position);
+        if (note != null) {
+            //Entering text to each Text fields.
+            noteHolder.noteTitle.setText(note.getNoteTitle());
+            noteHolder.noteBodyText.setText(note.getNoteBodyText());
+            noteHolder.noteDate.setText(NoteUtils.dateFromLong(note.getNoteDate()));
 
-        switch(holder.getItemViewType()) {
-            case 0: {
-                FirstNoteHolder firstNoteHolder = (FirstNoteHolder)holder;
-                final Note note = getNote(position);
-                if (note != null) {
-                    firstNoteHolder.noteTitle.setText(note.getNoteTitle());
-                    firstNoteHolder.noteBodyText.setText(note.getNoteBodyText());
-                    firstNoteHolder.noteDate.setText(NoteUtils.dateFromLong(note.getNoteDate()));
-
-                    //init note click event
-                    firstNoteHolder.itemView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            //listener for when clicking on noteBodyText and noteDate.
-                            listener.onNoteClick(note);
-                        }
-                    });
-
-                    //init deleteOnlyNote button click event
-                    firstNoteHolder.deleteOnlyNote.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            //deleteThisNoteListener object is a listener when clicking on deleteThisNote button and deletes the particular note.
-                            deleteThisNoteListener.onDeleteThisNoteClick(note);
-                        }
-                    });
-
-                    //init each notes checkbox, check event
-                    firstNoteHolder.noteCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                        @Override
-                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                            note.setChecked(isChecked);
-                        }
-                    });
-
-                    //Code for the checkbox, for checking all notes (cbAllNotes). Used for first note holder, first note view (notes_layout).
-                    if (!isCheckedAll) firstNoteHolder.noteCheck.setChecked(false); //If not all notes are checked, do not check notes checkboxes.
-                    else firstNoteHolder.noteCheck.setChecked(true); //Else if all notes are checked, check their checkboxes(noteCheck) too.
+            noteHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //When clicking on note(note title, note body text, note date).
+                    listener.onNoteClick(note, noteHolder);
                 }
-            }
-            break;
-            case 1: {
-                final SecondNoteHolder secondNoteHolder = (SecondNoteHolder)holder;
-                final Note note = getNote(position);
-                if (note != null) {
-                    secondNoteHolder.noteTitle.setText(note.getNoteTitle());
-                    secondNoteHolder.noteBodyText.setText(note.getNoteBodyText());
-                    secondNoteHolder.noteDate.setText(NoteUtils.dateFromLong(note.getNoteDate()));
+            });
 
-                    //init note click event
-                    secondNoteHolder.itemView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            //listener for when clicking on noteBodyText and noteDate.
-                            listener.onNoteClick(note);
-                        }
-                    });
-
-                    //init deleteOnlyNote button click event
-                    secondNoteHolder.deleteOnlyNote.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            //deleteThisNoteListener object is a listener when clicking on deleteThisNote button and deletes the particular note.
-                            deleteThisNoteListener.onDeleteThisNoteClick(note);
-                        }
-                    });
-
-                    //init each notes checkbox, check event
-                    secondNoteHolder.noteCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                        @Override
-                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                            note.setChecked(isChecked);
-                        }
-                    });
-
-                    //Code for the checkbox, for checking all notes (cbAllNotes). Used for second note holder, second note view (note2_layout).
-                    if (!isCheckedAll) secondNoteHolder.noteCheck.setChecked(false); //If not all notes are checked, do not check notes checkboxes.
-                    else secondNoteHolder.noteCheck.setChecked(true); //Else if all notes are checked, check their checkboxes(noteCheck) too.
+            noteHolder.noteCardView.setChecked(note.isChecked());
+            noteHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    //When long clicking(holding click) on note(note title, note body text, note date).
+                    listener.onNoteLongClick(note, noteHolder);
+                    return true;
                 }
-            }
-            break;
-            default:
-                break;
-        }
-    }
-    //Method for unselecting/unchecking all notes.
-    public void unselectAllNotes() {
-        isCheckedAll = false;
-        notifyDataSetChanged();
-    }
+            });
 
-    //Method for selecting/checking all notes.
-    public void selectAllNotes() {
-        isCheckedAll = true;
-        notifyDataSetChanged();
-    }
+            noteHolder.moreMenu.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    moreMenuButtonListener.onMoreMenuButtonClick(note, view, noteHolder.getBindingAdapterPosition());
+                }
+            });
 
-    //First note holder for the first note view.
-    class FirstNoteHolder extends RecyclerView.ViewHolder{
-        TextView noteTitle, noteBodyText, noteDate;
-        //The actual button to delete the note.
-        RelativeLayout deleteOnlyNote;
-        //The checkbox for each note.
-        CheckBox noteCheck;
-        //The checkbox which checks/selects all notes.
-        CheckBox cbAllNotes;
+            //If note title is empty, hide note title from the user, so it wont take any space, on screen.
+            if (noteHolder.noteTitle.getText().toString().equals(""))
+                noteHolder.noteTitle.setVisibility(View.GONE);
 
-        FirstNoteHolder(@NonNull View itemView) {
-            super(itemView);
-            //assigning note Title and finding View by id.
-            noteTitle = itemView.findViewById(R.id.noteTitle);
-            //assigning note Date and finding View by id.
-            noteDate = itemView.findViewById(R.id.noteDate);
-            //assigning written note and finding View by id.
-            noteBodyText = itemView.findViewById(R.id.noteBodyText);
-            //assigning delete Only This Note button and finding View by id.
-            deleteOnlyNote = itemView.findViewById(R.id.delete_only_this_note);
-            //assigning note check box and finding View by id.
-            noteCheck = itemView.findViewById(R.id.noteCheckbox);
-            //assigning check box for checking all notes  and finding View by id.
-            cbAllNotes = itemView.findViewById(R.id.cbAllNotes);
+            //If note body text is empty, hide note body text from the user, so it wont take any space, on screen.
+            if (noteHolder.noteBodyText.getText().toString().equals(""))
+                noteHolder.noteBodyText.setVisibility(View.GONE);
+
         }
     }
 
-    //Second note holder for the second note view.
-    class SecondNoteHolder extends RecyclerView.ViewHolder{
-        TextView noteTitle, noteBodyText, noteDate;
-        //The actual button to delete the note.
-        RelativeLayout deleteOnlyNote;
-        //The checkbox for each note.
-        CheckBox noteCheck;
-        //The checkbox which checks/selects all notes.
-        CheckBox cbAllNotes;
-
-        SecondNoteHolder(@NonNull View itemView) {
-            super(itemView);
-            //assigning note Title and finding View by id.
-            noteTitle = itemView.findViewById(R.id.noteTitle);
-            //assigning note Date and finding View by id.
-            noteDate = itemView.findViewById(R.id.noteDate);
-            //assigning written note and finding View by id.
-            noteBodyText = itemView.findViewById(R.id.noteBodyText);
-            //assigning delete Only This Note button and finding View by id.
-            deleteOnlyNote = itemView.findViewById(R.id.delete_only_this_note);
-            //assigning note check box and finding View by id.
-            noteCheck = itemView.findViewById(R.id.noteCheckbox);
-            //assigning check box for checking all notes  and finding View by id.
-            cbAllNotes = itemView.findViewById(R.id.cbAllNotes);
-        }
-    }
-
-    //Gets all the checked notes in a List and returns the List.
-    public List<Note> getCheckedNotes() {
-        List<Note> checkedNotes = new ArrayList<>(); //New note List called checkedNotes
-        for (Note n : this.notes) { // For every note
-            if (n.isChecked()){ // If the note n is checked
-                checkedNotes.add(n); //Add the note (n) to the List checkedNotes
-            }
-        }
-        return checkedNotes; //Return List checkedNotes.
-    }
-
-    //method getNote gets the notes position
-    private Note getNote (int position) {
+    //Gets the particular note and its position.
+    public Note getNote(int position) {
         return notes.get(position);
     }
 
-    //Gets the note view type. Method for using different note views.
-    @Override
-    public int getItemViewType(int position) {
-        //if note position is an even number then choose first note view
-        //if it isnt and it is an odd number then choose second note view
-        if (position % 2 == 0) {
-            return 0;
-        }
-        else {
-            return 1;
-        }
-    }
-
-    //method getItemCount gets how many notes will be created
+    //Gets how many notes are there.
     @Override
     public int getItemCount() {
         return notes.size();
     }
 
-    //method to set all the Listeners
-    public void setListener(NoteEventListener listener, DeleteThisNoteListener deleteThisNoteListener) {
+    //setListener sets all listeners
+    public void setListener(NoteEventListener listener, MoreMenuButtonListener moreMenuButtonListener) {
         this.listener = listener;
-        this.deleteThisNoteListener = deleteThisNoteListener;
+        this.moreMenuButtonListener = moreMenuButtonListener;
     }
+
+    public static class NoteHolder extends RecyclerView.ViewHolder {
+        TextView noteTitle, noteBodyText, noteDate;
+        MaterialButton moreMenu;
+        public MaterialCardView noteCardView;
+
+        public NoteHolder(@NonNull View itemView) {
+            super(itemView);
+            noteCardView = itemView.findViewById(R.id.note);
+            noteTitle = itemView.findViewById(R.id.note_title);
+            noteBodyText = itemView.findViewById(R.id.note_body_text);
+            noteDate = itemView.findViewById(R.id.note_date);
+            moreMenu = itemView.findViewById(R.id.more_menu_button);
+        }
+
+    }
+
+    public List<Note> getCheckedNotes() {
+        List<Note> checkedNotes = new ArrayList<>(); //New note List called checkedNotes
+        for (Note note : this.notesFull) { // For every note
+            if (note.isChecked()){ // If the note n is checked
+                checkedNotes.add(note); //Add the note (n) to the List checkedNotes
+            }
+        }
+        return checkedNotes; //Return List checkedNotes.
+    }
+
+    public void setAllCheckedNotes(boolean isChecked) {
+        for (Note note : this.notes) {
+            note.setChecked(isChecked);
+        }
+
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public Filter getFilter() {
+        return notesFilter;
+    }
+
+    private final Filter notesFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence charSequence) {
+            ArrayList<Note> filteredNotesList = new ArrayList<>();
+
+            if (charSequence == null || charSequence.length() == 0) {
+                filteredNotesList.addAll(notesFull);
+            } else {
+                String filterPattern = charSequence.toString().toLowerCase().trim();
+
+                for (Note note : notesFull) {
+                    if (note.getNoteTitle().toLowerCase().contains(filterPattern) || note.getNoteBodyText().toLowerCase().contains(filterPattern)) {
+                        filteredNotesList.add(note);
+                    }
+                }
+            }
+
+            FilterResults results = new FilterResults();
+            results.values = filteredNotesList;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+            notes.clear();
+            //noinspection unchecked
+            notes.addAll((ArrayList<Note>) filterResults.values);
+            notifyDataSetChanged();
+        }
+    };
 
 }

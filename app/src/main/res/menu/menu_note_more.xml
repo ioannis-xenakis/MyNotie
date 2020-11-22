@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<!-- This dropdown menu is displayed
+when clicked on note more menu button inside each note. -->
+
+    <!-- Add to folder button for adding notes to folders. -->
+    <item
+        android:id="@+id/add_to_folder_button"
+        android:title="@string/add_to_folder_button" />
+
+    <!-- Delete only this note button deletes the note,
+    binded to this dropdown menu. -->
+    <item
+        android:id="@+id/delete_only_this_note_button"
+        android:title="@string/delete_note_button" />
+
+</menu>
