@@ -4,13 +4,9 @@
     <string name="content_description_search">Search button</string>
     <string name="check_notes_button">Check notes</string>
     <string name="content_description_check_notes">Check notes button</string>
-    <string name="note_body_text_hint">Note Body Text:</string>
-    <string name="note_title_hint">Note Title:</string>
-    <string name="write_text_text"> </string>
     <string name="note_title">This is a new note. This is a new note. This is a new note. This is a new note. This is a new note. </string>
     <string name="note_body_text">This is Body Text. This is Body Text. This is Body Text. This is Body Text. This is Body Text. This is Body Text. This is Body Text. This is Body Text.</string>
     <string name="note_date_text">Last edited: Jul/13/2020</string>
-    <string name="delete_note_description">Delete only this note.</string>
     <string name="page_title">My notes</string>
     <string name="search_edittext_hint">Search here</string>
     <string name="notes_selected">0 notes selected.</string>
@@ -28,8 +24,8 @@
     <string name="my_folder_3">My folder 3</string>
     <string name="my_folder_4">My folder 4</string>
     <string name="add_or_manage_folders">Add or manage folders</string>
-    <string name="openNavDrawer">Open navigation drawer</string>
-    <string name="closeNavDrawer">Close navigation drawer</string>
+    <string name="open_nav_drawer">Open navigation drawer</string>
+    <string name="close_nav_drawer">Close navigation drawer</string>
     <string name="content_description_app_logo">My Notie</string>
     <string name="content_description_add_new_note">Add new note</string>
 

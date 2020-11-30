@@ -21,7 +21,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 
 import android.text.Editable;
@@ -160,7 +159,7 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
         add_new_note_button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                addNewNote();
+                //TODO Add new note functionality.
             }
         });
 
@@ -174,8 +173,8 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
                 this,
                 drawerLayout,
                 bottomAppBar,
-                R.string.openNavDrawer,
-                R.string.closeNavDrawer);
+                R.string.open_nav_drawer,
+                R.string.close_nav_drawer);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
@@ -210,16 +209,6 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
             showHideBottomAppBar();
         }
     };
-
-    /**
-     * addNewNote, allows user to create/write the new note,
-     * and opens MainActivity(activity/page that allows user to write new note.
-     * @see MainActivity The page/activity for user to write the new note.
-     */
-    private void addNewNote() {
-        //Open MainActivity to start writing the new note.
-        startActivity(new Intent(this, MainActivity.class));
-    }
 
     /**
      * closeKeyboard, closes the user's keyboard.

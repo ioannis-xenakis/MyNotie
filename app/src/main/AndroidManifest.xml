@@ -10,29 +10,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".FolderActivity"></activity>
-        <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme"
-            android:windowSoftInputMode="stateHidden|adjustPan">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <!-- Accepts URIs that begin with:  http://www.example.com/mynotepad -->
-                <data
-                    android:host="www.example.com"
-                    android:pathPrefix="/mynotepad"
-                    android:scheme="http" />
-
-                <!-- Accepts URIs that begin with:  example://mynotepad -->
-                <data
-                    android:host="mynotepad"
-                    android:scheme="example" />
-            </intent-filter>
-        </activity> <!-- The MainNotesActivity with the Main Note List layout (activity_my_notes.xml) -->
+        <!-- The MainNotesActivity with the Main Note List layout (activity_my_notes.xml) -->
         <activity
             android:name=".MyNotesActivity"
             android:label="@string/app_name"
