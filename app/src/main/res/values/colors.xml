@@ -6,16 +6,5 @@
     <color name="colorBlack">#090909</color>
     <color name="colorSemiTranspBlack">#75000000</color>
     <color name="colorWhite">#FFFFFF</color>
-    <color name="colorNoteTitle">#F2F2F2</color>
-    <color name="background_note_body_text">#F2F2F2</color>
-    <color name="color_line">#090909</color>
-    <color name="color_write_text">#0000c0</color>
-    <color name="colorDelNoteButtonDefault">#303030</color>
-    <color name="colorDelNoteButtonPressed">#505050</color>
-    <color name="colorNoteBackground2">#EEFAFAFA</color>
-    <color name="colorNoteCheckbox2">#EEE9E9E9</color>
-    <color name="colorNoteBackground">#FFFFFF</color>
-    <color name="colorNoteCheckbox1">#EEFAFAFA</color>
-    <color name="colorCbAllNotes">#0081FF</color>
 
 </resources>
