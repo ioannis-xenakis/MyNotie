@@ -14,15 +14,15 @@ public interface NoteEventListener {
 
     /**
      * onNoteClick, runs/is called, when note is clicked.
-     * @param note the actual note.
-     * @param noteHolder the actual content/buttons that is held in the particular note.
+     * @param note the note.
+     * @param noteHolder the holder that holds content/buttons in a note.
      */
     void onNoteClick(Note note, NotesAdapter.NoteHolder noteHolder);
 
     /**
      * onNoteLongClick, runs/is called, when note is <b>long</b> clicked
-     * @param note the actual note.
-     * @param noteHolder the actual content/buttons that is held in the particular note.
+     * @param note the note.
+     * @param noteHolder the holder that holds content/buttons in a note.
      */
     void onNoteLongClick(Note note, NotesAdapter.NoteHolder noteHolder);
 
