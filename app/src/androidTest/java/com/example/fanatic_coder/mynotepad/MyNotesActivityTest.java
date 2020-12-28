@@ -1,7 +1,6 @@
 package com.example.fanatic_coder.mynotepad;
 
 import android.content.Context;
-import android.view.View;
 import android.widget.TextView;
 
 import androidx.test.core.app.ApplicationProvider;
@@ -29,10 +28,6 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.intent.Intents.intended;
-import static androidx.test.espresso.intent.Intents.init;
-import static androidx.test.espresso.intent.Intents.release;
-import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
@@ -183,7 +178,7 @@ public class MyNotesActivityTest {
         onView(withId(R.id.notes_list)).perform(RecyclerViewActions.actionOnItemAtPosition(4, click()));
 
         //Checks if "select notes title" at top bar displays "3 notes selected.".
-        onView(allOf(Matchers.<View>instanceOf(TextView.class), withParent(withId(R.id.top_app_bar_select_notes)))).check(matches(withText("3 notes selected.")));
+        onView(allOf(Matchers.instanceOf(TextView.class), withParent(withId(R.id.top_app_bar_select_notes)))).check(matches(withText("3 notes selected.")));
     }
 
     /**
@@ -331,21 +326,6 @@ public class MyNotesActivityTest {
         onView(withId(R.id.delete_selected_notes)).perform(click());
         //Checks if "top app bar selected notes", displays "0 notes selected".
         onView(allOf(instanceOf(TextView.class), withParent(withId(R.id.top_app_bar_select_notes)))).check(matches(withText("0 notes selected.")));
-    }
-
-    /**
-     * openMainActivityForNewNote, opens <i>MainActivity</i> by clicking <i>add new note button</i>
-     * and checks if <i>MainActivity</i> is opened.
-     */
-    @Test
-    public void openMainActivityForNewNote() {
-        //initializing Intents for "intended()" to work.
-        init();
-        //Clicks on "add new note" button(Floating Action Button or FAB).
-        onView(withId(R.id.add_new_note)).perform(click());
-        //Checks if MainActivity, is opened.
-        intended(hasComponent(MainActivity.class.getName()));
-        release();
     }
 
     /**
