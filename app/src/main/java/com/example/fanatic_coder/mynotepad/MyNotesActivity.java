@@ -44,7 +44,7 @@ import java.util.List;
  * @version 1.0
  * @see <a href="https://github.com/ioannis-xenakis/MyNotie">https://github.com/ioannis-xenakis/MyNotie</a> This project, is uploaded at Github. Visit it if you want!
  */
-public class MyNotesActivity extends AppCompatActivity implements NoteEventListener, MoreMenuButtonListener, NavigationView.OnNavigationItemSelectedListener {
+public class MyNotesActivity extends AppCompatActivity implements NoteEventListener, MoreMenuButtonListener {
 
     /**
      * Top bar for users, to search notes.
@@ -135,16 +135,13 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
         selectNotesTopBar = findViewById(R.id.top_app_bar_select_notes);
         pageTitleTopBar = findViewById(R.id.top_app_bar);
         searchTopBar = findViewById(R.id.top_app_bar_search);
-        searchTopBar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                closeKeyboard();
-                searchEdittext.setText("");
-                if (adapter.getCheckedNotes().size() > 0) {
-                    showSelectNotesTopBar();
-                } else {
-                    showPageTitleTopBar();
-                }
+        searchTopBar.setNavigationOnClickListener(view -> {
+            closeKeyboard();
+            searchEdittext.setText("");
+            if (adapter.getCheckedNotes().size() > 0) {
+                showSelectNotesTopBar();
+            } else {
+                showPageTitleTopBar();
             }
         });
 
@@ -152,25 +149,19 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
           Close Select Notes Top Bar button, in Select Notes Top Bar,
           which closes Select Notes Top Bar.
          */
-        selectNotesTopBar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showPageTitleTopBar();
-                adapter.setAllCheckedNotes(false);
-                displaySelectedNotesCount();
-            }
+        selectNotesTopBar.setNavigationOnClickListener(view -> {
+            showPageTitleTopBar();
+            adapter.setAllCheckedNotes(false);
+            displaySelectedNotesCount();
         });
 
         //Add new note button, which adds/creates new note.
         FloatingActionButton add_new_note_button = findViewById(R.id.add_new_note);
-        add_new_note_button.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                //TODO Add new note functionality.
-            }
+        add_new_note_button.setOnClickListener(v -> {
+            //TODO Add new note functionality.
         });
 
-        //Listens to scroling at RecyclerView(notes list).
+        //Listens to scrolling at RecyclerView(notes list).
         recyclerView.addOnScrollListener(onScrollListener);
 
         drawerLayout = findViewById(R.id.drawer_layout);
@@ -184,19 +175,15 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
                 R.string.close_nav_drawer);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
-        navigationView.setNavigationItemSelectedListener(this);
 
         //Gets the Header from Navigation Drawer(Navigation View).
         View headerView = navigationView.getHeaderView(0);
         //Gets the close button, from navigation Drawer.
         MaterialButton closeButton = headerView.findViewById(R.id.close_nav_drawer_button);
         //Listens to clicks on close button.
-        closeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Closes/hides Navigation Drawer from Right/End, to Left/Start.
-                drawerLayout.closeDrawer(GravityCompat.START);
-            }
+        closeButton.setOnClickListener(view -> {
+            //Closes/hides Navigation Drawer from Right/End, to Left/Start.
+            drawerLayout.closeDrawer(GravityCompat.START);
         });
 
     }
@@ -437,48 +424,36 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
         PopupMenu notePopupMenu = new PopupMenu(view.getContext(), view);
 
         notePopupMenu.getMenuInflater().inflate(R.menu.menu_note_more, notePopupMenu.getMenu());
-        notePopupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                int itemId = menuItem.getItemId();
-                if (itemId == R.id.add_to_folder_button) {
-                    Log.d(TAG, "Add to folder button, clicked.");
-                    return true;
-                } else if (itemId == R.id.delete_only_this_note_button) {
-                    Log.d(TAG, "Delete note button, clicked.");
+        notePopupMenu.setOnMenuItemClickListener(menuItem -> {
+            int itemId = menuItem.getItemId();
+            if (itemId == R.id.add_to_folder_button) {
+                Log.d(TAG, "Add to folder button, clicked.");
+                return true;
+            } else if (itemId == R.id.delete_only_this_note_button) {
+                Log.d(TAG, "Delete note button, clicked.");
 
-                    dao.deleteNote(note);
-                    adapter.notes.remove(note);
-                    adapter.notesFull.remove(note);
-                    adapter.notifyItemRemoved(position);
-                    if (note.isChecked())
-                        displaySelectedNotesCount();
+                dao.deleteNote(note);
+                adapter.notes.remove(note);
+                adapter.notesFull.remove(note);
+                adapter.notifyItemRemoved(position);
+                if (note.isChecked())
+                    displaySelectedNotesCount();
 
-                    if (adapter.getCheckedNotes().size() > 0) {
-                        showSelectNotesTopBar();
-                    } else {
-                        showPageTitleTopBar();
-                        displaySelectedNotesCount();
-                    }
-
-                    Toast.makeText(MyNotesActivity.this, "Note deleted!", Toast.LENGTH_LONG).show();
-                    Log.d(TAG, "Delete note button, finished.");
-                    return true;
+                if (adapter.getCheckedNotes().size() > 0) {
+                    showSelectNotesTopBar();
+                } else {
+                    showPageTitleTopBar();
+                    displaySelectedNotesCount();
                 }
-                return false;
+
+                Toast.makeText(MyNotesActivity.this, "Note deleted!", Toast.LENGTH_LONG).show();
+                Log.d(TAG, "Delete note button, finished.");
+                return true;
             }
+            return false;
+
         });
         notePopupMenu.show();
-
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        return false;
-    }
-
-    @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
 
     }
 

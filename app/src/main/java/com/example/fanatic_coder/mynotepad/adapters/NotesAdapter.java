@@ -42,7 +42,7 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     /**
      * The current state and <b>context</b> of the notes.
      */
-    private Context context;
+    private final Context context;
 
     /**
      * The NoteEventListener for listening clicks, on a note, in notes list.
@@ -95,30 +95,18 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             noteHolder.noteBodyText.setText(note.getNoteBodyText());
             noteHolder.noteDate.setText(NoteUtils.dateFromLong(note.getNoteDate()));
 
-            noteHolder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //When clicking on note(note title, note body text, note date).
-                    listener.onNoteClick(note, noteHolder);
-                }
-            });
+            //When clicking on note(note title, note body text, note date).
+            noteHolder.itemView.setOnClickListener(view -> listener.onNoteClick(note, noteHolder));
 
             noteHolder.noteCardView.setChecked(note.isChecked());
-            noteHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-                    //When long clicking(holding click) on note(note title, note body text, note date).
-                    listener.onNoteLongClick(note, noteHolder);
-                    return true;
-                }
+            //When long clicking(holding click) on note(note title, note body text, note date).
+            noteHolder.itemView.setOnLongClickListener(view -> {
+                listener.onNoteLongClick(note, noteHolder);
+                return true;
             });
 
-            noteHolder.moreMenu.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    moreMenuButtonListener.onMoreMenuButtonClick(note, view, noteHolder.getBindingAdapterPosition());
-                }
-            });
+            noteHolder.moreMenu.setOnClickListener(view ->
+                    moreMenuButtonListener.onMoreMenuButtonClick(note, view, noteHolder.getBindingAdapterPosition()));
 
             //If note title is empty, hide note title from the user, so it wont take any space, on screen.
             if (noteHolder.noteTitle.getText().toString().equals(""))

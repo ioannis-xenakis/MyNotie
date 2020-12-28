@@ -9,7 +9,7 @@ import androidx.test.espresso.ViewAction;
 import org.hamcrest.Matcher;
 
 import static androidx.test.espresso.matcher.RootMatchers.isPlatformPopup;
-
+//TODO Add javadoc comments, in TestUtils.
 public class TestUtils {
 
     public static ViewAction clickChildViewWithId(final int id) {

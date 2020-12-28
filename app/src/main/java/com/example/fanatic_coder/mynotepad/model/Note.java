@@ -21,12 +21,6 @@ public class Note {
     private int id;
 
     /**
-     * The column for identifying if the note is new.
-     */
-    @ColumnInfo(name = "isNewNote")
-    private Boolean isNewNote = true;
-
-    /**
      * The note title, written by the user.
      */
     @ColumnInfo(name = "noteTitle")
@@ -118,25 +112,6 @@ public class Note {
      */
     public void setId(int id) {
         this.id = id;
-    }
-
-    /**
-     * getIsNewNote, gets the isNewNote variable,
-     * which identifies if the note is new.
-     * @return the variable responsible if the note is new.
-     */
-    @NonNull
-    public Boolean getIsNewNote() {
-        return isNewNote;
-    }
-
-    /**
-     * setIsNewNote, sets the isNewNote variable,
-     * which identifies if the note is new.
-     * @param newNote the variable responsible if the note is new.
-     */
-    public void setIsNewNote(@NonNull Boolean newNote) {
-        isNewNote = newNote;
     }
 
     /**
