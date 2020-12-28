@@ -45,16 +45,28 @@ import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.*;
 
 /**
- * Instrumented test, which will execute on an Android device.
+ * <h2>MyNotesActivityTest</h2> is a class, dedicated for instrumented tests on MyNotesActivity
+ * which will be executed on an Android device.
  *
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
+ * @see com.example.fanatic_coder.mynotepad.MyNotesActivity The class this Instrumented Test class(MyNotesActivityTest), tests on.
  */
 @RunWith(AndroidJUnit4ClassRunner.class)
 public class MyNotesActivityTest {
 
+    /**
+     * The Dao for notes, responsible for manipulating notes, delete, insert, update notes, in database.
+     */
     private NotesDAO dao;
+
+    /**
+     * The database creator, for notes.
+     */
     private NotesDB notesDB;
 
+    /**
+     * addAllNotes, adds/creates all new <i>test notes</i> needed for running instrumented tests, on <i>MyNotesActivity</i>
+     */
     private void addAllNotes() {
         addNote("This is a test note.", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin et ante quis nibh blandit vehicula non sit amet dui.");
         addNote("New note!", "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.");
@@ -63,6 +75,11 @@ public class MyNotesActivityTest {
         addNote("Wrote it all down!", "Nullam imperdiet placerat porttitor. Ut ac urna sed magna gravida eleifend. ");
     }
 
+    /**
+     * addNote, adds/creates each new <i>test note</i> needed for running instrumented tests.
+     * @param noteTitle the note title, written on note.
+     * @param noteBodyText the main text/body text, written on note.
+     */
     private void addNote(String noteTitle, String noteBodyText) {
         for (int i=0; i<2; i++) {
             Note testNote = new Note();
@@ -74,6 +91,9 @@ public class MyNotesActivityTest {
         }
     }
 
+    /**
+     * initialize, gets run everytime each test is being run/started.
+     */
     @Before
     public void initialize() {
         Context context = ApplicationProvider.getApplicationContext();
@@ -81,15 +101,24 @@ public class MyNotesActivityTest {
         dao = notesDB.notesDAO();
     }
 
+    /**
+     * tearDown, gets run everytime each test is finished/ended.
+     */
     @After
     public void tearDown() {
         notesDB.clearAllTables();
         addAllNotes();
     }
 
+    /**
+     * The <i>rule</i> for defining what activity to test on, in this case <i>MyNotesActivity</i>.
+     */
     @Rule
     public ActivityScenarioRule<MyNotesActivity> myNotesActivityRule = new ActivityScenarioRule<>(MyNotesActivity.class);
 
+    /**
+     * useAppContext, checks/tests, if <i>My Notie</i> gets run/loaded.
+     */
     @Test
     public void useAppContext() {
         // Context of the app under test.
@@ -98,6 +127,9 @@ public class MyNotesActivityTest {
         assertEquals("com.example.fanatic_coder.mynotepad", appContext.getPackageName());
     }
 
+    /**
+     * openSearchBarAndTypeInSearchEdittext, opens the Search bar and types in search edittext.
+     */
     @Test
     public void openSearchBarAndTypeInSearchEdittext() {
         onView(withId(R.id.search_button)).perform(click());
@@ -106,9 +138,8 @@ public class MyNotesActivityTest {
         onView(withId(R.id.search_edittext)).perform(typeText("New note"));
     }
 
-    /*
-     * Opens "select notes top app bar"
-     * and checks if it is displayed.
+    /**
+     * openSelectNotesTopAppbar, opens and checks if <i>select notes top bar</i> is displayed.
      */
     @Test
     public void openSelectNotesTopAppBar() {
@@ -120,29 +151,45 @@ public class MyNotesActivityTest {
         onView(withId(R.id.top_app_bar_select_notes)).check(matches(isDisplayed()));
     }
 
+    /**
+     * notesSelectedTitleMatchesWithText, checks if <i>notes selected title</i> or <i>notes count title</i>
+     * matches with initial text, without selecting note.
+     */
     @Test
     public void notesSelectedTitleMatchesWithText() {
         onView(allOf(instanceOf(TextView.class), withParent(withId(R.id.top_app_bar_select_notes))))
                 .check(matches(withText("0 notes selected.")));
     }
 
+    /**
+     * notesSelectedTopToolbarExists, checks/asserts
+     * if top bar/toolbar for notes selected, exists and is displayed on screen.
+     */
     @Test
     public void notesSelectedTopToolbarExists() {
         assertNotNull(withId(R.id.top_app_bar_select_notes));
     }
 
+    /**
+     * selectingNotes, selects 3 notes
+     * and checks if note count title at top bar for selecting notes,
+     * displays the count number of selected notes("3 notes selected.") on screen.
+     */
     @Test
     public void selectingNotes() {
+        //Select 3 notes at position 0, 3 and 4.
         onView(withId(R.id.notes_list)).perform(RecyclerViewActions.actionOnItemAtPosition(0, longClick()));
         onView(withId(R.id.notes_list)).perform(RecyclerViewActions.actionOnItemAtPosition(3, click()));
         onView(withId(R.id.notes_list)).perform(RecyclerViewActions.actionOnItemAtPosition(4, click()));
 
+        //Checks if "select notes title" at top bar displays "3 notes selected.".
         onView(allOf(Matchers.<View>instanceOf(TextView.class), withParent(withId(R.id.top_app_bar_select_notes)))).check(matches(withText("3 notes selected.")));
     }
 
-    /*
-     * Selects two notes by long clicking them
-     * and checks if "select notes title" displays "2 notes selected.".
+    /**
+     * selectingNotesAndMatchesNotesSelectedTitle, selects 2 notes
+     * and checks if note count title at top bar for selecting notes,
+     * displays the count number of selected notes("2 notes selected.") on screen.
      */
     @Test
     public void selectingNotesAndMatchesNotesSelectedTitle() {
@@ -155,68 +202,72 @@ public class MyNotesActivityTest {
                 .check(matches(withText("2 notes selected.")));
     }
 
-    /*
-     * Selects 3 notes by long clicking them,
-     * opens "select notes top app bar",
-     * checks if "select notes title" displays "3 notes selected.",
-     * closes "select notes top app bar"
-     * and checks again if "select notes title" displays "0 notes selected.".
+    /**
+     * selectingNotesAndCloseNotesSelectedTopAppBar, selects 3 notes,
+     * opens top bar for selecting notes,
+     * checks if note count title at top bar, displays "3 notes selected.",
+     * closes top bar for selecting notes,
+     * and checks again if note count title at top bar, displays "0 notes selected.".
      */
     @Test
     public void selectingNotesAndCloseNotesSelectedTopAppBar() {
-        //Selecting 3 notes by long clicking at position 2, 3 and 7.
+        //Selects 3 notes by long clicking at position 2, 3 and 7.
         onView(withId(R.id.notes_list)).perform(RecyclerViewActions.actionOnItemAtPosition(2, longClick()));
         onView(withId(R.id.notes_list)).perform(RecyclerViewActions.actionOnItemAtPosition(3, longClick()));
         onView(withId(R.id.notes_list)).perform(RecyclerViewActions.actionOnItemAtPosition(7, longClick()));
 
-        //Clicking on "select notes button" to open "top app bar select notes".
+        //Clicks on "select notes button" to open "top app bar select notes".
         onView(withId(R.id.select_notes_button)).perform(click());
         onView(withId(R.id.top_app_bar_select_notes)).perform(click());
-        //Checking if "select notes title" displays "3 notes selected.".
+        //Checks if "select notes title" displays "3 notes selected.".
         onView(allOf(instanceOf(TextView.class), withParent(withId(R.id.top_app_bar_select_notes))))
                 .check(matches(withText("3 notes selected.")));
 
-        //Clicking "top app bar close select notes" button to close "select notes top app bar".
+        //Clicks "top app bar close select notes" button to close "select notes top app bar".
         onView(withContentDescription("Close select notes toolbar")).perform(click());
-        //Checking if "select notes title" displays "0 notes selected.".
+        //Checks if note count title at top bar, displays "0 notes selected.".
         onView(allOf(instanceOf(TextView.class), withParent(withId(R.id.top_app_bar_select_notes))))
                 .check(matches(withText("0 notes selected.")));
     }
 
-    /*
-     * Selects 3 notes by long clicking them,
-     * checks if "select notes title" displays "3 notes selected.",
-     * Types/searches notes with text, "test",
-     * selecting one more note,
-     * and checks again if "select notes title" displays "4 notes selected."
+    /**
+     * selectingNotesSearchingNotesAndCheckingNotesSelectedTitle,
+     * selects 3 notes,
+     * checks if note count title at top bar, displays "3 notes selected.",
+     * types/searches notes with text, "test",
+     * selects one more note,
+     * and checks again if note count title, displays "4 notes selected.".
+     * @throws InterruptedException needed for Thread.sleep called method.
      */
     @Test
     public void selectingNotesSearchingNotesAndCheckingNotesSelectedTitle() throws InterruptedException {
-        //Selecting 3 notes by long clicking at positions 2, 3 and 7.
+        //Selects 3 notes by long clicking at positions 2, 3 and 7.
         onView(withId(R.id.notes_list)).perform(RecyclerViewActions.actionOnItemAtPosition(2, longClick()));
         onView(withId(R.id.notes_list)).perform(RecyclerViewActions.actionOnItemAtPosition(3, longClick()));
         onView(withId(R.id.notes_list)).perform(RecyclerViewActions.actionOnItemAtPosition(7, longClick()));
-        //Checking if "select notes title" displays "3 notes selected.".
+        //Checks if "select notes title" displays "3 notes selected.".
         onView(allOf(instanceOf(TextView.class), withParent(withId(R.id.top_app_bar_select_notes))))
                 .check(matches(withText("3 notes selected.")));
 
         //Opens "search top app bar" by clicking "search button".
         onView(withId(R.id.search_button)).perform(click());
-        //Types in "search edittext" "test" to search for notes.
+        //Types in "search edittext", "test" to search for notes.
         onView(withId(R.id.search_edittext)).perform(typeText("test")).perform(closeSoftKeyboard());
+        //Thread.sleep throws Unhandled InterruptedException.
         Thread.sleep(250);
-        //Selecting one more note, at position 5.
+        //Selects one more note, at position 5.
         onView(withId(R.id.notes_list)).perform(RecyclerViewActions.actionOnItemAtPosition(1, longClick()));
 
-        //Checking if "select notes title" displays "4 notes selected.".
+        //Checks if note count title at top bar, displays "4 notes selected.".
         onView(allOf(instanceOf(TextView.class), withParent(withId(R.id.top_app_bar_select_notes))))
                 .check(matches(withText("4 notes selected.")));
     }
 
-    /*
-     * Selects 2 notes,
+    /**
+     * deletingThisNoteAndCheckingNotesSelectedTitle, selects 2 notes,
      * deletes 1 of the 2 notes,
-     * checks if top app bar selected notes title, displays "1 notes selected.".
+     * checks if note count title at top bar, displays "1 notes selected.".
+     * @throws InterruptedException needed for Thread.sleep called method.
      */
     @Test
     public void deletingThisNoteAndCheckingNotesSelectedTitle() throws InterruptedException {
@@ -226,17 +277,19 @@ public class MyNotesActivityTest {
 
         //Clicks "more menu button" on a note, to open the popup menu.
         onView(withId(R.id.notes_list)).perform(RecyclerViewActions.actionOnItemAtPosition(0, TestUtils.clickChildViewWithId(R.id.more_menu_button)));
+        //Thread.sleep throws Unhandled InterruptedException.
         Thread.sleep(250);
 
         //Clicks the "delete note." button, from the popup menu.
         onView(withText("Delete note.")).inRoot(TestUtils.isPopupWindow()).perform(click());
 
-        //Checks if "top app bar selected notes", displays "1 notes selected".
+        //Checks if note count title at top bar, displays "1 notes selected".
         onView(allOf(instanceOf(TextView.class), withParent(withId(R.id.top_app_bar_select_notes)))).check(matches(withText("1 notes selected.")));
     }
 
-    /*
-     * Testing "select all notes button", on "top app bar select notes".
+    /**
+     * testingSelectAllNotesButton, tests the <i>select all notes button</i>,
+     * from top bar, which selects all notes.
      */
     @Test
     public void testingSelectAllNotesButton() {
@@ -257,8 +310,9 @@ public class MyNotesActivityTest {
         onView(allOf(instanceOf(TextView.class), withParent(withId(R.id.top_app_bar_select_notes)))).check(matches(withText("0 notes selected.")));
     }
 
-    /*
-     * Testing "delete selected notes button", on "top app bar select notes".
+    /**
+     * testingDeleteSelectedNotesButton, tests the <i>delete selected notes button</i>,
+     * from top bar, which deletes all selected notes.
      */
     @Test
     public void testingDeleteSelectedNotesButton() {
@@ -279,9 +333,9 @@ public class MyNotesActivityTest {
         onView(allOf(instanceOf(TextView.class), withParent(withId(R.id.top_app_bar_select_notes)))).check(matches(withText("0 notes selected.")));
     }
 
-    /*
-     * Opens MainActivity by clicking "add new note" button
-     * and check if MainActivity is opened.
+    /**
+     * openMainActivityForNewNote, opens <i>MainActivity</i> by clicking <i>add new note button</i>
+     * and checks if <i>MainActivity</i> is opened.
      */
     @Test
     public void openMainActivityForNewNote() {
@@ -294,6 +348,9 @@ public class MyNotesActivityTest {
         release();
     }
 
+    /**
+     * testUpdatingNotesCountWhenResuming, tests if <i>notes count title</i> from top bar, does get updated when app is resumed.
+     */
     @Test
     public void testUpdatingNotesCountWhenResuming() {
         onView(withId(R.id.select_notes_button)).perform(click());

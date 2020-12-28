@@ -38,10 +38,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * <h2>MyNotesActivity</h2> is the starting home page when <b>MyNotie</b> starts.
+ * <h2>MyNotesActivity</h2> is the starting home page when <b>My Notie</b> starts
+ * and is the page that displays all the existing notes.
  * @author John/Ioannis Xenakis
- * @version 1.0 <br>
- * MyNotesActivity contains all the existing notes. <br>
+ * @version 1.0
  * @see <a href="https://github.com/ioannis-xenakis/MyNotie">https://github.com/ioannis-xenakis/MyNotie</a> This project, is uploaded at Github. Visit it if you want!
  */
 public class MyNotesActivity extends AppCompatActivity implements NoteEventListener, MoreMenuButtonListener, NavigationView.OnNavigationItemSelectedListener {
@@ -50,35 +50,42 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
      * Top bar for users, to search notes.
      */
     private MaterialToolbar searchTopBar;
+
     /**
-     * The default top bar, which only displays the title name, of the page/activity.
+     * The default top bar, which only displays the title name, of <i>My notes</i> page.
      */
     private MaterialToolbar pageTitleTopBar;
+
     /**
      * Top bar for users, to select notes, and act(for ex. delete) on them.
      */
     private MaterialToolbar selectNotesTopBar;
+
     /**
      * Dao needed for managing notes, in database.
      */
     private NotesDAO dao;
+
     /**
      * Adapter for notes, which works as an exchange between the user interface and actual data.
      */
     private NotesAdapter adapter;
+
     /**
-     * The RecyclerView, or the <b>notes list</b> which displays all the existing notes.
+     * The RecyclerView, or the <b>notes list</b> which displays all the existing notes, on <b>My notes</b> page.
      */
     private RecyclerView recyclerView;
+
     /**
-     * The layoutManager initializes and lays out all the items in a grid for the layout/activity.
-     * For instance: It <b>lays out</b> and <b>manages</b> all notes, in notes_list.
+     * The layoutManager <b>lays out</b> and manages all notes in an grid/order, in <i>notes list</i>, for <i>My notes</i> page.
      */
     private LinearLayoutManager layoutManager;
+
     /**
      * The group/layout for the side navigation drawer.
      */
     private DrawerLayout drawerLayout;
+
     /**
      * The app name.
      */
@@ -195,7 +202,7 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
     }
 
     /**
-     * onScrollListener, Listens for scrolls, on RecyclerView(notes list).
+     * onScrollListener, Listens for scrolls when user scrolls, on <i>notes list</i>, from <i>My notes</i> Activity.
      */
     private final RecyclerView.OnScrollListener onScrollListener = new RecyclerView.OnScrollListener() {
         @Override
@@ -211,7 +218,7 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
     };
 
     /**
-     * closeKeyboard, closes the user's keyboard.
+     * closeKeyboard, closes the user's keyboard, if open.
      */
     private void closeKeyboard() {
         View view = this.getCurrentFocus();
@@ -238,7 +245,7 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
 
     /**
      * showPageTitleTopBar, shows/displays the default top bar,
-     * that only displays, the page title name.
+     * that only displays the page/Activity title name.
      */
     private void showPageTitleTopBar() {
         searchTopBar = findViewById(R.id.top_app_bar_search);
@@ -251,7 +258,7 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
     }
 
     /**
-     * showSearchTopBar, shows/displays the top bar, that allows user, to search notes.
+     * showSearchTopBar, shows/displays the top bar, that allows user to search notes.
      */
     private void showSearchTopBar() {
         searchTopBar = findViewById(R.id.top_app_bar_search);
@@ -264,7 +271,7 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
     }
 
     /**
-     * displaySelecteedNotesCount, displays the number of the checked/selected notes,
+     * displaySelectedNotesCount, displays on the top bar when selecting notes, the number of the checked/selected notes,
      * the user has.
      */
     private void displaySelectedNotesCount() {
@@ -273,8 +280,8 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
 
     /**
      * selectNote, selects/checks an existing note to act on it(for ex. delete it).
-     * @param note the actual note.
-     * @param noteHolder the actual content/buttons that is held in the particular note.
+     * @param note the note.
+     * @param noteHolder the holder that holds content/buttons in a note.
      */
     private void selectNote(Note note, NotesAdapter.NoteHolder noteHolder) {
         note.setChecked(!note.isChecked());
@@ -289,11 +296,11 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
     }
 
     /**
-     * onSelectAllNotesButtonClick, runs/is called when "select all notes" button is clicked,
+     * onSelectAllNotesButtonClick, runs/is called when <i>select all notes</i> button is clicked,
      * from top bar.
-     * "Select all notes" button allows user, to select all existing notes,
-     * in "notes list".
-     * @param menuItem the menu item/button("all notes" button).
+     * <i>Select all notes</i> button allows user, to select all existing notes,
+     * in <i>notes list</i>, in <i>My notes</i> Activity.
+     * @param menuItem the <i>select all notes</i> button.
      */
     public void onSelectAllNotesButtonClick(MenuItem menuItem) {
         adapter.setAllCheckedNotes(adapter.getCheckedNotes().size() != adapter.notes.size());
@@ -302,10 +309,10 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
 
     /**
      * onDeleteSelectedNotesButtonClick, runs/is called,
-     * when "delete selected notes" button is clicked, from top bar.
-     * "Delete selected notes" button allows user to delete all the selected notes,
+     * when <i>delete selected notes</i> button is clicked, from top bar.
+     * <i>Delete selected notes</i> button allows user to delete all the selected notes,
      * user have selected.
-     * @param menuItem the menu item/button("delete selected notes" button).
+     * @param menuItem the menu item/button(<i>delete selected notes</i> button).
      */
     public void onDeleteSelectedNotesButtonClick(MenuItem menuItem) {
         ArrayList<Note> deletedNotes = new ArrayList<>(adapter.getCheckedNotes());
@@ -323,10 +330,10 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
 
     /**
      * onSearchButtonClick, runs/is called
-     * when "search" button is clicked, from bottom app bar.
-     * "Search" button, opens the "search notes top bar",
+     * when <i>search</i> button is clicked, from bottom app bar.
+     * <i>Search</i> button, opens the <i>search notes top bar</i>,
      * that allows user to search existing notes.
-     * @param menuItem the menu item/button("search" button).
+     * @param menuItem the menu item/button(<i>search</i> button).
      */
     public void onSearchButtonClick(MenuItem menuItem) {
         showSearchTopBar();
@@ -334,10 +341,10 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
 
     /**
      * onSelectNotesButtonClick, runs/is called
-     * when "select notes" button is clicked, from bottom app bar.
-     * "Select notes" button, opens the "select notes top bar",
+     * when <i>select notes</i> button is clicked, from bottom app bar.
+     * <i>Select notes</i> button, opens the <i>select notes top bar</i>,
      * that allows user to select notes.
-     * @param item the menu item/button("select notes" button).
+     * @param item the menu item/button(<i>select notes</i> button).
      */
     public void onSelectNotesButtonClick(MenuItem item) {
         EditText searchEdittext = findViewById(R.id.search_edittext);
@@ -348,7 +355,7 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
 
     /**
      * loadNotes, loads/displays/refreshes all the existing notes,
-     * in "notes list".
+     * in <i>notes list</i>.
      */
     private void loadNotes() {
         List<Note> list = dao.getNotes();
@@ -359,8 +366,8 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
     }
 
     /**
-     * showHideBottomAppBar, shows or hides bottom app bar, <br>
-     * (enables/disables auto-hide when scrolling on "notes list"), <br>
+     * showHideBottomAppBar, shows or hides bottom app bar,
+     * (enables/disables auto-hide when scrolling on <i>notes list</i>),
      * depending on total number of notes on screen.
      */
     private void showHideBottomAppBar() {
@@ -376,8 +383,8 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
     }
 
     /**
-     * onResume, runs/is called, when resuming the app(MyNotie), <br>
-     * while android device is on sleep, or opening the app.
+     * onResume, runs/is called, when resuming the app(MyNotie),
+     * while android device is on sleep, or opening/switching to/from the app.
      */
     @Override
     protected void onResume() {
@@ -398,8 +405,8 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
 
     /**
      * onNoteClick, runs/is called, when a note is clicked.
-     * @param note the actual note.
-     * @param noteHolder the actual content/buttons that is held in the particular note.
+     * @param note the note.
+     * @param noteHolder the holder that holds content/buttons in a note.
      */
     @Override
     public void onNoteClick(Note note, NotesAdapter.NoteHolder noteHolder) {
@@ -409,9 +416,9 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
     }
 
     /**
-     * onNoteLongClick, runs/is called, when a note is long clicked.
-     * @param note the actual note.
-     * @param noteHolder the actual content/buttons that is held in the particular note.
+     * onNoteLongClick, runs/is called, when a note is long/hold clicked.
+     * @param note the note.
+     * @param noteHolder the holder that holds content/buttons in a note.
      */
     @Override
     public void onNoteLongClick(final Note note, final NotesAdapter.NoteHolder noteHolder) {
@@ -419,11 +426,11 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
     }
 
     /**
-     * onMoreMenuButtonClick, runs/is called, when "more menu" button is clicked,
+     * onMoreMenuButtonClick, runs/is called, when <i>more menu</i> button(three vertical dots button) is clicked,
      * revealing a dropdown menu. to act on the specific note, the button is on.
-     * @param note the actual note.
-     * @param view the more menu button on note.
-     * @param position the position, the note is at the notes list.
+     * @param note the note.
+     * @param view the more menu button(three vertical dots button) on note.
+     * @param position the position, the note is at the notes list, on <i>My notes</i> page.
      */
     @Override
     public void onMoreMenuButtonClick(final Note note, View view, final int position) {
