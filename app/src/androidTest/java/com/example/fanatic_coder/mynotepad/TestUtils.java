@@ -1,10 +1,12 @@
 package com.example.fanatic_coder.mynotepad;
 
+import android.content.pm.ActivityInfo;
 import android.view.View;
 
 import androidx.test.espresso.Root;
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
+import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
 import org.hamcrest.Matcher;
 
@@ -17,6 +19,26 @@ import static androidx.test.espresso.matcher.RootMatchers.isPlatformPopup;
  * @see com.example.fanatic_coder.mynotepad.MyNotesActivityTest The MyNotesActivity tests, uses TestUtils class.
  */
 public class TestUtils {
+
+    /**
+     * Landscape screen orientation.
+     */
+    public static int LANDSCAPE = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
+
+    /**
+     * Portrait screen orientation.
+     */
+    public static int PORTRAIT = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+
+    /**
+     * Reverse landscape screen orientation.
+     */
+    public static int REVERSE_LANDSCAPE = ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE;
+
+    /**
+     * Reverse portrait screen orientation.
+     */
+    public static int REVERSE_PORTRAIT = ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT;
 
     /**
      * clickChildViewWithId, clicks on a child view(for ex. button), inside a parent(for ex. note),
@@ -47,6 +69,13 @@ public class TestUtils {
                 v.performClick();
             }
         };
+    }
+
+    /**
+     * switchOrientation, switches the screen orientation(e.g. Landscape) of the device.
+     */
+    public static void switchOrientation(ActivityScenarioRule<?> rule, int orientation) {
+        rule.getScenario().onActivity(activity -> activity.setRequestedOrientation(orientation));
     }
 
     /**

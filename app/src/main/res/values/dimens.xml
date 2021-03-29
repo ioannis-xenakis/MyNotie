@@ -7,6 +7,7 @@
     <dimen name="note_top_edge_space">69.5dp</dimen>
     <dimen name="note_bot_edge_space">108.5dp</dimen>
     <dimen name="note_between_space">16dp</dimen>
+    <dimen name="note_between_horizontal_space">10dp</dimen>
     <dimen name="editnote_horizontal_edges_space">17dp</dimen>
     <dimen name="note_body_text_bot_space">21dp</dimen>
     <dimen name="note_edittexts_between_space">13dp</dimen>

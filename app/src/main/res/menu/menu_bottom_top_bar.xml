@@ -2,7 +2,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.fanatic_coder.mynotepad.MainActivity">
-<!-- Buttons displayed in bottom app bar. -->
+<!-- Buttons displayed in bottom app bar for mobile phones(smaller screens)
+ and in top app bar for tablets(larger screens). -->
 
     <!-- Search button for searching notes. -->
     <item

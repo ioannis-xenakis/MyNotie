@@ -6,6 +6,7 @@ import com.example.fanatic_coder.mynotepad.callbacks.NoteEventListener;
 import com.example.fanatic_coder.mynotepad.db.NotesDAO;
 import com.example.fanatic_coder.mynotepad.db.NotesDB;
 import com.example.fanatic_coder.mynotepad.model.Note;
+import com.example.fanatic_coder.mynotepad.utils.SpacesItemGrid;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.button.MaterialButton;
@@ -15,13 +16,16 @@ import com.google.android.material.navigation.NavigationView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 
 import android.text.Editable;
@@ -101,13 +105,34 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_notes);
-        BottomAppBar bottomAppBar = findViewById(R.id.bottom_app_bar);
-        setSupportActionBar(bottomAppBar);
+        pageTitleTopBar = findViewById(R.id.top_app_bar_my_notes);
 
-        layoutManager = new LinearLayoutManager(this);
+        setSupportActionBar(getAppBar());
+
+        int smallestScreenWidth = getResources().getConfiguration().smallestScreenWidthDp;
+
+        //For different screen orientations(Portrait or Landscape). Mobile phones only and smaller device screen sizes.
         recyclerView = findViewById(R.id.notes_list);
+        int orientation = getResources().getConfiguration().orientation;
+        if (orientation == Configuration.ORIENTATION_PORTRAIT && smallestScreenWidth < 600) {
+            layoutManager = new LinearLayoutManager(this);
+        } else if (orientation == Configuration.ORIENTATION_LANDSCAPE && smallestScreenWidth < 600) {
+            layoutManager = new GridLayoutManager(this, 2);
+            noteSpacing(recyclerView, 2);
+        }
+
+        //For different screen orientations(Portrait or Landscape). Mostly for android tablets and bigger device screen sizes.
+        if (orientation == Configuration.ORIENTATION_PORTRAIT && smallestScreenWidth >= 600) {
+            layoutManager = new GridLayoutManager(this, 2);
+            noteSpacing(recyclerView, 2);
+        } else if (orientation == Configuration.ORIENTATION_LANDSCAPE && smallestScreenWidth >= 600) {
+            layoutManager = new GridLayoutManager(this, 3);
+            noteSpacing(recyclerView, 3);
+        }
         recyclerView.setLayoutManager(layoutManager);
+
         dao = NotesDB.getInstance(this).notesDAO();
+        loadNotes();
 
         /*
           Note search functionality for search edittext on search top bar.
@@ -136,7 +161,6 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
           which closes Search Top Bar.
          */
         selectNotesTopBar = findViewById(R.id.top_app_bar_select_notes);
-        pageTitleTopBar = findViewById(R.id.top_app_bar_my_notes);
         searchTopBar = findViewById(R.id.top_app_bar_search);
         searchTopBar.setNavigationOnClickListener(view -> {
             closeKeyboard();
@@ -174,7 +198,7 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
         final ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(
                 this,
                 drawerLayout,
-                bottomAppBar,
+                getAppBar(),
                 R.string.open_nav_drawer,
                 R.string.close_nav_drawer);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
@@ -193,6 +217,21 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
     }
 
     /**
+     * getAppBar, gets and returns either the Top Bar, or the Bottom App Bar, depending on the devices screen size.
+     * @return the App Bar.
+     */
+    private Toolbar getAppBar() {
+        int smallestScreenWidth = getResources().getConfiguration().smallestScreenWidthDp;
+        Toolbar appBar;
+        if (smallestScreenWidth < 600) {
+            appBar = this.<BottomAppBar>findViewById(R.id.bottom_app_bar);
+        } else {
+            appBar = this.pageTitleTopBar;
+        }
+        return appBar;
+    }
+
+    /**
      * onScrollListener, Listens for scrolls when user scrolls, on <i>notes list</i>, from <i>My notes</i> Activity.
      */
     private final RecyclerView.OnScrollListener onScrollListener = new RecyclerView.OnScrollListener() {
@@ -204,9 +243,19 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
         @Override
         public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
             super.onScrolled(recyclerView, dx, dy);
-            showHideBottomAppBar();
+            if (getResources().getConfiguration().smallestScreenWidthDp < 600) {
+                showHideBottomAppBar();
+            }
         }
     };
+
+    /**
+     * noteSpacing, is for spacing the notes, inside notes list(RecyclerView).
+     */
+    private void noteSpacing(RecyclerView recyclerView, int spanCount) {
+        int noteSpacingInPixels = getResources().getDimensionPixelSize(R.dimen.note_between_horizontal_space);
+        recyclerView.addItemDecoration(new SpacesItemGrid(noteSpacingInPixels, spanCount));
+    }
 
     /**
      * closeKeyboard, closes the user's keyboard, if open.
@@ -399,7 +448,7 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.menu_bottom_bar, menu);
+        getMenuInflater().inflate(R.menu.menu_bottom_top_bar, menu);
         return true;
     }
 

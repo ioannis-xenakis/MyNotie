@@ -99,13 +99,13 @@
             android:id="@+id/top_app_bar_edit_note"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
             android:visibility="visible"
-            app:title="@string/page_title_edit_note"
-            android:background="@color/colorWhite"
-            app:navigationIcon="@drawable/go_back_icon"
-            app:navigationContentDescription="@string/content_description_edit_note_navigation"
             app:layout_scrollFlags="scroll|enterAlways|snap"
-            app:menu="@menu/menu_top_bar_edit_note" />
+            app:menu="@menu/menu_top_bar_edit_note"
+            app:navigationContentDescription="@string/content_description_edit_note_navigation"
+            app:navigationIcon="@drawable/go_back_icon"
+            app:title="@string/page_title_edit_note" />
 
     </com.google.android.material.appbar.AppBarLayout>
 

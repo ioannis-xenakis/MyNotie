@@ -16,6 +16,11 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
+import static com.example.fanatic_coder.mynotepad.TestUtils.LANDSCAPE;
+import static com.example.fanatic_coder.mynotepad.TestUtils.PORTRAIT;
+import static com.example.fanatic_coder.mynotepad.TestUtils.REVERSE_LANDSCAPE;
+import static com.example.fanatic_coder.mynotepad.TestUtils.REVERSE_PORTRAIT;
+import static com.example.fanatic_coder.mynotepad.TestUtils.switchOrientation;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.Assert.assertNotNull;
@@ -167,4 +172,41 @@ public class EditNoteActivityTest {
         assertNotNull(withText("Delete note."));
         onView(withText("Delete note.")).check(matches(isDisplayed()));
     }
+
+    /**
+     * testSwitchingToLandscape, tests switching from Portrait Orientation to Landscape Orientation.
+     */
+    @Test
+    public void testSwitchingToLandscape() {
+        switchOrientation(editNoteActivityRule, PORTRAIT);
+        switchOrientation(editNoteActivityRule, LANDSCAPE);
+    }
+
+    /**
+     * testSwitchingToPortrait, tests switching from Landscape Orientation to Portrait Orientation.
+     */
+    @Test
+    public void testSwitchingToPortrait() {
+        switchOrientation(editNoteActivityRule, LANDSCAPE);
+        switchOrientation(editNoteActivityRule, PORTRAIT);
+    }
+
+    /**
+     * testSwitchingToReverseLandscape, tests switching from Landscape Orientation to Reverse Landscape Orientation.
+     */
+    @Test
+    public void testSwitchingToReverseLandscape() {
+        switchOrientation(editNoteActivityRule, LANDSCAPE);
+        switchOrientation(editNoteActivityRule, REVERSE_LANDSCAPE);
+    }
+
+    /**
+     * testSwitchingToReversePortrait, tests switching from Portrait Orientation to Reverse Portrait Orientation.
+     */
+    @Test
+    public void testSwitchingToReversePortrait() {
+        switchOrientation(editNoteActivityRule, PORTRAIT);
+        switchOrientation(editNoteActivityRule, REVERSE_PORTRAIT);
+    }
+
 }
