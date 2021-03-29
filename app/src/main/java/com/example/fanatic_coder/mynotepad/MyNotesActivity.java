@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.appcompat.widget.TooltipCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -184,6 +185,7 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
 
         //Add new note button, which adds/creates new note.
         FloatingActionButton add_new_note_button = findViewById(R.id.add_new_note);
+        TooltipCompat.setTooltipText(add_new_note_button, this.getString(R.string.tooltip_add_new_note));
         add_new_note_button.setOnClickListener(v -> {
             Intent editNoteActivityIntent = new Intent(getApplicationContext(), EditNoteActivity.class);
             startActivity(editNoteActivityIntent);

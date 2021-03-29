@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">My Notie</string>
-    <string name="search_button">Search</string>
+    <string name="search_button">Search notes.</string>
     <string name="content_description_search">Search button</string>
-    <string name="check_notes_button">Check notes</string>
+    <string name="check_notes_button">Check notes.</string>
     <string name="content_description_check_notes">Check notes button</string>
     <string name="note_title">This is a new note. This is a new note. This is a new note. This is a new note. This is a new note. </string>
     <string name="note_body_text">This is Body Text. This is Body Text. This is Body Text. This is Body Text. This is Body Text. This is Body Text. This is Body Text. This is Body Text.</string>
@@ -38,5 +38,6 @@
     <string name="add_to_folder_button_edit_note">Add to folders.</string>
     <string name="revert_changes_button_edit_note">Revert changes.</string>
     <string name="delete_note_button_edit_note">Delete note.</string>
+    <string name="tooltip_add_new_note">Add new note.</string>
 
 </resources>
