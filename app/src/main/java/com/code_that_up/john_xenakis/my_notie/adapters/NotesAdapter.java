@@ -1,4 +1,4 @@
-package com.example.fanatic_coder.mynotepad.adapters;
+package com.code_that_up.john_xenakis.my_notie.adapters;
 
 import android.content.Context;
 import androidx.annotation.NonNull;
@@ -10,11 +10,11 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
-import com.example.fanatic_coder.mynotepad.R;
-import com.example.fanatic_coder.mynotepad.callbacks.MoreMenuButtonListener;
-import com.example.fanatic_coder.mynotepad.callbacks.NoteEventListener;
-import com.example.fanatic_coder.mynotepad.model.Note;
-import com.example.fanatic_coder.mynotepad.utils.NoteUtils;
+import com.code_that_up.john_xenakis.my_notie.callbacks.MoreMenuButtonListener;
+import com.code_that_up.john_xenakis.my_notie.callbacks.NoteEventListener;
+import com.code_that_up.john_xenakis.my_notie.model.Note;
+import com.code_that_up.john_xenakis.my_notie.utils.NoteUtils;
+import com.code_that_up.john_xenakis.my_notie.R;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 

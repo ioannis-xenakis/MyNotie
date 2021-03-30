@@ -1,4 +1,4 @@
-package com.example.fanatic_coder.mynotepad;
+package com.code_that_up.john_xenakis.my_notie;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,9 +6,9 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.example.fanatic_coder.mynotepad.db.NotesDAO;
-import com.example.fanatic_coder.mynotepad.db.NotesDB;
-import com.example.fanatic_coder.mynotepad.model.Note;
+import com.code_that_up.john_xenakis.my_notie.db.NotesDAO;
+import com.code_that_up.john_xenakis.my_notie.db.NotesDB;
+import com.code_that_up.john_xenakis.my_notie.model.Note;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.textfield.TextInputEditText;
 

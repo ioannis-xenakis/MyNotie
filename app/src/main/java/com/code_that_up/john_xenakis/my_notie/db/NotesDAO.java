@@ -1,4 +1,4 @@
-package com.example.fanatic_coder.mynotepad.db;
+package com.code_that_up.john_xenakis.my_notie.db;
 
 import androidx.room.Dao;
 import androidx.room.Delete;
@@ -7,7 +7,8 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import com.example.fanatic_coder.mynotepad.model.Note;
+import com.code_that_up.john_xenakis.my_notie.MyNotesActivity;
+import com.code_that_up.john_xenakis.my_notie.model.Note;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ import java.util.List;
  * which is responsible for manipulating data and insert, delete and update notes, from database.
  * @author John/Ioannis Xenakis
  * @version 1.0
- * @see com.example.fanatic_coder.mynotepad.MyNotesActivity the activity/page which calls this java interface(NotesDAO.class) <br>
+ * @see MyNotesActivity the activity/page which calls this java interface(NotesDAO.class) <br>
  */
 @Dao
 public interface NotesDAO {

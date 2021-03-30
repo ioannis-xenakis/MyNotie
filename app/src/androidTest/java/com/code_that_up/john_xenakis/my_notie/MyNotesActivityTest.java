@@ -1,4 +1,4 @@
-package com.example.fanatic_coder.mynotepad;
+package com.code_that_up.john_xenakis.my_notie;
 
 import android.content.Context;
 import android.widget.TextView;
@@ -9,9 +9,9 @@ import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
 
-import com.example.fanatic_coder.mynotepad.db.NotesDAO;
-import com.example.fanatic_coder.mynotepad.db.NotesDB;
-import com.example.fanatic_coder.mynotepad.model.Note;
+import com.code_that_up.john_xenakis.my_notie.db.NotesDAO;
+import com.code_that_up.john_xenakis.my_notie.db.NotesDB;
+import com.code_that_up.john_xenakis.my_notie.model.Note;
 
 import org.hamcrest.Matchers;
 import org.junit.After;
@@ -32,11 +32,6 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
-import static com.example.fanatic_coder.mynotepad.TestUtils.LANDSCAPE;
-import static com.example.fanatic_coder.mynotepad.TestUtils.PORTRAIT;
-import static com.example.fanatic_coder.mynotepad.TestUtils.REVERSE_LANDSCAPE;
-import static com.example.fanatic_coder.mynotepad.TestUtils.REVERSE_PORTRAIT;
-import static com.example.fanatic_coder.mynotepad.TestUtils.switchOrientation;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.not;
@@ -47,7 +42,7 @@ import static org.junit.Assert.*;
  * which will be executed on an Android device.
  *
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
- * @see com.example.fanatic_coder.mynotepad.MyNotesActivity The class this Instrumented Test class(MyNotesActivityTest), tests on.
+ * @see MyNotesActivity The class this Instrumented Test class(MyNotesActivityTest), tests on.
  */
 @RunWith(AndroidJUnit4ClassRunner.class)
 public class MyNotesActivityTest {
@@ -122,7 +117,7 @@ public class MyNotesActivityTest {
         // Context of the app under test.
         Context appContext = getInstrumentation().getTargetContext();
 
-        assertEquals("com.example.fanatic_coder.mynotepad", appContext.getPackageName());
+        assertEquals("com.example.john_xenakis.my_notie", appContext.getPackageName());
     }
 
     /**
@@ -289,7 +284,7 @@ public class MyNotesActivityTest {
      */
     @Test
     public void testSwitchingToLandscape() throws InterruptedException {
-        switchOrientation(myNotesActivityRule, LANDSCAPE);
+        TestUtils.switchOrientation(myNotesActivityRule, TestUtils.LANDSCAPE);
         Thread.sleep(1000);
     }
 
@@ -298,7 +293,7 @@ public class MyNotesActivityTest {
      */
     @Test
     public void testSwitchingToPortrait() throws InterruptedException {
-        switchOrientation(myNotesActivityRule, PORTRAIT);
+        TestUtils.switchOrientation(myNotesActivityRule, TestUtils.PORTRAIT);
         Thread.sleep(1000);
     }
 
@@ -307,7 +302,7 @@ public class MyNotesActivityTest {
      */
     @Test
     public void testSwitchingToReverseLandscape() throws InterruptedException {
-        switchOrientation(myNotesActivityRule, REVERSE_LANDSCAPE);
+        TestUtils.switchOrientation(myNotesActivityRule, TestUtils.REVERSE_LANDSCAPE);
         Thread.sleep(1000);
     }
 
@@ -316,7 +311,7 @@ public class MyNotesActivityTest {
      */
     @Test
     public void testSwitchingToReversePortrait() throws InterruptedException {
-        switchOrientation(myNotesActivityRule, REVERSE_PORTRAIT);
+        TestUtils.switchOrientation(myNotesActivityRule, TestUtils.REVERSE_PORTRAIT);
         Thread.sleep(1000);
     }
 

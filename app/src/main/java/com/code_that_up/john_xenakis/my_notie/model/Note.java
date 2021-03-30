@@ -1,4 +1,4 @@
-package com.example.fanatic_coder.mynotepad.model;
+package com.code_that_up.john_xenakis.my_notie.model;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;

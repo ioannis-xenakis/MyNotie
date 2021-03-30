@@ -1,4 +1,4 @@
-package com.example.fanatic_coder.mynotepad;
+package com.code_that_up.john_xenakis.my_notie;
 
 import android.widget.TextView;
 
@@ -16,11 +16,11 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
-import static com.example.fanatic_coder.mynotepad.TestUtils.LANDSCAPE;
-import static com.example.fanatic_coder.mynotepad.TestUtils.PORTRAIT;
-import static com.example.fanatic_coder.mynotepad.TestUtils.REVERSE_LANDSCAPE;
-import static com.example.fanatic_coder.mynotepad.TestUtils.REVERSE_PORTRAIT;
-import static com.example.fanatic_coder.mynotepad.TestUtils.switchOrientation;
+import static com.code_that_up.john_xenakis.my_notie.TestUtils.LANDSCAPE;
+import static com.code_that_up.john_xenakis.my_notie.TestUtils.PORTRAIT;
+import static com.code_that_up.john_xenakis.my_notie.TestUtils.REVERSE_LANDSCAPE;
+import static com.code_that_up.john_xenakis.my_notie.TestUtils.REVERSE_PORTRAIT;
+import static com.code_that_up.john_xenakis.my_notie.TestUtils.switchOrientation;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.Assert.assertNotNull;
@@ -35,7 +35,7 @@ import org.junit.runner.RunWith;
  * @author John/Ioannis Xenakis
  * @version 1.0
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
- * @see com.example.fanatic_coder.mynotepad.EditNoteActivity The class this Instrumented Test class(EditNoteActivityTest), tests on.
+ * @see EditNoteActivity The class this Instrumented Test class(EditNoteActivityTest), tests on.
  */
 @RunWith(AndroidJUnit4ClassRunner.class)
 public class EditNoteActivityTest {

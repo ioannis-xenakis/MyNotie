@@ -1,4 +1,4 @@
-package com.example.fanatic_coder.mynotepad;
+package com.code_that_up.john_xenakis.my_notie;
 
 import android.content.pm.ActivityInfo;
 import android.view.View;
@@ -16,7 +16,7 @@ import static androidx.test.espresso.matcher.RootMatchers.isPlatformPopup;
  * <h2>TestUtils</h2> is a class, which contains tools/utilities, for instrumentation tests.
  * @author John/Ioannis Xenakis
  * @version 1.0
- * @see com.example.fanatic_coder.mynotepad.MyNotesActivityTest The MyNotesActivity tests, uses TestUtils class.
+ * @see MyNotesActivityTest The MyNotesActivity tests, uses TestUtils class.
  */
 public class TestUtils {
 

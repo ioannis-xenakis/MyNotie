@@ -1,12 +1,12 @@
-package com.example.fanatic_coder.mynotepad;
+package com.code_that_up.john_xenakis.my_notie;
 
-import com.example.fanatic_coder.mynotepad.adapters.NotesAdapter;
-import com.example.fanatic_coder.mynotepad.callbacks.MoreMenuButtonListener;
-import com.example.fanatic_coder.mynotepad.callbacks.NoteEventListener;
-import com.example.fanatic_coder.mynotepad.db.NotesDAO;
-import com.example.fanatic_coder.mynotepad.db.NotesDB;
-import com.example.fanatic_coder.mynotepad.model.Note;
-import com.example.fanatic_coder.mynotepad.utils.SpacesItemGrid;
+import com.code_that_up.john_xenakis.my_notie.db.NotesDAO;
+import com.code_that_up.john_xenakis.my_notie.db.NotesDB;
+import com.code_that_up.john_xenakis.my_notie.adapters.NotesAdapter;
+import com.code_that_up.john_xenakis.my_notie.callbacks.MoreMenuButtonListener;
+import com.code_that_up.john_xenakis.my_notie.callbacks.NoteEventListener;
+import com.code_that_up.john_xenakis.my_notie.model.Note;
+import com.code_that_up.john_xenakis.my_notie.utils.SpacesItemGrid;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.button.MaterialButton;
@@ -42,8 +42,6 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.example.fanatic_coder.mynotepad.EditNoteActivity.NOTE_EXTRA_KEY;
 
 /**
  * <h2>MyNotesActivity</h2> is the starting home page when <b>My Notie</b> starts
@@ -429,7 +427,7 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
      */
     private void openNote(Note note) {
         Intent edit = new Intent(this, EditNoteActivity.class);
-        edit.putExtra(NOTE_EXTRA_KEY, note.getId());
+        edit.putExtra(EditNoteActivity.NOTE_EXTRA_KEY, note.getId());
         startActivity(edit);
     }
 

@@ -1,15 +1,16 @@
-package com.example.fanatic_coder.mynotepad.callbacks;
+package com.code_that_up.john_xenakis.my_notie.callbacks;
 
 import android.view.View;
 
-import com.example.fanatic_coder.mynotepad.model.Note;
+import com.code_that_up.john_xenakis.my_notie.MyNotesActivity;
+import com.code_that_up.john_xenakis.my_notie.model.Note;
 
 /**
  * <h2>MoreMenuButtonListener</h2> is a listener for listening clicks on <i>More Menu Button</i> (three vertical dots button),
  * that is on each note, from <i>MyNotesActivity</i>.
  * @author John/Ioannis Xenakis
  * @version 1.0
- * @see com.example.fanatic_coder.mynotepad.MyNotesActivity the activity/page which calls this java interface(MoreMenuButtonListener.java) <br>
+ * @see MyNotesActivity the activity/page which calls this java interface(MoreMenuButtonListener.java) <br>
  * @see <a href="https://github.com/ioannis-xenakis/MyNotie">https://github.com/ioannis-xenakis/MyNotie</a> This project, is uploaded at Github. Visit it if you want!
  */
 public interface MoreMenuButtonListener {

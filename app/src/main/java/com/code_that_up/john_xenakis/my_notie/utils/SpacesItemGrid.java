@@ -1,4 +1,4 @@
-package com.example.fanatic_coder.mynotepad.utils;
+package com.code_that_up.john_xenakis.my_notie.utils;
 
 import android.graphics.Rect;
 import android.view.View;

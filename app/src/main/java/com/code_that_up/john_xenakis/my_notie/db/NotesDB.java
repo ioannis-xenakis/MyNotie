@@ -1,20 +1,20 @@
 
-package com.example.fanatic_coder.mynotepad.db;
+package com.code_that_up.john_xenakis.my_notie.db;
 
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import android.content.Context;
 
-import com.example.fanatic_coder.mynotepad.model.Note;
+import com.code_that_up.john_xenakis.my_notie.model.Note;
 
 /**
  * <h2>NotesDB</h2> is the database creator for notes and the unifier for the note model/entity and notes dao.
  * @author John/Ioannis Xenakis
  * @version 1.0
  * @see androidx.room.RoomDatabase This app, uses Room database
- * @see com.example.fanatic_coder.mynotepad.db.NotesDAO This class uses NotesDAO.class
- * @see com.example.fanatic_coder.mynotepad.model.Note This class uses Note.class for entity
+ * @see NotesDAO This class uses NotesDAO.class
+ * @see Note This class uses Note.class for entity
  */
 @Database(entities = Note.class, version = 1)
 public abstract class NotesDB extends RoomDatabase {

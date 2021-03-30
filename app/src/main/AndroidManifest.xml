@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.fanatic_coder.mynotepad">
+    package="com.code_that_up.john_xenakis.my_notie">
 
     <application
         android:allowBackup="true"
@@ -13,13 +13,13 @@
 
         <!-- The EditNoteActivity is responsible for editing new/existing note. -->
         <activity
-            android:name=".EditNoteActivity"
+            android:name="com.code_that_up.john_xenakis.my_notie.EditNoteActivity"
             android:windowSoftInputMode="stateHidden|adjustPan">
         </activity>
 
         <!-- The MainNotesActivity with the Main Note List layout (activity_my_notes.xml) -->
         <activity
-            android:name=".MyNotesActivity"
+            android:name="com.code_that_up.john_xenakis.my_notie.MyNotesActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateHidden|adjustPan">
@@ -38,7 +38,7 @@
                     android:pathPrefix="/mynotepad/main_notes_activity"
                     android:scheme="http" />
 
-                <!-- Accepts URIs that begin with:   example://mynotepad/main_notes_activity -->
+                <!-- Accepts URIs that begin with:   example://my_notie/main_notes_activity -->
                 <data
                     android:host="mynotepad"
                     android:pathPrefix="/main_notes_activity"
