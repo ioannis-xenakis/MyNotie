@@ -204,9 +204,8 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public void setAllCheckedNotes(boolean isChecked) {
         for (Note note : this.notes) {
             note.setChecked(isChecked);
+            notifyItemChanged(notes.indexOf(note));
         }
-
-        notifyDataSetChanged();
     }
 
     /**
@@ -259,7 +258,9 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             notes.clear();
             //noinspection unchecked
             notes.addAll((ArrayList<Note>) filterResults.values);
-            notifyDataSetChanged();
+            for (Note note : notesFull) {
+                notifyItemChanged(notesFull.indexOf(note));
+            }
         }
     };
 
