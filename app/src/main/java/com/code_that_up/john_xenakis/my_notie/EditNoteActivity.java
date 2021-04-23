@@ -1,5 +1,7 @@
 package com.code_that_up.john_xenakis.my_notie;
 
+import static com.code_that_up.john_xenakis.my_notie.utils.OtherUtils.closeKeyboard;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -88,6 +90,7 @@ public class EditNoteActivity extends AppCompatActivity {
     @Override
     public void finish() {
         saveNote();
+        closeKeyboard(this);
         super.finish();
     }
 
