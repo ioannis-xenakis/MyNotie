@@ -108,13 +108,8 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             noteHolder.moreMenu.setOnClickListener(view ->
                     moreMenuButtonListener.onMoreMenuButtonClick(note, view, noteHolder.getBindingAdapterPosition()));
 
-            //If note title is empty, hide note title from the user, so it wont take any space, on screen.
-            if (noteHolder.noteTitle.getText().toString().equals(""))
-                noteHolder.noteTitle.setVisibility(View.GONE);
-
-            //If note body text is empty, hide note body text from the user, so it wont take any space, on screen.
-            if (noteHolder.noteBodyText.getText().toString().equals(""))
-                noteHolder.noteBodyText.setVisibility(View.GONE);
+            hideNoteTitleIfEmpty(noteHolder);
+            hideNoteBodyTextIfEmpty(noteHolder);
 
         }
     }
@@ -263,5 +258,27 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             }
         }
     };
+
+    /**
+     * hideNoteTitleIfEmpty, hides Note Title from the screen if it is empty
+     * and takes less android device resources.
+     * @param noteHolder The holder for all the views inside each note.
+     */
+    private void hideNoteTitleIfEmpty(NoteHolder noteHolder) {
+        noteHolder.noteTitle.setVisibility(View.VISIBLE);
+        if (noteHolder.noteTitle.getText().toString().equals(""))
+            noteHolder.noteTitle.setVisibility(View.GONE);
+    }
+
+    /**
+     * hideNoteBodyTextIfEmpty, hides Note Body Text from the screen if it is empty
+     * and takes less android device resources.
+     * @param noteHolder The holder for all the views inside each note.
+     */
+    private void hideNoteBodyTextIfEmpty(NoteHolder noteHolder) {
+        noteHolder.noteBodyText.setVisibility(View.VISIBLE);
+        if (noteHolder.noteBodyText.getText().toString().equals(""))
+            noteHolder.noteBodyText.setVisibility(View.GONE);
+    }
 
 }
