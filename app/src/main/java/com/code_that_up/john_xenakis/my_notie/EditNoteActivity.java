@@ -79,10 +79,21 @@ public class EditNoteActivity extends AppCompatActivity {
         }
         else {
             if (isItNewNote) {
-                notesDAO.insertNote(note);
-            }
-            else {
-                notesDAO.updateNote(note);
+                try {
+                    notesDAO.insertNote(note);
+                    Toast.makeText(getApplicationContext(), "New note saved!", Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "Saving new note failed!", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                try {
+                    notesDAO.updateNote(note);
+                    Toast.makeText(getApplicationContext(), "Note saved!", Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "Saving note failed!", Toast.LENGTH_SHORT).show();
+                }
             }
         }
     }
