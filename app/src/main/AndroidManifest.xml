@@ -28,7 +28,9 @@
 
                 <!-- The LAUNCHER category is when the app is launched, the first activity that is launched first is this. -->
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
 
+            <intent-filter>
                 <!-- The BROWSABLE category is for being accesible from a web browser. Without this, clicking links at a web browser, wont direct the user to the app -->
                 <category android:name="android.intent.category.BROWSABLE" />
 
@@ -46,5 +48,4 @@
             </intent-filter>
         </activity>
     </application>
-
 </manifest>
