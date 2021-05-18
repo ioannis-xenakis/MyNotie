@@ -254,6 +254,7 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             //noinspection unchecked
             notes.addAll((ArrayList<Note>) filterResults.values);
             for (Note note : notesFull) {
+                notifyItemRemoved(notesFull.indexOf(note));
                 notifyItemChanged(notesFull.indexOf(note));
             }
         }
