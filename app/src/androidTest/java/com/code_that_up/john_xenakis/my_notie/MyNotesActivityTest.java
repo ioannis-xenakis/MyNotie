@@ -110,14 +110,14 @@ public class MyNotesActivityTest {
     public ActivityScenarioRule<MyNotesActivity> myNotesActivityRule = new ActivityScenarioRule<>(MyNotesActivity.class);
 
     /**
-     * useAppContext, checks/tests, if <i>My Notie</i> gets run/loaded.
+     * useAppContext, checks/tests, if <i>My Notie</i> have the proper package name.
      */
     @Test
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = getInstrumentation().getTargetContext();
 
-        assertEquals("com.example.john_xenakis.my_notie", appContext.getPackageName());
+        assertEquals("com.code_that_up.john_xenakis.my_notie", appContext.getPackageName());
     }
 
     /**
