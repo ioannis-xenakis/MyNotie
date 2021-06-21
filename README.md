@@ -1,5 +1,17 @@
-# My Notie
+# ![logo_mynotie](https://user-images.githubusercontent.com/37518738/122807098-d21d4c80-d2d3-11eb-9d75-0c86004fca23.png)  My Notie
+
 An android notepad for taking notes, write what you want and save them to see them later.
+
+### Screenshots
+<div style="display:flex;">
+<img src="screenshots/1.png" width="19%" />
+<img src="screenshots/2.png" width="19%" />
+<img src="screenshots/3.png" width="19%" />
+</div>
+
+### Latest Release
+Version 1.0.0 Alpha is out! [Try it here!](https://github.com/ioannis-xenakis/MyNotie/releases/download/v1.0.0-alpha/mynotie-v1.0.0-alpha.apk)
+
 ### Under Development
 My Notie is not ready yet. It is **Under Development**.
 
