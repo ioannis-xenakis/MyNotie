@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    My Notie is a note taking app, write notes and save them to see them and remember later.
+    Copyright (C) 2021  Ioannis Xenakis
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+    Anything you want to contact me for, contact me with an e-mail, at: Xenakis.i.Contact@gmail.com
+    I'll be happy to help you, or discuss anything with you! -->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!-- Menu buttons that is displayed
+    on top app bar select notes(Toolbar). -->
+
+    <!-- Select all notes button for selecting all notes
+    in notes list(RecyclerView called notes_list). -->
+    <item
+        android:id="@+id/select_all_notes"
+        android:orderInCategory="100"
+        android:title="@string/select_all_notes_button"
+        android:icon="@drawable/select_all_icon"
+        android:onClick="onSelectAllNotesButtonClick"
+        android:contentDescription="@string/content_description_select_all_notes"
+        app:showAsAction="always" />
+
+    <!-- Delete selected notes button for deleting
+    the already selected notes
+    from notes list(RecyclerView called notes_list). -->
+    <item
+        android:id="@+id/delete_selected_notes"
+        android:orderInCategory="200"
+        android:title="@string/delete_selected_notes_button"
+        android:icon="@drawable/delete_icon"
+        android:onClick="onDeleteSelectedNotesButtonClick"
+        android:contentDescription="@string/content_description_delete_selected_notes"
+        app:showAsAction="ifRoom" />
+
+</menu>

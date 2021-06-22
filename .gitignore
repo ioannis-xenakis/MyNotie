@@ -1,0 +1,22 @@
+*.iml
+.gradle
+/local.properties
+/.idea
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+
+#Built application files
+*.apk
+*.ap_
+
+.gradle/
+build/
+local.properties
+*.log
+
+# Android Studio specific files
+*.iml
+*.ipr
+*.iws
