@@ -40,7 +40,8 @@
         </menu>
     </item>
 
-    <item android:title="@string/add_or_manage_folders"
+    <item android:id="@+id/go_to_add_or_manage_folders"
+        android:title="@string/add_or_manage_folders"
         android:icon="@drawable/new_folder_icon" />
 
 </menu>

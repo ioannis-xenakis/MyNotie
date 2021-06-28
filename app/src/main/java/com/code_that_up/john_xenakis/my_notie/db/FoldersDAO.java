@@ -3,12 +3,10 @@ package com.code_that_up.john_xenakis.my_notie.db;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
-import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import com.code_that_up.john_xenakis.my_notie.MyNotesActivity;
-import com.code_that_up.john_xenakis.my_notie.model.Note;
+import com.code_that_up.john_xenakis.my_notie.model.Folder;
 
 import java.util.List;
 /*
@@ -32,49 +30,40 @@ import java.util.List;
     I'll be happy to help you, or discuss anything with you! */
 
 /**
- * <h2>NotesDAO</h2> is the Data Object Access for notes,
- * which is responsible for manipulating data and insert, delete and update notes, from database.
+ * <h2>FoldersDAO</h2> is the Data Object Access for folders,
+ * which is responsible for manipulating data and insert, delete and update folders, from database.
  * @author John/Ioannis Xenakis
  * @version 1.0
- * @see MyNotesActivity the activity/page which calls this java interface(NotesDAO.class) <br>
  */
 @Dao
-public interface NotesDAO {
+public interface FoldersDAO {
 
     /**
-     * insertNote, inserts/adds new note to database.
-     * @param note the note.
+     * insertFolder, inserts/adds a new folder to the database.
+     * @param folder The new folder.
      */
-    @Insert(onConflict = OnConflictStrategy.REPLACE) //If the note exists, replace it.
-    void insertNote(Note note);
+    @Insert
+    void insertFolder(Folder folder);
 
     /**
-     * deleteNote, deletes a note from database.
-     * @param note the note.
+     * deleteFolder, deletes a folder from database.
+     * @param folder The folder, to be deleted.
      */
     @Delete
-    void deleteNote(Note note);
+    void deleteFolder(Folder folder);
 
     /**
-     * updateNote, updates an existing note from database.
-     * @param note the note.
+     * updateFolder, updates an existing folder, from database.
+     * @param folder The folder, to be updated.
      */
     @Update
-    void updateNote(Note note);
+    void updateFolder(Folder folder);
 
     /**
-     * Gets all notes from database.
-     * @return All existing notes.
+     * Gets all folders, from database.
+     * @return All existing folders.
      */
-    @Query("SELECT * FROM notes")
-    List<Note> getNotes();
-
-    /**
-     * Gets a specific note, by specifying its id.
-     * @param noteId the note id.
-     * @return the note.
-     */
-    @Query("SELECT * FROM notes WHERE noteId = :noteId")
-    Note getNoteById(int noteId);
+    @Query("SELECT * FROM folders")
+    List<Folder> getAllFolders();
 
 }

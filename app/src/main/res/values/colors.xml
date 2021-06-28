@@ -26,5 +26,7 @@
     <color name="colorBlack">#090909</color>
     <color name="colorSemiTranspBlack">#75000000</color>
     <color name="colorWhite">#FFFFFF</color>
+    <color name="colorBlueGrey">#D8E0E6</color>
+    <color name="colorGrey">#E3E3E3</color>
 
 </resources>

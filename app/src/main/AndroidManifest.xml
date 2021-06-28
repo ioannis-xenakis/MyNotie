@@ -31,19 +31,25 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <!-- The AddOrManageFoldersActivity is responsible for managing folders(Creating/deleting folders). -->
+        <activity
+            android:name=".AddOrManageFoldersActivity"
+            android:exported="true"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+
         <!-- The EditNoteActivity is responsible for editing new/existing note. -->
         <activity
-            android:name="com.code_that_up.john_xenakis.my_notie.EditNoteActivity"
+            android:name=".EditNoteActivity"
             android:windowSoftInputMode="stateHidden|adjustPan">
         </activity>
 
         <!-- The MainNotesActivity with the Main Note List layout (activity_my_notes.xml) -->
         <activity
-            android:name="com.code_that_up.john_xenakis.my_notie.MyNotesActivity"
+            android:name=".MyNotesActivity"
+            android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="stateHidden|adjustPan"
-            android:exported="true">
+            android:windowSoftInputMode="stateHidden|adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -52,4 +58,5 @@
             </intent-filter>
         </activity>
     </application>
+
 </manifest>

@@ -233,6 +233,16 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
             drawerLayout.closeDrawer(GravityCompat.START);
         });
 
+        navigationView.setNavigationItemSelectedListener(menuItem -> {
+            int id = menuItem.getItemId();
+            if (id == R.id.go_to_add_or_manage_folders) {
+                Intent manageFoldersActivityIntent = new Intent(getApplicationContext(), AddOrManageFoldersActivity.class);
+                startActivity(manageFoldersActivityIntent);
+                drawerLayout.closeDrawer(GravityCompat.START);
+            }
+            return true;
+        });
+
     }
 
     /**

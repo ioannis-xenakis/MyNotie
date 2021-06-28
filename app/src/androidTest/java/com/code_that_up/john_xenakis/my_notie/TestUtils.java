@@ -2,15 +2,21 @@ package com.code_that_up.john_xenakis.my_notie;
 
 import android.content.pm.ActivityInfo;
 import android.view.View;
+import android.widget.EditText;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.espresso.Root;
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
+import androidx.test.espresso.matcher.BoundedMatcher;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
+import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 
 import static androidx.test.espresso.matcher.RootMatchers.isPlatformPopup;
+import static kotlin.jvm.internal.Intrinsics.checkNotNull;
 /*
     My Notie is a note taking app, write notes and save them to see them and remember later.
     Copyright (C) 2021  Ioannis Xenakis
@@ -86,6 +92,79 @@ public class TestUtils {
             public void perform(UiController uiController, View view) {
                 View v = view.findViewById(id);
                 v.performClick();
+            }
+        };
+    }
+
+    /**
+     * typeEdittextWithId, types on an Edittext, inside a parent(for ex. folder), with specifying the Edittext's id,
+     * to know which Edittext to type in.
+     * @param id The Edittext's id number for specifying the Edittext.
+     * @param typedText The text that is typed in Edittext.
+     * @return The typing action on Edittext.
+     */
+    public static ViewAction typeEdittextWithId(final int id, final String typedText) {
+        return new ViewAction() {
+            @Override
+            public Matcher<View> getConstraints() {
+                return null;
+            }
+
+            /**
+             * getDescription, gets the description of what this ViewAction does.
+             * @return The description text.
+             */
+            @Override
+            public String getDescription() {
+                return "Type on Edittext";
+            }
+
+            /**
+             * perform, handles the main typing mechanism/part when typing. It is the heart of <i>performing</i> the actual typing.
+             * @param uiController The controller, which controls operations about ui action types(clicks, scrolls, swipes etc.).
+             * @param view the parent of the edittext(for ex. a folder).
+             */
+            @Override
+            public void perform(UiController uiController, View view) {
+                EditText editText = view.findViewById(id);
+                editText.setText(typedText);
+            }
+        };
+    }
+
+    /**
+     * atPosition, specifies the position, the item will be on a RecyclerView
+     * and the item Matcher that will be given, in order to locate which item to be used.
+     * @param position The position the item will be on RecyclerView.
+     * @param itemMatcher The matcher that will be given in order for the item to be found.
+     * @return The matcher that found the item.
+     */
+    public static Matcher<View> atPosition(final int position, @NonNull final Matcher<View> itemMatcher) {
+        checkNotNull(itemMatcher);
+        return new BoundedMatcher<View, RecyclerView>(RecyclerView.class) {
+            /**
+             * describeTo, gives a description about the item.
+             * @param description The description of the item.
+             */
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("has item at position: " + position);
+                itemMatcher.describeTo(description);
+            }
+
+            /**
+             * matchesSafely, has the main mechanism to match with an particular item on a RecyclerView.
+             * @param view The item on RecyclerView.
+             * @return The result of a found item on a RecyclerView.
+             */
+            @Override
+            protected boolean matchesSafely(RecyclerView view) {
+                RecyclerView.ViewHolder viewHolder = view.findViewHolderForAdapterPosition(position);
+                if (viewHolder == null) {
+                    //has no item on such position.
+                    return false;
+                }
+                return itemMatcher.matches(viewHolder.itemView);
             }
         };
     }

@@ -47,4 +47,28 @@ public class OtherUtils {
         }
     }
 
+    /**
+     * closeKeyboard, closes the keyboard, if open.
+     * @param context The context of the activity, the keyboard is on.
+     * @param view The view(for ex. an Edittext or a Button).
+     */
+    public static void closeKeyboard(Context context, View view) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    /**
+     * openKeyboard, opens/shows the keyboard, if closed.
+     * @param activity The activity, the keyboard is on.
+     */
+    public static void openKeyboard(Activity activity) {
+        View view = activity.getCurrentFocus();
+        if(view != null) {
+            InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            if(imm != null) {
+                imm.showSoftInput(view, 0);
+            }
+        }
+    }
+
 }

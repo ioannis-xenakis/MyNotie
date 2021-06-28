@@ -36,8 +36,15 @@ public class Note {
     /**
      * The primary key and the id number, for identifying a unique note, in <i>notes</i> entity/table.
      */
+    @ColumnInfo(name = "noteId")
     @PrimaryKey(autoGenerate = true)
     private int id;
+
+    /**
+     * The folder id/the folder, associated with the note.
+     */
+    @ColumnInfo(name = "folderId")
+    private int folderId;
 
     /**
      * The note title, written by the user.
@@ -131,6 +138,22 @@ public class Note {
      */
     public void setId(int id) {
         this.id = id;
+    }
+
+    /**
+     * getFolderId, gets the id of a folder.
+     * @return The folder id number.
+     */
+    public int getFolderId() {
+        return folderId;
+    }
+
+    /**
+     * setFolderId, sets the id of a folder.
+     * @param folderId The folder id number.
+     */
+    public void setFolderId(int folderId) {
+        this.folderId = folderId;
     }
 
     /**
