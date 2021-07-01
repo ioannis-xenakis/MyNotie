@@ -31,5 +31,6 @@
     <dimen name="editnote_horizontal_edges_space">17dp</dimen>
     <dimen name="note_body_text_bot_space">21dp</dimen>
     <dimen name="note_edittexts_between_space">13dp</dimen>
+    <dimen name="view_space_add_or_manage_folders">17dp</dimen>
 
 </resources>

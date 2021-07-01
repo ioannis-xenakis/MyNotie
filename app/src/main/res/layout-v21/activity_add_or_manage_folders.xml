@@ -54,7 +54,8 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!-- Layout for adding/creating new folders. -->
+    <!-- Layout for adding/creating new folders.
+    Elevation(shadow), is supported from android api 21 devices and higher.-->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/add_new_folder_layout"
         android:layout_width="match_parent"
@@ -65,7 +66,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginTop="@dimen/view_space_add_or_manage_folders"
-        android:background="@color/colorWhite">
+        android:background="@color/colorWhite"
+        android:elevation="4dp">
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
