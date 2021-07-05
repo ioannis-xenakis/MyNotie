@@ -69,6 +69,21 @@
         android:background="@color/colorWhite"
         android:elevation="4dp">
 
+        <!-- The button for adding new folder. -->
+        <ImageButton
+            android:id="@+id/add_new_folder_button"
+            style="?attr/borderlessButtonStyle"
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="@dimen/left_space_add_or_manage_folders"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/add_icon"
+            android:contentDescription="@string/content_description_manage_folders_add" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

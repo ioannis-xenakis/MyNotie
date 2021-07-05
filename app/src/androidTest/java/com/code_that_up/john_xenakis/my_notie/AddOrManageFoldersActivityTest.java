@@ -58,4 +58,13 @@ public class AddOrManageFoldersActivityTest {
         assertNotNull(withId(R.id.top_app_bar_add_or_manage_folders));
         onView(withId(R.id.top_app_bar_add_or_manage_folders)).check(matches(isDisplayed()));
     }
+
+    /**
+     * testAddNewFolderButtonExists, tests that Add New Folder button exists and is displayed on screen.
+     */
+    @Test
+    public void testAddNewFolderButtonExists() {
+        assertNotNull(withId(R.id.add_new_folder_button));
+        onView(withId(R.id.add_new_folder_button)).check(matches(isDisplayed()));
+    }
 }

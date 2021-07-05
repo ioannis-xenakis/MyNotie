@@ -61,5 +61,6 @@
     <string name="tooltip_add_new_note">Add new note.</string>
     <string name="page_title_add_or_manage_folders">Manage folders</string>
     <string name="content_description_manage_folders_navigation">Go back.</string>
+    <string name="content_description_manage_folders_add">Add new folder.</string>
 
 </resources>
