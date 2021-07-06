@@ -84,6 +84,36 @@
             android:src="@drawable/add_icon"
             android:contentDescription="@string/content_description_manage_folders_add" />
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/add_new_folder_text_input_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/vertical_space_add_new_folder_textinputlayout"
+            android:layout_marginBottom="@dimen/vertical_space_add_new_folder_textinputlayout"
+            android:layout_marginStart="@dimen/horizontal_space_add_new_folder_textinputlayout"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.Edittext.SmallComponent"
+            app:boxStrokeColor="@color/colorPrimary"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="2dp"
+            android:hint="@string/add_new_folder_edittext_hint"
+            app:endIconMode="clear_text"
+            app:endIconContentDescription="@string/content_description_add_new_folder_clear_button"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/add_new_folder_button"
+            app:layout_constraintStart_toEndOf="@id/add_new_folder_button"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:hintAnimationEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/add_new_folder_text_input_edittext"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/roboto_regular" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

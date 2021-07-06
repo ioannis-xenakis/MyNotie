@@ -1,9 +1,13 @@
 package com.code_that_up.john_xenakis.my_notie;
 
 import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.junit.Assert.*;
 
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
@@ -66,5 +70,35 @@ public class AddOrManageFoldersActivityTest {
     public void testAddNewFolderButtonExists() {
         assertNotNull(withId(R.id.add_new_folder_button));
         onView(withId(R.id.add_new_folder_button)).check(matches(isDisplayed()));
+    }
+
+    /**
+     * testAddNewFolderEdittext, tests that Add New Folder edittext exists and is displayed on screen.
+     */
+    @Test
+    public void testAddNewFolderEdittextExists() {
+        assertNotNull(withId(R.id.add_new_folder_text_input_edittext));
+        onView(withId(R.id.add_new_folder_text_input_edittext)).check(matches(isDisplayed()));
+    }
+
+    /**
+     * testAddNewFolderEdittextWrites, tests by writing on Edittext.
+     */
+    @Test
+    public void testAddNewFolderEdittextWrites() {
+        onView(withId(R.id.add_new_folder_text_input_edittext)).perform(typeText("My folder 1"));
+        onView(withId(R.id.add_new_folder_text_input_edittext)).check(matches(withText("My folder 1")));
+    }
+
+    /**
+     * testClearAddNewFolderEdittext, tests by clearing text on Edittext.
+     */
+    @Test
+    public void testClearAddNewFolderEdittext() {
+        onView(withId(R.id.add_new_folder_text_input_edittext)).check(matches(withText("")));
+        onView(withId(R.id.add_new_folder_text_input_edittext)).perform(typeText("My folder 1"));
+        onView(withId(R.id.add_new_folder_text_input_edittext)).check(matches(withText("My folder 1")));
+        onView(withContentDescription("Clear add new folder edittext text.")).perform(click());
+        onView(withId(R.id.add_new_folder_text_input_edittext)).check(matches(withText("")));
     }
 }

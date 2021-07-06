@@ -50,6 +50,14 @@
         <item name="cornerSizeTopRight">40dp</item>
     </style>
 
+    <style name="ShapeAppearance.Edittext.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name='cornerFamily'>rounded</item>
+        <item name="cornerSizeBottomLeft">9dp</item>
+        <item name="cornerSizeBottomRight">9dp</item>
+        <item name="cornerSizeTopLeft">9dp</item>
+        <item name="cornerSizeTopRight">40dp</item>
+    </style>
+
     <style name="TextAppearance.MyNotie.Subtitle1" parent="TextAppearance.MaterialComponents.Subtitle1">
         <item name="fontFamily">@font/roboto_regular</item>
         <item name="android:fontFamily">@font/roboto_regular</item>
