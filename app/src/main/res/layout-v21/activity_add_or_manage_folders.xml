@@ -115,6 +115,23 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <!-- The button for rejecting and not creating the new folder. -->
+        <ImageButton
+            android:id="@+id/reject_new_folder_button"
+            style="?attr/borderlessButtonStyle"
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/add_new_folder_text_input_layout"
+            android:layout_marginStart="@dimen/horizontal_space_add_or_manage_folders"
+            android:visibility="gone"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/reject_icon"
+            android:contentDescription="@string/content_description_manage_folders_reject" />
+
         <ImageButton
             android:id="@+id/accept_new_folder_button"
             style="?attr/borderlessButtonStyle"
