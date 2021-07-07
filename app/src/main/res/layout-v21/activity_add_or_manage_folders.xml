@@ -84,6 +84,7 @@
             android:src="@drawable/add_icon"
             android:contentDescription="@string/content_description_manage_folders_add" />
 
+        <!-- The input field(parent layout of TextInputEdittext), the user will use to name the new folder. -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/add_new_folder_text_input_layout"
             android:layout_width="0dp"
@@ -107,6 +108,7 @@
             app:layout_constraintEnd_toStartOf="@id/accept_new_folder_button"
             app:hintAnimationEnabled="true">
 
+            <!-- The actual Edittext(Material Edittext called TextInputEditText), which user types to name new folder. -->
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/add_new_folder_text_input_edittext"
                 android:layout_width="match_parent"
@@ -132,6 +134,7 @@
             android:src="@drawable/reject_icon"
             android:contentDescription="@string/content_description_manage_folders_reject" />
 
+        <!-- The button for accepting creating the new folder. -->
         <ImageButton
             android:id="@+id/accept_new_folder_button"
             style="?attr/borderlessButtonStyle"
