@@ -79,7 +79,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginStart="@dimen/left_space_add_or_manage_folders"
+            android:layout_marginStart="@dimen/horizontal_space_add_or_manage_folders"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/add_icon"
             android:contentDescription="@string/content_description_manage_folders_add" />
@@ -91,6 +91,7 @@
             android:layout_marginTop="@dimen/vertical_space_add_new_folder_textinputlayout"
             android:layout_marginBottom="@dimen/vertical_space_add_new_folder_textinputlayout"
             android:layout_marginStart="@dimen/horizontal_space_add_new_folder_textinputlayout"
+            android:layout_marginEnd="@dimen/horizontal_space_add_new_folder_textinputlayout"
             app:shapeAppearanceOverlay="@style/ShapeAppearance.Edittext.SmallComponent"
             app:boxStrokeColor="@color/colorPrimary"
             app:boxStrokeWidth="0dp"
@@ -102,8 +103,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@id/add_new_folder_button"
             app:layout_constraintStart_toEndOf="@id/add_new_folder_button"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/accept_new_folder_button"
+            app:layout_constraintEnd_toStartOf="@id/accept_new_folder_button"
             app:hintAnimationEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -113,6 +114,23 @@
                 android:fontFamily="@font/roboto_regular" />
 
         </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageButton
+            android:id="@+id/accept_new_folder_button"
+            style="?attr/borderlessButtonStyle"
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/add_new_folder_text_input_layout"
+            app:layout_constraintStart_toEndOf="@id/add_new_folder_text_input_layout"
+            android:layout_marginEnd="@dimen/horizontal_space_add_or_manage_folders"
+            android:visibility="gone"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/accept_icon"
+            android:contentDescription="@string/content_description_manage_folders_accept"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
