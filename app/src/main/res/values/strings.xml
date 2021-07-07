@@ -64,5 +64,6 @@
     <string name="content_description_manage_folders_add">Add new folder.</string>
     <string name="add_new_folder_edittext_hint">Add new folder</string>
     <string name="content_description_add_new_folder_clear_button">Clear add new folder edittext text.</string>
+    <string name="content_description_manage_folders_reject">Reject adding new folder.</string>
 
 </resources>
