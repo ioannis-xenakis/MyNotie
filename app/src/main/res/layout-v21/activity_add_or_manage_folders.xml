@@ -102,10 +102,10 @@
             app:endIconContentDescription="@string/content_description_add_new_folder_clear_button"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/add_new_folder_button"
-            app:layout_constraintStart_toEndOf="@id/add_new_folder_button"
-            app:layout_constraintRight_toLeftOf="@id/accept_new_folder_button"
-            app:layout_constraintEnd_toStartOf="@id/accept_new_folder_button"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:hintAnimationEnabled="true">
 
             <!-- The actual Edittext(Material Edittext called TextInputEditText), which user types to name new folder. -->
