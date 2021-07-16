@@ -86,20 +86,20 @@
 
         <!-- The input field(parent layout of TextInputEdittext), the user will use to name the new folder. -->
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/add_new_folder_text_input_layout"
+            android:id="@+id/name_new_folder_text_input_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/vertical_space_add_new_folder_textinputlayout"
-            android:layout_marginBottom="@dimen/vertical_space_add_new_folder_textinputlayout"
-            android:layout_marginStart="@dimen/horizontal_space_add_new_folder_textinputlayout"
-            android:layout_marginEnd="@dimen/horizontal_space_add_new_folder_textinputlayout"
+            android:layout_marginTop="@dimen/vertical_space_name_new_folder_textinputlayout"
+            android:layout_marginBottom="@dimen/vertical_space_name_new_folder_textinputlayout"
+            android:layout_marginStart="@dimen/horizontal_space_name_new_folder_textinputlayout"
+            android:layout_marginEnd="@dimen/horizontal_space_name_new_folder_textinputlayout"
             app:shapeAppearanceOverlay="@style/ShapeAppearance.Edittext.SmallComponent"
             app:boxStrokeColor="@color/colorPrimary"
             app:boxStrokeWidth="0dp"
             app:boxStrokeWidthFocused="2dp"
-            android:hint="@string/add_new_folder_edittext_hint"
+            android:hint="@string/name_new_folder_edittext_hint"
             app:endIconMode="clear_text"
-            app:endIconContentDescription="@string/content_description_add_new_folder_clear_button"
+            app:endIconContentDescription="@string/content_description_name_new_folder_clear_button"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -110,7 +110,7 @@
 
             <!-- The actual Edittext(Material Edittext called TextInputEditText), which user types to name new folder. -->
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/add_new_folder_text_input_edittext"
+                android:id="@+id/name_new_folder_text_input_edittext"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fontFamily="@font/roboto_regular" />
@@ -127,7 +127,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/add_new_folder_text_input_layout"
+            app:layout_constraintRight_toLeftOf="@id/name_new_folder_text_input_layout"
             android:layout_marginStart="@dimen/horizontal_space_add_or_manage_folders"
             android:visibility="gone"
             android:background="?attr/selectableItemBackgroundBorderless"
@@ -144,8 +144,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/add_new_folder_text_input_layout"
-            app:layout_constraintStart_toEndOf="@id/add_new_folder_text_input_layout"
+            app:layout_constraintLeft_toRightOf="@id/name_new_folder_text_input_layout"
+            app:layout_constraintStart_toEndOf="@id/name_new_folder_text_input_layout"
             android:layout_marginEnd="@dimen/horizontal_space_add_or_manage_folders"
             android:visibility="gone"
             android:background="?attr/selectableItemBackgroundBorderless"

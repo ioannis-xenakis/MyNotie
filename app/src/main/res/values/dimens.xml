@@ -34,7 +34,7 @@
     <dimen name="view_space_add_or_manage_folders">17dp</dimen>
     <dimen name="horizontal_space_add_or_manage_folders">8dp</dimen>
     <dimen name="icon_size">48dp</dimen>
-    <dimen name="horizontal_space_add_new_folder_textinputlayout">60dp</dimen>
-    <dimen name="vertical_space_add_new_folder_textinputlayout">5dp</dimen>
+    <dimen name="horizontal_space_name_new_folder_textinputlayout">60dp</dimen>
+    <dimen name="vertical_space_name_new_folder_textinputlayout">5dp</dimen>
 
 </resources>

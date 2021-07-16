@@ -77,30 +77,30 @@ public class AddOrManageFoldersActivityTest {
      * testAddNewFolderEdittext, tests that Add New Folder edittext exists and is displayed on screen.
      */
     @Test
-    public void testAddNewFolderEdittextExists() {
-        assertNotNull(withId(R.id.add_new_folder_text_input_edittext));
-        onView(withId(R.id.add_new_folder_text_input_edittext)).check(matches(isDisplayed()));
+    public void testNameNewFolderEdittextExists() {
+        assertNotNull(withId(R.id.name_new_folder_text_input_edittext));
+        onView(withId(R.id.name_new_folder_text_input_edittext)).check(matches(isDisplayed()));
     }
 
     /**
      * testAddNewFolderEdittextWrites, tests by writing on Edittext.
      */
     @Test
-    public void testAddNewFolderEdittextWrites() {
-        onView(withId(R.id.add_new_folder_text_input_edittext)).perform(typeText("My folder 1"));
-        onView(withId(R.id.add_new_folder_text_input_edittext)).check(matches(withText("My folder 1")));
+    public void testNameNewFolderEdittextWrites() {
+        onView(withId(R.id.name_new_folder_text_input_edittext)).perform(typeText("My folder 1"));
+        onView(withId(R.id.name_new_folder_text_input_edittext)).check(matches(withText("My folder 1")));
     }
 
     /**
      * testClearAddNewFolderEdittext, tests by clearing text on Edittext.
      */
     @Test
-    public void testClearAddNewFolderEdittext() {
-        onView(withId(R.id.add_new_folder_text_input_edittext)).check(matches(withText("")));
-        onView(withId(R.id.add_new_folder_text_input_edittext)).perform(typeText("My folder 1"));
-        onView(withId(R.id.add_new_folder_text_input_edittext)).check(matches(withText("My folder 1")));
-        onView(withContentDescription("Clear add new folder edittext text.")).perform(click());
-        onView(withId(R.id.add_new_folder_text_input_edittext)).check(matches(withText("")));
+    public void testClearNameNewFolderEdittext() {
+        onView(withId(R.id.name_new_folder_text_input_edittext)).check(matches(withText("")));
+        onView(withId(R.id.name_new_folder_text_input_edittext)).perform(typeText("My folder 1"));
+        onView(withId(R.id.name_new_folder_text_input_edittext)).check(matches(withText("My folder 1")));
+        onView(withContentDescription("Clear name new folder edittext text.")).perform(click());
+        onView(withId(R.id.name_new_folder_text_input_edittext)).check(matches(withText("")));
     }
 
     /**
@@ -109,13 +109,13 @@ public class AddOrManageFoldersActivityTest {
      */
     @Test
     public void testAddNewFolderButtonsVisibility() {
-        onView(withId(R.id.add_new_folder_text_input_edittext)).check(matches(withText("")));
+        onView(withId(R.id.name_new_folder_text_input_edittext)).check(matches(withText("")));
         onView(withId(R.id.add_new_folder_button)).check(matches(isDisplayed()));
         onView(withId(R.id.accept_new_folder_button)).check(matches(not(isDisplayed())));
         onView(withId(R.id.reject_new_folder_button)).check(matches(not(isDisplayed())));
 
-        onView(withId(R.id.add_new_folder_text_input_edittext)).perform(typeText("My folder 1"));
-        onView(withId(R.id.add_new_folder_text_input_edittext)).check(matches(withText("My folder 1")));
+        onView(withId(R.id.name_new_folder_text_input_edittext)).perform(typeText("My folder 1"));
+        onView(withId(R.id.name_new_folder_text_input_edittext)).check(matches(withText("My folder 1")));
 
         onView(withId(R.id.add_new_folder_button)).check(matches(not(isDisplayed())));
         onView(withId(R.id.accept_new_folder_button)).check(matches(isDisplayed()));
