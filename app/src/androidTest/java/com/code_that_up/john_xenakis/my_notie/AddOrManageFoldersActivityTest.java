@@ -8,6 +8,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.*;
 
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
@@ -100,5 +101,24 @@ public class AddOrManageFoldersActivityTest {
         onView(withId(R.id.add_new_folder_text_input_edittext)).check(matches(withText("My folder 1")));
         onView(withContentDescription("Clear add new folder edittext text.")).perform(click());
         onView(withId(R.id.add_new_folder_text_input_edittext)).check(matches(withText("")));
+    }
+
+    /**
+     * testAddNewFolderButtonsVisibility, tests the "Add new folder" buttons visibility,
+     * when user writes on "Add new folder" text field(MaterialInputEdittext).
+     */
+    @Test
+    public void testAddNewFolderButtonsVisibility() {
+        onView(withId(R.id.add_new_folder_text_input_edittext)).check(matches(withText("")));
+        onView(withId(R.id.add_new_folder_button)).check(matches(isDisplayed()));
+        onView(withId(R.id.accept_new_folder_button)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.reject_new_folder_button)).check(matches(not(isDisplayed())));
+
+        onView(withId(R.id.add_new_folder_text_input_edittext)).perform(typeText("My folder 1"));
+        onView(withId(R.id.add_new_folder_text_input_edittext)).check(matches(withText("My folder 1")));
+
+        onView(withId(R.id.add_new_folder_button)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.accept_new_folder_button)).check(matches(isDisplayed()));
+        onView(withId(R.id.reject_new_folder_button)).check(matches(isDisplayed()));
     }
 }
