@@ -14,6 +14,7 @@ android {
                 arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
             }
         }
+        multiDexEnabled = true
     }
     buildTypes {
         release {
@@ -23,11 +24,22 @@ android {
     }
 }
 
+project.getConfigurations().all { config ->
+    if (config.name.contains("AndroidTest")) {
+        config.resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+            if (details.requested.name == "multidex") {
+                details.useTarget("de.felixschulze.teamcity:teamcity-status-message-helper:1.2")
+            }
+        }
+    }
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.appcompat:appcompat:1.4.0-beta01'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.1'
-    implementation 'com.google.android.material:material:1.5.0-alpha04'
+    implementation "androidx.concurrent:concurrent-futures:1.1.0"
+    implementation 'androidx.appcompat:appcompat:1.4.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.2'
+    implementation 'com.google.android.material:material:1.6.0-alpha01'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test:rules:1.4.1-alpha03'
     androidTestImplementation 'androidx.test.ext:junit:1.1.4-alpha03'
@@ -36,8 +48,8 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-intents:3.5.0-alpha03'
 
     //Room database
-    implementation 'androidx.room:room-runtime:2.4.0-alpha05'
-    annotationProcessor 'androidx.room:room-compiler:2.4.0-alpha05'
-    implementation 'androidx.paging:paging-runtime:3.1.0-alpha04'
-    testImplementation 'androidx.room:room-testing:2.4.0-alpha05'
+    implementation 'androidx.room:room-runtime:2.4.0-beta02'
+    annotationProcessor 'androidx.room:room-compiler:2.4.0-beta02'
+    implementation 'androidx.paging:paging-runtime:3.1.0'
+    testImplementation 'androidx.room:room-testing:2.4.0-beta02'
 }

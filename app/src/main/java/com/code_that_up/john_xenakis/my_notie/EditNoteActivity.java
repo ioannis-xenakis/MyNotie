@@ -4,6 +4,7 @@ import static com.code_that_up.john_xenakis.my_notie.utils.OtherUtils.closeKeybo
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 import com.code_that_up.john_xenakis.my_notie.db.NotesDAO;
 import com.code_that_up.john_xenakis.my_notie.db.NotesDB;
 import com.code_that_up.john_xenakis.my_notie.model.Note;
+import com.code_that_up.john_xenakis.my_notie.utils.NoteUtils;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -71,6 +73,7 @@ public class EditNoteActivity extends AppCompatActivity {
         } else {
             isItNewNote = true;
             note = new Note();
+            NoteUtils.increaseNoteIdByOne(notesDAO, note);
         }
 
         oldNoteTitle = Objects.requireNonNull(noteTitle.getText()).toString();
@@ -138,5 +141,11 @@ public class EditNoteActivity extends AppCompatActivity {
         noteTitle.setText(oldNoteTitle);
         noteBodyText.setText(oldNoteBodyText);
         Toast.makeText(getApplicationContext(), "Changes Reverted!", Toast.LENGTH_SHORT).show();
+    }
+
+    public void onAddToFoldersButtonClick(MenuItem menuItem) {
+        Intent addToFolder = new Intent(this, AddToFoldersActivity.class);
+        addToFolder.putExtra(AddToFoldersActivity.NOTE_EXTRA_KEY, note.getId());
+        startActivity(addToFolder);
     }
 }

@@ -9,15 +9,19 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.code_that_up.john_xenakis.my_notie.adapters.FoldersManageFoldersAdapter;
+import com.code_that_up.john_xenakis.my_notie.adapters.FoldersAddToFoldersAdapter;
 import com.code_that_up.john_xenakis.my_notie.db.FoldersDAO;
+import com.code_that_up.john_xenakis.my_notie.db.NotesDAO;
 import com.code_that_up.john_xenakis.my_notie.db.NotesDB;
+import com.code_that_up.john_xenakis.my_notie.db.NotesFoldersJoinDAO;
 import com.code_that_up.john_xenakis.my_notie.model.Folder;
+import com.code_that_up.john_xenakis.my_notie.model.Note;
 import com.code_that_up.john_xenakis.my_notie.utils.FolderUtils;
 import com.code_that_up.john_xenakis.my_notie.utils.OtherUtils;
 import com.code_that_up.john_xenakis.my_notie.utils.SpacesItemGrid;
@@ -48,71 +52,97 @@ import java.util.Objects;
     I'll be happy to help you, or discuss anything with you! */
 
 /**
- * <h2>AddOrManageFoldersActivity</h2> is the Activity for <i>adding</i> or <i>managing</i> folders.
+ * <h2>AddToFoldersActivity</h2> is the Activity for adding notes to folders.
  * @author John/Ioannis Xenakis
  * @version 1.0
  * @see <a href="https://github.com/ioannis-xenakis/MyNotie">https://github.com/ioannis-xenakis/MyNotie</a> This project, is uploaded at Github. Visit it if you want!
  */
-public class AddOrManageFoldersActivity extends AppCompatActivity {
+public class AddToFoldersActivity extends AppCompatActivity {
 
     /**
-     * The dao needed, for managing folders, in database.
+     * The id number of the note, that <i>identifies</i> the note, to be added to folders.
+     */
+    public static final String NOTE_EXTRA_KEY = "note_id";
+
+    /**
+     * Folders list displays all the existing folders, to the screen.
+     */
+    private RecyclerView foldersListRv;
+
+    /**
+     * The dao needed(Data Access Object), for managing folders, in database.
      */
     private FoldersDAO folderDao;
 
     /**
-     * foldersList displays all the existing folders
-     */
-    private RecyclerView foldersListRV;
-
-    /**
-     * The layoutManager <b>lays out</b> and manages all folders in a grid/order, in <i>folders list</i> for <i>Add Or Manage Folders</i> page.
-     */
-    private LinearLayoutManager layoutManager;
-
-    /**
      * Adapter for folders, which works as an exchange between user interface and data.
-     * It manages folders list and each folder.
+     * It manages folders list(RecyclerView) and each folder.
      */
-    private FoldersManageFoldersAdapter foldersAdapter;
+    private FoldersAddToFoldersAdapter foldersAdapter;
 
+    /**
+     * The note that will be added to folders.
+     */
+    private Note note;
+
+    /**
+     * onCreate gets called/run, when this <i>Activity</i>(<i>AddToFoldersActivity</i>) first <b>loads/starts/gets created</b>.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_or_manage_folders);
-        MaterialToolbar topAppBar = findViewById(R.id.top_app_bar_add_or_manage_folders);
-        TextInputEditText name_new_folder_text = findViewById(R.id.name_new_folder_text_input_edittext);
+        setContentView(R.layout.activity_add_to_folders);
+        MaterialToolbar topAppBar = findViewById(R.id.top_app_bar_add_to_folders);
         final ImageButton add_new_folder_button = findViewById(R.id.add_new_folder_button);
+        TextInputEditText name_new_folder_text = findViewById(R.id.name_new_folder_text_input_edittext);
         final ImageButton reject_new_folder_button = findViewById(R.id.reject_new_folder_button);
         final ImageButton accept_new_folder_button = findViewById(R.id.accept_new_folder_button);
-        foldersListRV = findViewById(R.id.folder_list_add_or_manage_folders);
+        foldersListRv = findViewById(R.id.folder_list_add_to_folders);
         folderDao = NotesDB.getInstance(this).foldersDAO();
         int orientation = getResources().getConfiguration().orientation;
         int smallestScreenWidth = getResources().getConfiguration().smallestScreenWidthDp;
+        NotesDAO notesDAO = NotesDB.getInstance(this).notesDAO();
+
+        //Get the note from "My Notes Activity", to be added to folders.
+        if (getIntent().getExtras() != null) {
+            int id = getIntent().getExtras().getInt(NOTE_EXTRA_KEY, 0);
+            note = notesDAO.getNoteById(id);
+        } else {
+            Log.e("MyNotie", "Note id is not found/is null.");
+        }
 
         //For different screen orientations(Portrait or Landscape). Mobile phones only and smaller device screen sizes.
         if (orientation == Configuration.ORIENTATION_PORTRAIT && smallestScreenWidth < 600) {
-            layoutManager = new LinearLayoutManager(this);
             folderSpacing(1);
+            foldersListRv.setLayoutManager(new LinearLayoutManager(this));
         } else if (orientation == Configuration.ORIENTATION_LANDSCAPE && smallestScreenWidth < 600) {
-            layoutManager = new GridLayoutManager(this, 2);
             folderSpacing(2);
+            foldersListRv.setLayoutManager(new GridLayoutManager(this, 2));
         }
 
         //For different screen orientations(Portrait or Landscape). Mostly for tablets and bigger device screen sizes.
         if (orientation == Configuration.ORIENTATION_PORTRAIT && smallestScreenWidth >= 600) {
-            layoutManager = new GridLayoutManager(this, 2);
             folderSpacing(2);
+            foldersListRv.setLayoutManager(new GridLayoutManager(this, 2));
         } else if (orientation == Configuration.ORIENTATION_LANDSCAPE && smallestScreenWidth >= 600) {
-            layoutManager = new GridLayoutManager(this, 3);
             folderSpacing(3);
+            foldersListRv.setLayoutManager(new GridLayoutManager(this, 3));
         }
-
-        foldersListRV.setLayoutManager(layoutManager);
 
         loadFolders();
 
-        //Functionality for the Done key in keyboard, when keyboard is opened by user, for typing on "Name new folder text" Edittext.
+        //Functionality for "Add new folder button" when clicked on it.
+        add_new_folder_button.setOnClickListener(view -> {
+            name_new_folder_text.requestFocus();
+            OtherUtils.openKeyboard(this);
+        });
+
+        accept_new_folder_button.setOnClickListener(view -> saveNewFolder(name_new_folder_text));
+
+        /*
+        Functionality for the Done key, in keyboard, when keyboard is opened by user,
+        for typing on <i>Name new folder text</i> Edittext.
+         */
         name_new_folder_text.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 saveNewFolder(name_new_folder_text);
@@ -121,10 +151,16 @@ public class AddOrManageFoldersActivity extends AppCompatActivity {
             return false;
         });
 
+        //Functionality for "Reject new folder button" when clicked on it.
+        reject_new_folder_button.setOnClickListener(view -> {
+            name_new_folder_text.setText("");
+            name_new_folder_text.clearFocus();
+        });
+
         /*
         Functionality for showing "Accept new folder" and "Reject new folder" buttons,
-        when user types in "Add new folder" text field
-        and hides these buttons, if "Add new folder" text field doesn't have text in it.
+        when user types in "Name new folder text" Edittext
+        and hides these buttons if "Name new folder text" Edittext doesn't have text in it.
          */
         name_new_folder_text.addTextChangedListener(new TextWatcher() {
             @Override
@@ -140,63 +176,28 @@ public class AddOrManageFoldersActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable editable) {
                 if (editable.toString().trim().equals("")) {
-                    hideAcceptRejectNewFolderButtons(add_new_folder_button,
-                            reject_new_folder_button,
-                            accept_new_folder_button);
+                    hideAcceptRejectNewFolderButtons(add_new_folder_button, reject_new_folder_button, accept_new_folder_button);
                 } else {
-                    showAcceptRejectNewFolderButtons(add_new_folder_button,
-                            reject_new_folder_button,
-                            accept_new_folder_button);
+                    showAcceptRejectNewFolderButtons(add_new_folder_button, reject_new_folder_button, accept_new_folder_button);
                 }
             }
         });
 
-        //Functionality for "Add new folder button" when clicked on it.
-        add_new_folder_button.setOnClickListener(view -> {
-            name_new_folder_text.requestFocus();
-            OtherUtils.openKeyboard(this);
-        });
-
-        //Functionality for "Accept new folder button" when clicked on it.
-        accept_new_folder_button.setOnClickListener(view -> saveNewFolder(name_new_folder_text));
-
-        //Functionality for "Reject new folder button" when clicked on it.
-        reject_new_folder_button.setOnClickListener(view -> {
-            name_new_folder_text.setText("");
-            name_new_folder_text.clearFocus();
-        });
-
-        //Clicking functionality for Navigation button, on "Top app bar".
+        /*
+        Clicking functionality for Navigation button, on "Top app bar".
+        If user clicks on Navigation button, he goes back to the previous Activity,
+        the user were before this Activity.
+        */
         topAppBar.setNavigationOnClickListener(view -> finish());
     }
 
     /**
-     * onResume, runs/is called, when resuming the app(My Notie),
-     * while android device is on sleep, or opening/switching to the app.
-     */
-    @Override
-    protected void onResume() {
-        super.onResume();
-        loadFolders();
-    }
-
-    /**
-     * Loads/displays/refreshes all existing folders,
-     * in <i>folders list</i>.
-     */
-    private void loadFolders() {
-        List<Folder> folderList = folderDao.getAllFolders();
-        ArrayList<Folder> folders = new ArrayList<>(folderList);
-        this.foldersAdapter = new FoldersManageFoldersAdapter(folders, this, folderDao);
-        this.foldersListRV.setAdapter(foldersAdapter);
-    }
-
-    /**
-     * saveNewFolder, saves and adds the new folder to database and folder list.
-     * @param name_new_folder_text The Material Edittext "Name new folder text", for user to type his new folder name.
+     * saveNewFolder, saves and adds the new folder, to the database and folders list.
+     * @param name_new_folder_text The Material Edittext "Name new folder text" for user to type his new folder name.
      */
     private void saveNewFolder(TextInputEditText name_new_folder_text) {
         try {
+            OtherUtils.closeKeyboard(this);
             Folder folder = new Folder();
             FolderUtils.increaseFolderIdByOne(folderDao, folder);
             folder.setFolderName(Objects.requireNonNull(name_new_folder_text.getText()).toString());
@@ -217,13 +218,42 @@ public class AddOrManageFoldersActivity extends AppCompatActivity {
      * @param spanCount The number of columns.
      */
     private void folderSpacing(int spanCount) {
-        int folderSpacingInPixels = getResources().getDimensionPixelSize(R.dimen.folder_horizontal_space_manage_folders);
-        this.foldersListRV.addItemDecoration(new SpacesItemGrid(folderSpacingInPixels, spanCount));
+        int folderSpacingInPixels = getResources().getDimensionPixelSize(R.dimen.folder_horizontal_space_add_to_folders);
+        this.foldersListRv.addItemDecoration(new SpacesItemGrid(folderSpacingInPixels, spanCount));
+    }
+
+    /**
+     * Loads/displays/refreshes all folders,
+     * in <i>folders list</i>.
+     */
+    private void loadFolders () {
+        NotesFoldersJoinDAO notesFoldersJoinDao = NotesDB.getInstance(this).notesFoldersJoinDAO();
+        List<Folder> folderList = folderDao.getAllFolders();
+        List<Folder> checkedFolderList = notesFoldersJoinDao.getFoldersFromNote(note.getId());
+        ArrayList<Folder> folders = new ArrayList<>(folderList);
+        checkAlreadyCheckedFolders(checkedFolderList, folderList);
+        this.foldersAdapter = new FoldersAddToFoldersAdapter(folders, checkedFolderList, note, this, folderDao, notesFoldersJoinDao);
+        this.foldersListRv.setAdapter(foldersAdapter);
+    }
+
+    /**
+     * Checks the already checked state of checkbox in a folder and loads all checked folders.
+     * @param checkedFolderList The folder list that contains the checked folders.
+     * @param folderList The list of all folders that exist.
+     */
+    private void checkAlreadyCheckedFolders(List<Folder> checkedFolderList, List<Folder> folderList) {
+        for (Folder checkedFolder : checkedFolderList) {
+            for (Folder folder : folderList) {
+                if (checkedFolder.getId() == folder.getId()) {
+                    folder.setChecked(true);
+                }
+            }
+        }
     }
 
     /**
      * hideAcceptRejectNewFolderButtons, hides the "Accept new folder" and "Reject new folder" buttons,
-     * and shows the "Add new folder" button.
+     * and hides the "Add new folder button".
      * @param add_new_folder_button The "Add new folder" button.
      * @param reject_new_folder_button The "Reject new folder" button.
      * @param accept_new_folder_button The "Accept new folder" button.
@@ -237,7 +267,7 @@ public class AddOrManageFoldersActivity extends AppCompatActivity {
     }
 
     /**
-     * showAcceptRejectNewFolderButtons, shows the "Accept new folder" and "Reject new folder" buttons,
+     * showAcceptRejectNewFolderButtons, shows the "Accept new folder" and "Reject new folder" buttons
      * and hides the "Add new folder" button.
      * @param add_new_folder_button The "Add new folder" button.
      * @param reject_new_folder_button The "Reject new folder" button.
@@ -250,5 +280,4 @@ public class AddOrManageFoldersActivity extends AppCompatActivity {
         reject_new_folder_button.setVisibility(View.VISIBLE);
         accept_new_folder_button.setVisibility(View.VISIBLE);
     }
-
 }

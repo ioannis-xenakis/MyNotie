@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "b8dfe02434d0f2743a6a5018bb21ba77",
+    "identityHash": "22504cb73cf3d2fa3f1c0fbce2ced191",
     "entities": [
       {
         "tableName": "notes",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`noteId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `folderId` INTEGER NOT NULL, `noteTitle` TEXT, `text` TEXT, `date` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`noteId` INTEGER NOT NULL, `folderId` INTEGER NOT NULL, `noteTitle` TEXT, `text` TEXT, `date` INTEGER NOT NULL, PRIMARY KEY(`noteId`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -43,14 +43,14 @@
           "columnNames": [
             "noteId"
           ],
-          "autoGenerate": true
+          "autoGenerate": false
         },
         "indices": [],
         "foreignKeys": []
       },
       {
         "tableName": "folders",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`folderId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `folderName` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`folderId` INTEGER NOT NULL, `folderName` TEXT, `checked` INTEGER NOT NULL, PRIMARY KEY(`folderId`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -63,20 +63,26 @@
             "columnName": "folderName",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "checked",
+            "columnName": "checked",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
           "columnNames": [
             "folderId"
           ],
-          "autoGenerate": true
+          "autoGenerate": false
         },
         "indices": [],
         "foreignKeys": []
       },
       {
         "tableName": "note_folder_join",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`noteId` INTEGER NOT NULL, `folderId` INTEGER NOT NULL, PRIMARY KEY(`noteId`, `folderId`), FOREIGN KEY(`noteId`) REFERENCES `notes`(`noteId`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`folderId`) REFERENCES `folders`(`folderId`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`noteId` INTEGER NOT NULL, `folderId` INTEGER NOT NULL, PRIMARY KEY(`noteId`, `folderId`), FOREIGN KEY(`noteId`) REFERENCES `notes`(`noteId`) ON UPDATE SET NULL ON DELETE CASCADE , FOREIGN KEY(`folderId`) REFERENCES `folders`(`folderId`) ON UPDATE SET NULL ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "noteId",
@@ -100,19 +106,29 @@
         },
         "indices": [
           {
+            "name": "index_note_folder_join_noteId",
+            "unique": false,
+            "columnNames": [
+              "noteId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_note_folder_join_noteId` ON `${TABLE_NAME}` (`noteId`)"
+          },
+          {
             "name": "index_note_folder_join_folderId",
             "unique": false,
             "columnNames": [
               "folderId"
             ],
+            "orders": [],
             "createSql": "CREATE INDEX IF NOT EXISTS `index_note_folder_join_folderId` ON `${TABLE_NAME}` (`folderId`)"
           }
         ],
         "foreignKeys": [
           {
             "table": "notes",
-            "onDelete": "NO ACTION",
-            "onUpdate": "NO ACTION",
+            "onDelete": "CASCADE",
+            "onUpdate": "SET NULL",
             "columns": [
               "noteId"
             ],
@@ -122,8 +138,8 @@
           },
           {
             "table": "folders",
-            "onDelete": "NO ACTION",
-            "onUpdate": "NO ACTION",
+            "onDelete": "CASCADE",
+            "onUpdate": "SET NULL",
             "columns": [
               "folderId"
             ],
@@ -137,7 +153,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b8dfe02434d0f2743a6a5018bb21ba77')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '22504cb73cf3d2fa3f1c0fbce2ced191')"
     ]
   }
 }

@@ -1,9 +1,15 @@
 package com.code_that_up.john_xenakis.my_notie.db;
 
 import androidx.room.Dao;
+import androidx.room.Delete;
+import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.RoomWarnings;
 
+import com.code_that_up.john_xenakis.my_notie.model.Folder;
 import com.code_that_up.john_xenakis.my_notie.model.Note;
+import com.code_that_up.john_xenakis.my_notie.model.NoteFolderJoin;
 
 import java.util.List;
 /*
@@ -36,10 +42,33 @@ import java.util.List;
 @Dao
 public interface NotesFoldersJoinDAO {
     /**
+     * Inserts/adds a new/replaces an existent noteFolderJoin(a link between a note and a folder).
+     * @param noteFolderJoin The connection link between a note and a folder. The link that is added.
+     */
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertNoteFolderJoin(NoteFolderJoin noteFolderJoin);
+
+    /**
+     * Deletes an existent noteFolderJoin(a link between a note and a folder).
+     * @param noteFolderJoin The connection link between a note and a folder. The link that is deleted.
+     */
+    @Delete
+    void deleteNoteNoteFolderJoin(NoteFolderJoin noteFolderJoin);
+
+    /**
      * Gets notes <i>only</i> from a specific folder.
      * @param folderId The unique folder id number for choosing the folder.
      * @return The notes list from the folder.
      */
     @Query("SELECT * FROM notes INNER JOIN note_folder_join ON notes.noteId=note_folder_join.noteId WHERE note_folder_join.folderId=:folderId")
     List<Note> getNotesFromFolder(final int folderId);
+
+    /**
+     * Gets only the folders that is associated/connected with 1 note, that is specified by the note Id number.
+     * @param noteId The unique id of the note, that is associated with the folders.
+     * @return A list of folders, that is associated with the note.
+     */
+    @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
+    @Query("SELECT * FROM folders INNER JOIN note_folder_join ON folders.folderId=note_folder_join.folderId WHERE note_folder_join.noteId=:noteId")
+    List<Folder> getFoldersFromNote(final int noteId);
 }

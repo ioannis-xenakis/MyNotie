@@ -35,7 +35,7 @@ public class Folder {
      * The primary key and the id number, for identifying an unique folder, in <i>folders</i> entity/table.
      */
     @ColumnInfo(name = "folderId")
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     private int id;
 
     /**
@@ -43,6 +43,11 @@ public class Folder {
      */
     @ColumnInfo(name = "folderName")
     private String folderName;
+
+    /**
+     * The checked state of the checkbox in the folder.
+     */
+    private boolean checked;
 
     /**
      * The constructor for the folder, to be constructed/used in another class.
@@ -80,5 +85,21 @@ public class Folder {
      */
     public void setId(int id) {
         this.id = id;
+    }
+
+    /**
+     * isChecked, gets the checked state of the checkbox in the folder.
+     * @return The checked state of the checkbox.
+     */
+    public boolean isChecked() {
+        return checked;
+    }
+
+    /**
+     * setChecked, sets the checked state of the checkbox in the folder.
+     * @param checked The checked state of the checkbox.
+     */
+    public void setChecked(boolean checked) {
+        this.checked = checked;
     }
 }

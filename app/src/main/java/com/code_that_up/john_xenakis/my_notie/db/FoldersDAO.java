@@ -66,4 +66,18 @@ public interface FoldersDAO {
     @Query("SELECT * FROM folders")
     List<Folder> getAllFolders();
 
+    /**
+     * Gets the last/higher folder Id number.
+     * @return The last/higher folder Id number.
+     */
+    @Query("SELECT MAX(folderId) FROM folders")
+    int getMaxFolderId();
+
+    /**
+     * Gets all the folder Id's in a list.
+     * @return The folder Id's list.
+     */
+    @Query("SELECT folderId FROM folders")
+    List<Integer> getListOfFolderIds();
+
 }

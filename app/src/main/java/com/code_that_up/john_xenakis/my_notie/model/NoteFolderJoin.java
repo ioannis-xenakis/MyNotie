@@ -1,5 +1,8 @@
 package com.code_that_up.john_xenakis.my_notie.model;
 
+import static androidx.room.ForeignKey.CASCADE;
+import static androidx.room.ForeignKey.SET_NULL;
+
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
@@ -35,18 +38,33 @@ import androidx.room.ForeignKey;
         foreignKeys = {
                 @ForeignKey(entity = Note.class,
                         parentColumns = "noteId",
-                        childColumns = "noteId"),
+                        childColumns = "noteId",
+                        onDelete = CASCADE,
+                        onUpdate = SET_NULL),
                 @ForeignKey(entity = Folder.class,
                         parentColumns ="folderId",
-                        childColumns = "folderId")
+                        childColumns = "folderId",
+                        onDelete = CASCADE,
+                        onUpdate = SET_NULL)
                 })
 public class NoteFolderJoin {
-    @ColumnInfo(name = "noteId")
+    /**
+     * The unique id number that specifies each note.
+     */
+    @ColumnInfo(name = "noteId", index = true)
     public final int noteId;
 
+    /**
+     * The unique id number that specifies each folder.
+     */
     @ColumnInfo(name = "folderId", index = true)
     public final int folderId;
 
+    /**
+     * The constructor that constructs and is used for initializing this class.
+     * @param noteId The unique id number that specifies each note.
+     * @param folderId The unique id number that specifies each folder.
+     */
     public NoteFolderJoin(int noteId, int folderId) {
         this.noteId = noteId;
         this.folderId = folderId;

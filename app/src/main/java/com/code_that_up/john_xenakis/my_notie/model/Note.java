@@ -37,7 +37,7 @@ public class Note {
      * The primary key and the id number, for identifying a unique note, in <i>notes</i> entity/table.
      */
     @ColumnInfo(name = "noteId")
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     private int id;
 
     /**

@@ -520,6 +520,9 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
         notePopupMenu.setOnMenuItemClickListener(menuItem -> {
             int itemId = menuItem.getItemId();
             if (itemId == R.id.add_to_folder_button) {
+                Intent addToFolders = new Intent(this, AddToFoldersActivity.class);
+                addToFolders.putExtra(AddToFoldersActivity.NOTE_EXTRA_KEY, note.getId());
+                startActivity(addToFolders);
                 Log.d(TAG, "Add to folder button, clicked.");
                 return true;
             } else if (itemId == R.id.delete_only_this_note_button) {

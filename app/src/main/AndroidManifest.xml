@@ -31,6 +31,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <!-- The AddToFoldersActivity is responsible for adding a note to the existing listed folders. -->
+        <activity
+            android:name=".AddToFoldersActivity"
+            android:exported="true"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+
         <!-- The AddOrManageFoldersActivity is responsible for managing folders(Creating/deleting folders). -->
         <activity
             android:name=".AddOrManageFoldersActivity"
