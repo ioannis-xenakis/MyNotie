@@ -24,16 +24,6 @@ android {
     }
 }
 
-project.getConfigurations().all { config ->
-    if (config.name.contains("AndroidTest")) {
-        config.resolutionStrategy.eachDependency { DependencyResolveDetails details ->
-            if (details.requested.name == "multidex") {
-                details.useTarget("de.felixschulze.teamcity:teamcity-status-message-helper:1.2")
-            }
-        }
-    }
-}
-
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "androidx.concurrent:concurrent-futures:1.1.0"
