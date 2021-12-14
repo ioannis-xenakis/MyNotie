@@ -25,6 +25,7 @@ import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
 import com.code_that_up.john_xenakis.my_notie.db.FoldersDAO;
 import com.code_that_up.john_xenakis.my_notie.db.NotesDB;
 import com.code_that_up.john_xenakis.my_notie.model.Folder;
+import com.code_that_up.john_xenakis.my_notie.utils.FolderUtils;
 
 import org.junit.After;
 import org.junit.Before;
@@ -91,6 +92,7 @@ public class AddOrManageFoldersActivityTest {
      */
     private void addFolder(String folderNameText) {
         Folder testFolder = new Folder();
+        FolderUtils.increaseFolderIdByOne(foldersDao, testFolder);
         testFolder.setFolderName(folderNameText);
         foldersDao.insertFolder(testFolder);
     }

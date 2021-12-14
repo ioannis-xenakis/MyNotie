@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -54,6 +55,7 @@ public class EditNoteActivity extends AppCompatActivity {
     private String oldNoteBodyText;
     private boolean isItNewNote;
     public static final String NOTE_EXTRA_KEY = "note_id";
+    public static final String TAG = "MyNotie";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,26 +98,31 @@ public class EditNoteActivity extends AppCompatActivity {
         note.setNoteBodyText(noteBodyTextString);
         note.setNoteDate(date);
 
-        if(oldNoteTitle.equals(noteTitleString) && oldNoteBodyText.equals(noteBodyTextString)) {
+        if (noteTitleString.equals("") && noteBodyTextString.equals("")) {
+            notesDAO.deleteNote(note);
+        } else if (oldNoteTitle.equals(noteTitleString) && oldNoteBodyText.equals(noteBodyTextString)) {
             finishNoSave();
+        } else {
+            saveNewNoteOrUpdateNote();
         }
-        else {
-            if (isItNewNote) {
-                try {
-                    notesDAO.insertNote(note);
-                    Toast.makeText(getApplicationContext(), "New note saved!", Toast.LENGTH_SHORT).show();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Toast.makeText(getApplicationContext(), "Saving new note failed!", Toast.LENGTH_SHORT).show();
-                }
-            } else {
-                try {
-                    notesDAO.updateNote(note);
-                    Toast.makeText(getApplicationContext(), "Note saved!", Toast.LENGTH_SHORT).show();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Toast.makeText(getApplicationContext(), "Saving note failed!", Toast.LENGTH_SHORT).show();
-                }
+    }
+
+    private void saveNewNoteOrUpdateNote() {
+        if (isItNewNote) {
+            try {
+                notesDAO.insertNote(note);
+                Toast.makeText(getApplicationContext(), "New note saved!", Toast.LENGTH_SHORT).show();
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(getApplicationContext(), "Saving new note failed!", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            try {
+                notesDAO.updateNote(note);
+                Toast.makeText(getApplicationContext(), "Note saved!", Toast.LENGTH_SHORT).show();
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(getApplicationContext(), "Saving note failed!", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -144,8 +151,16 @@ public class EditNoteActivity extends AppCompatActivity {
     }
 
     public void onAddToFoldersButtonClick(MenuItem menuItem) {
-        Intent addToFolder = new Intent(this, AddToFoldersActivity.class);
-        addToFolder.putExtra(AddToFoldersActivity.NOTE_EXTRA_KEY, note.getId());
-        startActivity(addToFolder);
+        if (note != null) {
+            saveNewNoteOrUpdateNote();
+            isItNewNote = false;
+            Intent addToFolder = new Intent(this, AddToFoldersActivity.class);
+            Log.d(TAG, "AddToFoldersButtonClick, note id: " + note.getId());
+            addToFolder.putExtra(AddToFoldersActivity.NOTE_EXTRA_KEY, note.getId());
+            startActivity(addToFolder);
+        } else {
+            Log.d(TAG, "Note is null(doesn't exist).");
+            Toast.makeText(getApplicationContext(), "Adding to folders failed!", Toast.LENGTH_SHORT).show();
+        }
     }
 }

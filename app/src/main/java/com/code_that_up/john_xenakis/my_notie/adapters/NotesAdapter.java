@@ -2,6 +2,7 @@ package com.code_that_up.john_xenakis.my_notie.adapters;
 
 import android.content.Context;
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import com.code_that_up.john_xenakis.my_notie.callbacks.MoreMenuButtonListener;
 import com.code_that_up.john_xenakis.my_notie.callbacks.NoteEventListener;
 import com.code_that_up.john_xenakis.my_notie.model.Note;
+import com.code_that_up.john_xenakis.my_notie.utils.NoteDiffCallback;
 import com.code_that_up.john_xenakis.my_notie.utils.NoteUtils;
 import com.code_that_up.john_xenakis.my_notie.R;
 import com.google.android.material.button.MaterialButton;
@@ -268,16 +270,21 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
          * @param filterResults the final filtered notes.
          */
         @Override
+        @SuppressWarnings("unchecked")
         protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-            notes.clear();
             //noinspection unchecked
-            notes.addAll((ArrayList<Note>) filterResults.values);
-            for (Note note : notesFull) {
-                notifyItemRemoved(notesFull.indexOf(note));
-                notifyItemChanged(notesFull.indexOf(note));
-            }
+            updateNoteList((ArrayList<Note>) filterResults.values);
         }
     };
+
+    private void updateNoteList(List<Note> noteList) {
+        final NoteDiffCallback diffCallback = new NoteDiffCallback(this.notes, noteList);
+        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
+
+        this.notes.clear();
+        this.notes.addAll(noteList);
+        diffResult.dispatchUpdatesTo(this);
+    }
 
     /**
      * hideNoteTitleIfEmpty, hides Note Title from the screen if it is empty

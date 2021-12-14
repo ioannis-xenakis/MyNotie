@@ -12,6 +12,7 @@ import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
 import com.code_that_up.john_xenakis.my_notie.db.NotesDAO;
 import com.code_that_up.john_xenakis.my_notie.db.NotesDB;
 import com.code_that_up.john_xenakis.my_notie.model.Note;
+import com.code_that_up.john_xenakis.my_notie.utils.NoteUtils;
 
 import org.hamcrest.Matchers;
 import org.junit.After;
@@ -95,6 +96,7 @@ public class MyNotesActivityTest {
     private void addNote(String noteTitle, String noteBodyText) {
         for (int i=0; i<2; i++) {
             Note testNote = new Note();
+            NoteUtils.increaseNoteIdByOne(dao, testNote);
             long date = new Date().getTime();
             testNote.setNoteTitle(noteTitle);
             testNote.setNoteBodyText(noteBodyText);
