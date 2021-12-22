@@ -5,6 +5,8 @@ import com.code_that_up.john_xenakis.my_notie.db.NotesDB;
 import com.code_that_up.john_xenakis.my_notie.adapters.NotesAdapter;
 import com.code_that_up.john_xenakis.my_notie.callbacks.MoreMenuButtonListener;
 import com.code_that_up.john_xenakis.my_notie.callbacks.NoteEventListener;
+import com.code_that_up.john_xenakis.my_notie.db.NotesFoldersJoinDAO;
+import com.code_that_up.john_xenakis.my_notie.model.Folder;
 import com.code_that_up.john_xenakis.my_notie.model.Note;
 import com.code_that_up.john_xenakis.my_notie.utils.SpacesItemGrid;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -34,6 +36,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -110,6 +113,21 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
      * The group/layout for the side navigation drawer.
      */
     private DrawerLayout drawerLayout;
+
+    /**
+     * The side navigation drawer.
+     */
+    private NavigationView navigationView;
+
+    /**
+     * The id number of the <i>all notes button(Menu Item)</i>, in navigation view(side navigation drawer).
+     */
+    private static final int ALL_NOTES_ID = -1;
+
+    /**
+     * The id number of the <i>go to add or manage folders button(Menu Item)</i>, in navigation view(side navigation drawer).
+     */
+    private static final int GO_TO_ADD_OR_MANAGE_FOLDERS_ID = -2;
 
     /**
      * The app name.
@@ -212,7 +230,7 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
         recyclerView.addOnScrollListener(onScrollListener);
 
         drawerLayout = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
         //Opens/Shows and Closes/Hides Side Navigation Drawer.
         final ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(
                 this,
@@ -233,16 +251,48 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
             drawerLayout.closeDrawer(GravityCompat.START);
         });
 
+        //The menu items(buttons) click mechanism for the side navigation drawer(in navigation view).
         navigationView.setNavigationItemSelectedListener(menuItem -> {
             int id = menuItem.getItemId();
-            if (id == R.id.go_to_add_or_manage_folders) {
+            if (id == ALL_NOTES_ID) {
+                loadNotes();
+                pageTitleTopBar.setTitle(R.string.page_title);
+            } else if (id == GO_TO_ADD_OR_MANAGE_FOLDERS_ID) {
                 Intent manageFoldersActivityIntent = new Intent(getApplicationContext(), AddOrManageFoldersActivity.class);
                 startActivity(manageFoldersActivityIntent);
-                drawerLayout.closeDrawer(GravityCompat.START);
+            } else {
+                List<Folder> folderList = NotesDB.getInstance(this).foldersDAO().getAllFolders();
+                for (Folder folder : folderList) {
+                    if (id == folder.getId()) {
+                        loadNotesFromFolder(folder);
+                        pageTitleTopBar.setTitle(folder.getFolderName().trim());
+                    }
+                }
             }
+            drawerLayout.closeDrawer(GravityCompat.START);
             return true;
         });
 
+    }
+
+    /**
+     * inflates(creates), the menu items(buttons) and the menu, in navigation view(side navigation drawer).
+     */
+    private void inflateNavigationMenus() {
+        Menu menu = navigationView.getMenu();
+        menu.clear();
+        menu.add(Menu.NONE, ALL_NOTES_ID, Menu.NONE, "All notes")
+                .setIcon(R.drawable.note_icon)
+                .setCheckable(true);
+        List<Folder> folderList = NotesDB.getInstance(this).foldersDAO().getAllFolders();
+        final SubMenu myFoldersSubMenu = menu.addSubMenu("My folders");
+        for (Folder folder : folderList) {
+            myFoldersSubMenu.add(Menu.NONE, folder.getId(), Menu.NONE, folder.getFolderName())
+                    .setIcon(R.drawable.folder_icon)
+                    .setCheckable(true);
+        }
+        menu.add(Menu.NONE, GO_TO_ADD_OR_MANAGE_FOLDERS_ID, Menu.NONE, "Add or manage folders")
+                .setIcon(R.drawable.new_folder_icon);
     }
 
     /**
@@ -435,6 +485,19 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
     }
 
     /**
+     * Loads/displays/refreshes notes, only from a specific folder.
+     * @param folder The folder to display the notes from.
+     */
+    private void loadNotesFromFolder(Folder folder) {
+        NotesFoldersJoinDAO notesFoldersJoinDao = NotesDB.getInstance(this).notesFoldersJoinDAO();
+        List<Note> noteListFromFolder = notesFoldersJoinDao.getNotesFromFolder(folder.getId());
+        ArrayList<Note> notesFromFolder = new ArrayList<>(noteListFromFolder);
+        this.adapter = new NotesAdapter(notesFromFolder, this, this);
+        this.adapter.setListener(this, this);
+        this.recyclerView.setAdapter(adapter);
+    }
+
+    /**
      * showHideBottomAppBar, shows or hides bottom app bar,
      * (enables/disables auto-hide when scrolling on <i>notes list</i>),
      * depending on total number of notes on screen.
@@ -467,6 +530,7 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
     @Override
     protected void onResume() {
         super.onResume();
+        inflateNavigationMenus();
         loadNotes(); //loads/reloads notes from database.
         displaySelectedNotesCount();
     }

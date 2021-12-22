@@ -277,12 +277,16 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     };
 
-    private void updateNoteList(List<Note> noteList) {
-        final NoteDiffCallback diffCallback = new NoteDiffCallback(this.notes, noteList);
+    /**
+     * Updates/refreshes the <i>note list(RecyclerView)</i>.
+     * @param newNoteList The new note list containing the new data, to refresh/update to.
+     */
+    private void updateNoteList(List<Note> newNoteList) {
+        final NoteDiffCallback diffCallback = new NoteDiffCallback(this.notes, newNoteList);
         final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
 
         this.notes.clear();
-        this.notes.addAll(noteList);
+        this.notes.addAll(newNoteList);
         diffResult.dispatchUpdatesTo(this);
     }
 
