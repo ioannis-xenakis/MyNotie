@@ -2,6 +2,7 @@ package com.code_that_up.john_xenakis.my_notie.adapters;
 
 import android.content.Context;
 import androidx.annotation.NonNull;
+import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,12 +14,16 @@ import android.widget.TextView;
 
 import com.code_that_up.john_xenakis.my_notie.callbacks.MoreMenuButtonListener;
 import com.code_that_up.john_xenakis.my_notie.callbacks.NoteEventListener;
+import com.code_that_up.john_xenakis.my_notie.db.NotesDB;
+import com.code_that_up.john_xenakis.my_notie.model.Folder;
 import com.code_that_up.john_xenakis.my_notie.model.Note;
 import com.code_that_up.john_xenakis.my_notie.utils.NoteDiffCallback;
 import com.code_that_up.john_xenakis.my_notie.utils.NoteUtils;
 import com.code_that_up.john_xenakis.my_notie.R;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -132,6 +137,7 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             hideNoteTitleIfEmpty(noteHolder);
             hideNoteBodyTextIfEmpty(noteHolder);
 
+            addFolderChipsAtEachNote(noteHolder, note);
         }
     }
 
@@ -180,6 +186,11 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         MaterialButton moreMenu;
 
         /**
+         * Chip group that displays all folders(chips), in a note.
+         */
+        ChipGroup folderChipGroup;
+
+        /**
          * noteCardView is the note itself, that contains all the content/buttons.
          */
         public MaterialCardView noteCardView;
@@ -195,6 +206,7 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             noteBodyText = itemView.findViewById(R.id.note_body_text);
             noteDate = itemView.findViewById(R.id.note_date);
             moreMenu = itemView.findViewById(R.id.more_menu_button);
+            folderChipGroup = itemView.findViewById(R.id.folder_chip_group);
         }
 
     }
@@ -310,6 +322,24 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         noteHolder.noteBodyText.setVisibility(View.VISIBLE);
         if (noteHolder.noteBodyText.getText().toString().equals(""))
             noteHolder.noteBodyText.setVisibility(View.GONE);
+    }
+
+    /**
+     * Add folder chips that is connected with each note.
+     */
+    private void addFolderChipsAtEachNote(NoteHolder noteHolder, Note note) {
+        List<Folder> foldersFromNoteList = NotesDB.getInstance(context).notesFoldersJoinDAO().getFoldersFromNote(note.getId());
+
+        noteHolder.folderChipGroup.removeAllViews();
+        for (Folder folder : foldersFromNoteList) {
+            noteHolder.folderChipGroup.addView(new Chip(context) {{
+                setId(ViewCompat.generateViewId());
+                setText(folder.getFolderName().trim());
+                setContentDescription("Folder chip");
+                setCheckable(false);
+                setClickable(false);
+            }});
+        }
     }
 
 }

@@ -9,9 +9,14 @@ import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
 
+import com.code_that_up.john_xenakis.my_notie.db.FoldersDAO;
 import com.code_that_up.john_xenakis.my_notie.db.NotesDAO;
 import com.code_that_up.john_xenakis.my_notie.db.NotesDB;
+import com.code_that_up.john_xenakis.my_notie.db.NotesFoldersJoinDAO;
+import com.code_that_up.john_xenakis.my_notie.model.Folder;
 import com.code_that_up.john_xenakis.my_notie.model.Note;
+import com.code_that_up.john_xenakis.my_notie.model.NoteFolderJoin;
+import com.code_that_up.john_xenakis.my_notie.utils.FolderUtils;
 import com.code_that_up.john_xenakis.my_notie.utils.NoteUtils;
 
 import org.hamcrest.Matchers;
@@ -21,6 +26,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import static androidx.test.espresso.action.ViewActions.longClick;
@@ -28,11 +34,14 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
+import static com.code_that_up.john_xenakis.my_notie.TestUtils.atPosition;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.not;
@@ -73,6 +82,17 @@ public class MyNotesActivityTest {
     private NotesDAO dao;
 
     /**
+     * The Dao for folders, responsible for manipulating folders, delete, insert, update folders, in database.
+     */
+    private FoldersDAO foldersDao;
+
+    /**
+     * The Dao for joining/connecting notes with folders, and responsible for manipulating this connection,
+     * delete, insert, update the connection, in database.
+     */
+    private NotesFoldersJoinDAO notesFoldersJoinDao;
+
+    /**
      * The database creator, for notes.
      */
     private NotesDB notesDB;
@@ -81,11 +101,23 @@ public class MyNotesActivityTest {
      * addAllNotes, adds/creates all new <i>test notes</i> needed for running instrumented tests, on <i>MyNotesActivity</i>
      */
     private void addAllNotes() {
-        addNote("This is a test note.", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin et ante quis nibh blandit vehicula non sit amet dui.");
-        addNote("New note!", "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.");
-        addNote("Check this new note!", "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.");
-        addNote("Cool note!", "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
-        addNote("Wrote it all down!", "Nullam imperdiet placerat porttitor. Ut ac urna sed magna gravida eleifend. ");
+        ArrayList<Folder> folderArrayList = new ArrayList<>();
+
+        for (int folderNumber=1; folderNumber<=6; folderNumber++) {
+            folderArrayList.add(addFolder("Test folder " + folderNumber));
+            folderArrayList.add(addFolder("Special folder " + folderNumber));
+        }
+
+        addNote("This is a test note.", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin et ante quis nibh blandit vehicula non sit amet dui.",
+                folderArrayList, 5);
+        addNote("New note!", "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                folderArrayList, 3);
+        addNote("Check this new note!", "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+                folderArrayList, null);
+        addNote("Cool note!", "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                folderArrayList, 2);
+        addNote("Wrote it all down!", "Nullam imperdiet placerat porttitor. Ut ac urna sed magna gravida eleifend. ",
+                folderArrayList, 1);
     }
 
     /**
@@ -93,7 +125,7 @@ public class MyNotesActivityTest {
      * @param noteTitle the note title, written on note.
      * @param noteBodyText the main text/body text, written on note.
      */
-    private void addNote(String noteTitle, String noteBodyText) {
+    private void addNote(String noteTitle, String noteBodyText, ArrayList<Folder> folderArrayList, Integer folderCount) {
         for (int i=0; i<2; i++) {
             Note testNote = new Note();
             NoteUtils.increaseNoteIdByOne(dao, testNote);
@@ -101,8 +133,38 @@ public class MyNotesActivityTest {
             testNote.setNoteTitle(noteTitle);
             testNote.setNoteBodyText(noteBodyText);
             testNote.setNoteDate(date);
+
             dao.insertNote(testNote);
+            connectFolderWithNote(testNote, folderArrayList, folderCount);
         }
+    }
+
+    /**
+     * Connects a folder with a note.
+     * @param testNote The note to be connected with folder.
+     * @param folderArrayList The folder list that contains the folders to be connected with a note.
+     * @param folderCount The counting number of how many folders to be connected with a note.
+     */
+    private void connectFolderWithNote(Note testNote, ArrayList<Folder> folderArrayList, Integer folderCount) {
+        if (folderCount != null && folderCount <= folderArrayList.size()) {
+            for (int a = 0; a < folderCount; a++) {
+                NoteFolderJoin noteFolderJoin = new NoteFolderJoin(testNote.getId(), folderArrayList.get(a).getId());
+                notesFoldersJoinDao.insertNoteFolderJoin(noteFolderJoin);
+            }
+        }
+    }
+
+    /**
+     * Adds a new folder.
+     * @param folderName The name text of the new folder.
+     * @return The new folder.
+     */
+    private Folder addFolder(String folderName) {
+        Folder testFolder = new Folder();
+        FolderUtils.increaseFolderIdByOne(foldersDao, testFolder);
+        testFolder.setFolderName(folderName);
+        foldersDao.insertFolder(testFolder);
+        return testFolder;
     }
 
     /**
@@ -113,6 +175,8 @@ public class MyNotesActivityTest {
         Context context = ApplicationProvider.getApplicationContext();
         notesDB = NotesDB.getNoSaveInstance(context);
         dao = notesDB.notesDAO();
+        foldersDao = notesDB.foldersDAO();
+        notesFoldersJoinDao = notesDB.notesFoldersJoinDAO();
     }
 
     /**
@@ -198,6 +262,23 @@ public class MyNotesActivityTest {
 
         //Checks if "select notes title" at top bar displays "3 notes selected.".
         onView(allOf(Matchers.instanceOf(TextView.class), withParent(withId(R.id.top_app_bar_select_notes)))).check(matches(withText("3 notes selected.")));
+    }
+
+    /**
+     * Checks if chip group for folders in a note, from <i>note list(RecyclerView)</i> exists/is displayed on screen.
+     */
+    @Test
+    public void testFolderChipGroupOnNoteExists() {
+        onView(withId(R.id.notes_list)).check(matches(atPosition(0, hasDescendant(withId(R.id.folder_chip_group)))));
+        assertNotNull(withId(R.id.folder_chip_group));
+    }
+
+    /**
+     * Checks if a folder chip in a note, from <i>note list(RecyclerView)</i> exists/is displayed on screen.
+     */
+    @Test
+    public void testFolderChipOnNoteExists() {
+        onView(withId(R.id.notes_list)).check(matches(atPosition(0, hasDescendant(withContentDescription("Folder chip")))));
     }
 
     /**

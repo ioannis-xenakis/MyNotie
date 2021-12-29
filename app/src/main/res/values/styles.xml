@@ -32,6 +32,34 @@
         <item name="textAppearanceLargePopupMenu">@style/TextAppearance.MyNotie.Subtitle1</item>
         <item name="textAppearanceSmallPopupMenu">@style/TextAppearance.MyNotie.Subtitle1</item>
         <item name="popupMenuBackground">@drawable/popup_menu_background</item>
+        <item name="chipStyle">@style/ChipStyle</item>
+        <item name="chipGroupStyle">@style/ChipGroupStyle</item>
+    </style>
+
+    <style name="ChipStyle" parent="Widget.MaterialComponents.Chip.Action">
+        <item name="android:textAppearance">@style/ChipTextAppearance</item>
+        <item name="shapeAppearance">@style/ChipShapeAppearance</item>
+        <!-- "EnsureMinTouchTargetSize = false", disables/removes the unnecessary space from top and bottom chip.
+        That space is for ensuring the touch space size is not too small for user to tap.
+        Although in this case tap space is not needed, thus I removed that space. -->
+        <item name="ensureMinTouchTargetSize">false</item>
+    </style>
+
+    <style name="ChipGroupStyle" parent="Widget.MaterialComponents.ChipGroup">
+        <item name="chipSpacingHorizontal">3dp</item>
+        <item name="chipSpacingVertical">3dp</item>
+    </style>
+
+    <style name="ChipTextAppearance" parent="TextAppearance.MaterialComponents.Chip">
+        <item name="fontFamily">@font/roboto_light</item>
+    </style>
+
+    <style name="ChipShapeAppearance" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeBottomLeft">4dp</item>
+        <item name="cornerSizeBottomRight">4dp</item>
+        <item name="cornerSizeTopLeft">4dp</item>
+        <item name="cornerSizeTopRight">14dp</item>
     </style>
     
     <style name="ShapeAppearance.Notes.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">
