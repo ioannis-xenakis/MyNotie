@@ -255,7 +255,7 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
         navigationView.setNavigationItemSelectedListener(menuItem -> {
             int id = menuItem.getItemId();
             if (id == ALL_NOTES_ID) {
-                loadNotes();
+                onlyRefreshAndLoadAllNotes();
                 pageTitleTopBar.setTitle(R.string.page_title);
             } else if (id == GO_TO_ADD_OR_MANAGE_FOLDERS_ID) {
                 Intent manageFoldersActivityIntent = new Intent(getApplicationContext(), AddOrManageFoldersActivity.class);
@@ -283,7 +283,8 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
         menu.clear();
         menu.add(Menu.NONE, ALL_NOTES_ID, Menu.NONE, "All notes")
                 .setIcon(R.drawable.note_icon)
-                .setCheckable(true);
+                .setCheckable(true)
+                .setChecked(true);
         List<Folder> folderList = NotesDB.getInstance(this).foldersDAO().getAllFolders();
         final SubMenu myFoldersSubMenu = menu.addSubMenu("My folders");
         for (Folder folder : folderList) {
@@ -485,6 +486,15 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
     }
 
     /**
+     * Only refreshes the notes and not loads the whole adapter. Avoids calling setAdapter.
+     */
+    private void onlyRefreshAndLoadAllNotes() {
+        List<Note> list = dao.getNotes();
+        ArrayList<Note> notes = new ArrayList<>(list);
+        this.adapter.updateNoteList(notes);
+    }
+
+    /**
      * Loads/displays/refreshes notes, only from a specific folder.
      * @param folder The folder to display the notes from.
      */
@@ -492,9 +502,7 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
         NotesFoldersJoinDAO notesFoldersJoinDao = NotesDB.getInstance(this).notesFoldersJoinDAO();
         List<Note> noteListFromFolder = notesFoldersJoinDao.getNotesFromFolder(folder.getId());
         ArrayList<Note> notesFromFolder = new ArrayList<>(noteListFromFolder);
-        this.adapter = new NotesAdapter(notesFromFolder, this, this);
-        this.adapter.setListener(this, this);
-        this.recyclerView.setAdapter(adapter);
+        this.adapter.updateNoteList(notesFromFolder);
     }
 
     /**
@@ -532,6 +540,7 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
         super.onResume();
         inflateNavigationMenus();
         loadNotes(); //loads/reloads notes from database.
+        pageTitleTopBar.setTitle(R.string.page_title);
         displaySelectedNotesCount();
     }
 

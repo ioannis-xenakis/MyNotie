@@ -293,7 +293,7 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
      * Updates/refreshes the <i>note list(RecyclerView)</i>.
      * @param newNoteList The new note list containing the new data, to refresh/update to.
      */
-    private void updateNoteList(List<Note> newNoteList) {
+    public void updateNoteList(List<Note> newNoteList) {
         final NoteDiffCallback diffCallback = new NoteDiffCallback(this.notes, newNoteList);
         final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
 
