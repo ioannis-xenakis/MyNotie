@@ -492,6 +492,7 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
         List<Note> list = dao.getNotes();
         ArrayList<Note> notes = new ArrayList<>(list);
         this.adapter.updateNoteList(notes);
+        this.adapter.setNotes(notes);
     }
 
     /**
@@ -503,6 +504,7 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
         List<Note> noteListFromFolder = notesFoldersJoinDao.getNotesFromFolder(folder.getId());
         ArrayList<Note> notesFromFolder = new ArrayList<>(noteListFromFolder);
         this.adapter.updateNoteList(notesFromFolder);
+        this.adapter.setNotes(notesFromFolder);
     }
 
     /**

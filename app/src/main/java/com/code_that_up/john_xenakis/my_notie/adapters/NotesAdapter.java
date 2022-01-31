@@ -170,6 +170,15 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     /**
+     * Sets/replaces note list with a new note list, which is displayed on screen.
+     * @param newNoteList The new note list to replace note list.
+     */
+    public void setNotes(ArrayList<Note> newNoteList) {
+        this.notes = newNoteList;
+        notesFull = new ArrayList<>(newNoteList);
+    }
+
+    /**
      * NoteHolder class, holds all the content/buttons, in a note.
      */
     public static class NoteHolder extends RecyclerView.ViewHolder {
