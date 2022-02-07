@@ -20,16 +20,19 @@
     I'll be happy to help you, or discuss anything with you! -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.code_that_up.john_xenakis.my_notie">
 
     <application
         android:allowBackup="true"
-        android:fullBackupContent="true"
+        android:fullBackupContent="@xml/full_backup_content_rules"
+        android:dataExtractionRules="@xml/data_extraction_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:targetApi="s">
 
         <!-- The AddToFoldersActivity is responsible for adding a note to the existing listed folders. -->
         <activity
