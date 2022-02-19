@@ -78,6 +78,10 @@ public class TestUtils {
                 return null;
             }
 
+            /**
+             * Gets the description for the child view(for ex. button).
+             * @return The child views description text.
+             */
             @Override
             public String getDescription() {
                 return "Click on button";

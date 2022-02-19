@@ -320,6 +320,13 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
             super.onScrollStateChanged(recyclerView, newState);
         }
 
+        /**
+         * onScrolled runs, when user scrolls.
+         * onScrolled runs, <i>after</i> the scroll has completed.
+         * @param recyclerView The <i>Notes list</i> RecyclerView.
+         * @param dx The amount of horizontal scroll.
+         * @param dy The amount of vertical scroll.
+         */
         @Override
         public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
             super.onScrolled(recyclerView, dx, dy);

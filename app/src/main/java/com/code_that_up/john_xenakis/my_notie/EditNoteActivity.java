@@ -47,16 +47,55 @@ import java.util.Objects;
  */
 public class EditNoteActivity extends AppCompatActivity {
 
+    /**
+     * The notes title editable text.
+     */
     private TextInputEditText noteTitle;
+
+    /**
+     * The notes body main editable text.
+     */
     private TextInputEditText noteBodyText;
+
+    /**
+     * The note with its content.
+     */
     private Note note;
+
+    /**
+     * The notes DAO(Data Object Access) which is responsible for manipulating data, from database.
+     */
     private NotesDAO notesDAO;
+
+    /**
+     * The note title text when first appears and gets created, when this Activity loads.
+     */
     private String oldNoteTitle;
+
+    /**
+     * The note body text(notes main text) when first appears and gets created, when this Activity loads.
+     */
     private String oldNoteBodyText;
+
+    /**
+     * The boolean state(yes/no, true/false) of, if the note is new.
+     */
     private boolean isItNewNote;
+
+    /**
+     * The notes key which is used from other activities to use a specific note.
+     * In other words, it is used as a key for specifying a note.
+     */
     public static final String NOTE_EXTRA_KEY = "note_id";
+
+    /**
+     * The tag text with the apps name. Usually used for logging messages.
+     */
     public static final String TAG = "MyNotie";
 
+    /**
+     * onCreate gets called/run, when this <i>Activity</i>(<i>EditNoteActivity</i>) first <b>loads/starts/gets created</b>.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,6 +146,9 @@ public class EditNoteActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * saveNewNoteOrUpdateNote saves a note if it is new, or updates a note if it exists.
+     */
     private void saveNewNoteOrUpdateNote() {
         if (isItNewNote) {
             try {
@@ -127,6 +169,9 @@ public class EditNoteActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * finish gets called/runs, when this Activity gets closed/changes to another activity.
+     */
     @Override
     public void finish() {
         saveNote();
@@ -134,22 +179,41 @@ public class EditNoteActivity extends AppCompatActivity {
         super.finish();
     }
 
+    /**
+     * finishNoSave gets called/runs, when this Activity gets closed,
+     * without saving the note, and just exits from this Activity.
+     */
     private void finishNoSave() {
         super.finish();
     }
 
+    /**
+     * onDeleteNoteClick gets called/runs,
+     * when the delete note button is clicked from the user.
+     * @param menuItem The <i>Delete note</i> button.
+     */
     public void onDeleteNoteClick(MenuItem menuItem) {
         notesDAO.deleteNote(note);
         finishNoSave();
         Toast.makeText(getApplicationContext(), "Note deleted!", Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * onRevertChangesClick gets called/runs,
+     * when <i>Revert changes</i> button is clicked from the user.
+     * @param menuItem The <i>Revert changes</i> button.
+     */
     public void onRevertChangesClick(MenuItem menuItem) {
         noteTitle.setText(oldNoteTitle);
         noteBodyText.setText(oldNoteBodyText);
         Toast.makeText(getApplicationContext(), "Changes Reverted!", Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * onAddToFoldersButtonClick gets called/runs,
+     * when <i>Add to folders</i> button is clicked from the user.
+     * @param menuItem The <i>Add to folders</i> button.
+     */
     public void onAddToFoldersButtonClick(MenuItem menuItem) {
         if (note != null) {
             saveNewNoteOrUpdateNote();

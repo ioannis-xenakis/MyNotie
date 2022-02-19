@@ -76,6 +76,9 @@ public class AddOrManageFoldersActivity extends AppCompatActivity {
      */
     private FoldersManageFoldersAdapter foldersAdapter;
 
+    /**
+     * onCreate gets called/run, when this <i>Activity</i>(<i>AddOrManageFoldersActivity</i>) first <b>loads/starts/gets created</b>.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
