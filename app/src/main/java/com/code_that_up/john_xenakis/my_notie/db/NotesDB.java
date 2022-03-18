@@ -1,9 +1,13 @@
 
 package com.code_that_up.john_xenakis.my_notie.db;
 
+import androidx.room.AutoMigration;
 import androidx.room.Database;
+import androidx.room.RenameColumn;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.room.migration.AutoMigrationSpec;
+
 import android.content.Context;
 
 import com.code_that_up.john_xenakis.my_notie.model.Folder;
@@ -38,7 +42,7 @@ import com.code_that_up.john_xenakis.my_notie.model.NoteFolderJoin;
  * @see NotesDAO This class uses NotesDAO.class
  * @see Note This class uses Note.class for entity
  */
-@Database(entities = {Note.class, Folder.class, NoteFolderJoin.class}, version = 1)
+@Database(entities = {Note.class, Folder.class, NoteFolderJoin.class}, version = 2, autoMigrations = {@AutoMigration(from = 1, to = 2, spec = NotesDB.MyAutoMigration.class)})
 public abstract class NotesDB extends RoomDatabase {
 
     /**
@@ -72,6 +76,9 @@ public abstract class NotesDB extends RoomDatabase {
      * The notes database and its instance.
      */
     private static NotesDB instance;
+
+    @RenameColumn(tableName = "notes", fromColumnName = "id", toColumnName = "noteId")
+    static class MyAutoMigration implements AutoMigrationSpec {}
 
     /**
      * getInstance, gets the created instance/the notes database.
