@@ -8,6 +8,7 @@ import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -127,7 +128,7 @@ public class EditNoteActivityTest {
                 "This is a new note with main note text! This is a new note with main note text! This is a new note with main note text! " +
                 "This is a new note with main note text! This is a new note with main note text! This is a new note with main note text! ";
         onView(withId(R.id.note_body_text)).check(matches(withText("")));
-        onView(withId(R.id.note_body_text)).perform(typeText(typedText));
+        onView(withId(R.id.note_body_text)).perform(typeText(typedText), closeSoftKeyboard());
         onView(withContentDescription("clear note body text")).perform(click());
         onView(withId(R.id.note_body_text)).check(matches(withText("")));
     }

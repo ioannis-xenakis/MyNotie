@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    My Notie is a note taking app, write notes and save them to see them and remember later.
+    Copyright (C) 2021  Ioannis Xenakis
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+    Anything you want to contact me for, contact me with an e-mail, at: Xenakis.i.Contact@gmail.com
+    I'll be happy to help you, or discuss anything with you! -->
+
+<!-- Add to folders activity is the activity for adding notes to folders. -->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/colorBlueGrey"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddToFoldersActivity">
+
+    <!-- The folders list for listing all existing folders
+     and choosing which ones to add notes to the folders. -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/folder_list_add_to_folders"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/colorWhite"
+        app:layout_constraintTop_toBottomOf="@id/add_new_folder_layout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="@dimen/view_space_add_to_folders"
+        android:contentDescription="@string/content_description_add_to_folders_folder_list"/>
+
+    <!-- The Top App Bars Layout. -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/top_app_bar_add_to_folders_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:liftOnScroll="true"
+        app:elevation="4dp">
+
+        <!-- The Top App Bar. -->
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/top_app_bar_add_to_folders"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:visibility="visible"
+            app:title="@string/page_title_add_to_folders"
+            android:background="@color/colorWhite"
+            app:navigationIcon="@drawable/go_back_icon"
+            app:navigationContentDescription="@string/content_description_add_to_folders_navigation"
+            app:layout_scrollFlags="scroll|enterAlways|snap" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- Layout for adding/creating new folders. -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/add_new_folder_layout"
+        android:layout_width="match_parent"
+        android:layout_height="68dp"
+        app:layout_constraintTop_toBottomOf="@id/top_app_bar_add_to_folders_layout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="@dimen/view_space_add_to_folders"
+        android:background="@color/colorWhite">
+
+        <!-- The button for adding new folder. -->
+        <ImageButton
+            android:id="@+id/add_new_folder_button"
+            style="?attr/borderlessButtonStyle"
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginLeft="@dimen/horizontal_space_add_to_folders_buttons"
+            android:layout_marginStart="@dimen/horizontal_space_add_to_folders_buttons"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/add_icon"
+            android:contentDescription="@string/content_description_add_new_folder_button"/>
+
+        <!-- The input field(parent layout of TextInputEditText), the user will use to name his new folder. -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/name_new_folder_text_input_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/horizontal_space_name_new_folder_textinputlayout"
+            android:layout_marginStart="@dimen/horizontal_space_name_new_folder_textinputlayout"
+            android:layout_marginRight="@dimen/horizontal_space_name_new_folder_textinputlayout"
+            android:layout_marginEnd="@dimen/horizontal_space_name_new_folder_textinputlayout"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.Edittext.SmallComponent"
+            app:boxStrokeColor="@color/colorPrimary"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="2dp"
+            android:hint="@string/name_new_folder_edittext_hint"
+            app:endIconMode="clear_text"
+            app:endIconContentDescription="@string/content_description_name_new_folder_clear_button">
+
+            <!-- The actual Edittext(Material Edittext called TextInputEditText)
+             which user types to name his new folder. -->
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/name_new_folder_text_input_edittext"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="text"
+                android:maxLines="1"
+                android:imeOptions="actionDone"
+                android:fontFamily="@font/roboto_regular" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- The button for rejecting and not creating the folder. -->
+        <ImageButton
+            android:id="@+id/reject_new_folder_button"
+            style="?attr/borderlessButtonStyle"
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginLeft="@dimen/horizontal_space_add_to_folders_buttons"
+            android:layout_marginStart="@dimen/horizontal_space_add_to_folders_buttons"
+            android:visibility="gone"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/reject_icon"
+            android:contentDescription="@string/content_description_reject_new_folder_button" />
+
+        <!-- The button for accepting creating the new folder. -->
+        <ImageButton
+            android:id="@+id/accept_new_folder_button"
+            style="?attr/borderlessButtonStyle"
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginRight="@dimen/horizontal_space_add_to_folders_buttons"
+            android:layout_marginEnd="@dimen/horizontal_space_add_to_folders_buttons"
+            android:visibility="gone"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/accept_icon"
+            android:contentDescription="@string/content_description_accept_new_folder_button" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

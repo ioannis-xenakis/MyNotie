@@ -74,7 +74,21 @@ public interface NotesDAO {
      * @param noteId the note id.
      * @return the note.
      */
-    @Query("SELECT * FROM notes WHERE id = :noteId")
+    @Query("SELECT * FROM notes WHERE noteId = :noteId")
     Note getNoteById(int noteId);
+
+    /**
+     * Gets the last/highest note Id number.
+     * @return The last/highest note Id number.
+     */
+    @Query("SELECT MAX(noteId) FROM notes")
+    int getMaxNoteId();
+
+    /**
+     * Gets all the folder Ids in a list.
+     * @return The folder Ids list.
+     */
+    @Query("SELECT noteId FROM notes")
+    List<Integer> getListOfNoteIds();
 
 }

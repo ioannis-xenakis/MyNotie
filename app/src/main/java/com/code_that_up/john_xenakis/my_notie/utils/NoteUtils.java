@@ -1,5 +1,8 @@
 package com.code_that_up.john_xenakis.my_notie.utils;
 
+import com.code_that_up.john_xenakis.my_notie.db.NotesDAO;
+import com.code_that_up.john_xenakis.my_notie.model.Note;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -38,5 +41,22 @@ public class NoteUtils {
     public static String dateFromLong (long time) {
         DateFormat format = new SimpleDateFormat("'Last edited: ' dd/MMM/yyyy ' ' hh:mm", Locale.US);
         return format.format(new Date(time));
+    }
+
+    /**
+     * Increases a Notes id number by one.
+     * @param noteDao The Data Object Access for notes which is responsible for manipulating data, from database.
+     * @param note The note that its id, is incremented.
+     */
+    public static void increaseNoteIdByOne (NotesDAO noteDao, Note note) {
+        if (!noteDao.getListOfNoteIds().contains(noteDao.getMaxNoteId() + 1)) {
+            note.setId(noteDao.getMaxNoteId() + 1);
+        } else {
+            int increasedNoteId = noteDao.getMaxNoteId() + 1;
+            while (noteDao.getListOfNoteIds().contains(increasedNoteId)) {
+                increasedNoteId++;
+            }
+            note.setId(increasedNoteId);
+        }
     }
 }

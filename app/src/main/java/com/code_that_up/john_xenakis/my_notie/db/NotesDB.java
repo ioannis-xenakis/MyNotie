@@ -1,12 +1,18 @@
 
 package com.code_that_up.john_xenakis.my_notie.db;
 
+import androidx.room.AutoMigration;
 import androidx.room.Database;
+import androidx.room.RenameColumn;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.room.migration.AutoMigrationSpec;
+
 import android.content.Context;
 
+import com.code_that_up.john_xenakis.my_notie.model.Folder;
 import com.code_that_up.john_xenakis.my_notie.model.Note;
+import com.code_that_up.john_xenakis.my_notie.model.NoteFolderJoin;
 /*
     My Notie is a note taking app, write notes and save them to see them and remember later.
     Copyright (C) 2021  Ioannis Xenakis
@@ -28,14 +34,15 @@ import com.code_that_up.john_xenakis.my_notie.model.Note;
     I'll be happy to help you, or discuss anything with you! */
 
 /**
- * <h2>NotesDB</h2> is the database creator for notes and the unifier for the note model/entity and notes dao.
+ * <h2>NotesDB</h2> is the database creator for notes and folders
+ * and the unifier for the note model/entity, folder model/entity, notes dao and folders dao.
  * @author John/Ioannis Xenakis
  * @version 1.0
  * @see androidx.room.RoomDatabase This app, uses Room database
  * @see NotesDAO This class uses NotesDAO.class
  * @see Note This class uses Note.class for entity
  */
-@Database(entities = Note.class, version = 1)
+@Database(entities = {Note.class, Folder.class, NoteFolderJoin.class}, version = 2, autoMigrations = {@AutoMigration(from = 1, to = 2, spec = NotesDB.MyAutoMigration.class)})
 public abstract class NotesDB extends RoomDatabase {
 
     /**
@@ -46,6 +53,21 @@ public abstract class NotesDB extends RoomDatabase {
     public abstract NotesDAO notesDAO();
 
     /**
+     * The Data Object Access for folders,
+     * responsible for manipulating data, in database.
+     * @return The foldersDAO from <i>FoldersDAO.java</i> class.
+     */
+    public abstract FoldersDAO foldersDAO();
+
+    /**
+     * The Data Access Object for the connection link between notes and folders,
+     * is responsible for manipulating data, in database and is depending on a many-to-many database relationship
+     * (1 folder has many notes and 1 note has many folders).
+     * @return The NotesFoldersJoinDAO from <i>NotesFoldersJoinDAO.java</i> interface.
+     */
+    public abstract NotesFoldersJoinDAO notesFoldersJoinDAO();
+
+    /**
      * The name of the database.
      */
     public static final String DATABASE_NAME = "notesDb";
@@ -54,6 +76,9 @@ public abstract class NotesDB extends RoomDatabase {
      * The notes database and its instance.
      */
     private static NotesDB instance;
+
+    @RenameColumn(tableName = "notes", fromColumnName = "id", toColumnName = "noteId")
+    static class MyAutoMigration implements AutoMigrationSpec {}
 
     /**
      * getInstance, gets the created instance/the notes database.

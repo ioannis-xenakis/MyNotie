@@ -2,7 +2,11 @@ package com.code_that_up.john_xenakis.my_notie.adapters;
 
 import android.content.Context;
 import androidx.annotation.NonNull;
+import androidx.core.view.ViewCompat;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,11 +16,16 @@ import android.widget.TextView;
 
 import com.code_that_up.john_xenakis.my_notie.callbacks.MoreMenuButtonListener;
 import com.code_that_up.john_xenakis.my_notie.callbacks.NoteEventListener;
+import com.code_that_up.john_xenakis.my_notie.db.NotesDB;
+import com.code_that_up.john_xenakis.my_notie.model.Folder;
 import com.code_that_up.john_xenakis.my_notie.model.Note;
+import com.code_that_up.john_xenakis.my_notie.utils.NoteDiffCallback;
 import com.code_that_up.john_xenakis.my_notie.utils.NoteUtils;
 import com.code_that_up.john_xenakis.my_notie.R;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +66,11 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
      * The notes list, which is displayed <b>regardless</b> of being at the screen.
      */
     public ArrayList<Note> notesFull;
+
+    /**
+     * The list that have only the checked notes.
+     */
+    private ArrayList<Note> checkedNotes;
 
     /**
      * The current state and <b>context</b> of the notes.
@@ -130,6 +144,7 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             hideNoteTitleIfEmpty(noteHolder);
             hideNoteBodyTextIfEmpty(noteHolder);
 
+            addFolderChipsAtEachNote(noteHolder, note);
         }
     }
 
@@ -162,6 +177,15 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     /**
+     * Sets/replaces note list with a new note list, which is displayed on screen.
+     * @param newNoteList The new note list to replace note list.
+     */
+    public void setNotes(ArrayList<Note> newNoteList) {
+        this.notes = newNoteList;
+        notesFull = new ArrayList<>(newNoteList);
+    }
+
+    /**
      * NoteHolder class, holds all the content/buttons, in a note.
      */
     public static class NoteHolder extends RecyclerView.ViewHolder {
@@ -176,6 +200,11 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
          * moreMenu button (three vertical dots icon), that diplays the vertical dropdown menu when clicked.
          */
         MaterialButton moreMenu;
+
+        /**
+         * Chip group that displays all folders(chips), in a note.
+         */
+        ChipGroup folderChipGroup;
 
         /**
          * noteCardView is the note itself, that contains all the content/buttons.
@@ -193,8 +222,16 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             noteBodyText = itemView.findViewById(R.id.note_body_text);
             noteDate = itemView.findViewById(R.id.note_date);
             moreMenu = itemView.findViewById(R.id.more_menu_button);
+            folderChipGroup = itemView.findViewById(R.id.folder_chip_group);
         }
 
+    }
+
+    /**
+     * Initializes a new, clean, empty list, of the checked notes.
+     */
+    public void initCheckedNotes() {
+        checkedNotes = new ArrayList<>();
     }
 
     /**
@@ -202,13 +239,7 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
      * @return Checked/selected notes.
      */
     public List<Note> getCheckedNotes() {
-        List<Note> checkedNotes = new ArrayList<>(); //New note List called checkedNotes
-        for (Note note : this.notesFull) { // For every note
-            if (note.isChecked()){ // If the note n is checked
-                checkedNotes.add(note); //Add the note (n) to the List checkedNotes
-            }
-        }
-        return checkedNotes; //Return List checkedNotes.
+        return checkedNotes;
     }
 
     /**
@@ -217,9 +248,56 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
      */
     public void setAllCheckedNotes(boolean isChecked) {
         for (Note note : this.notes) {
-            note.setChecked(isChecked);
+            checkOrUncheckNote(note, isChecked, 1);
             notifyItemChanged(notes.indexOf(note));
         }
+    }
+
+    /**
+     * setAllCheckedNotesFull, <b>selects/checks</b> or <b>unselects/unchecks</b>
+     * all notes regardless of whether is <i>displayed</i> or not on screen.
+     * Checks or unchecks the full <i>unfiltered</i> notes list.
+     * @param isChecked The boolean state of whether the notes should be checked or not.
+     */
+    public void setAllCheckedNotesFull(boolean isChecked) {
+        for (Note note : this.notesFull) {
+            checkOrUncheckNote(note, isChecked, 1);
+            notifyItemChanged(notesFull.indexOf(note));
+        }
+    }
+
+    /**
+     * Checks or unchecks a note.
+     * @param note The note to be checked or unchecked.
+     * @param isChecked The boolean state of whether the note should be checked or not.
+     * @param checkedMode Decides which code should be used for checking/unchecking the note.
+     */
+    public void checkOrUncheckNote(Note note, boolean isChecked, int checkedMode) {
+        switch (checkedMode) {
+            case 1:
+                if (isChecked) {
+                    if (!checkedNotes.contains(note)) {
+                        checkedNotes.add(note);
+                    }
+                    note.setChecked(true);
+                } else {
+                    checkedNotes.remove(note);
+                    note.setChecked(false);
+                }
+                break;
+
+            case 2:
+                if (isChecked) {
+                    checkedNotes.add(note);
+                } else {
+                    checkedNotes.remove(note);
+                }
+                break;
+
+            default:
+                Log.d("MyNotie", "Checked mode doesnt exist. Choose 1 or 2.");
+        }
+
     }
 
     /**
@@ -268,16 +346,42 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
          * @param filterResults the final filtered notes.
          */
         @Override
+        @SuppressWarnings("unchecked")
         protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-            notes.clear();
             //noinspection unchecked
-            notes.addAll((ArrayList<Note>) filterResults.values);
-            for (Note note : notesFull) {
-                notifyItemRemoved(notesFull.indexOf(note));
-                notifyItemChanged(notesFull.indexOf(note));
-            }
+            updateNoteList((ArrayList<Note>) filterResults.values);
         }
     };
+
+    /**
+     * Updates/refreshes the <i>note list(RecyclerView)</i>.
+     * @param newNoteList The new note list containing the new data, to refresh/update to.
+     */
+    public void updateNoteList(List<Note> newNoteList) {
+        final NoteDiffCallback diffCallback = new NoteDiffCallback(this.notes, newNoteList);
+        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
+
+        this.notes.clear();
+        this.notes.addAll(newNoteList);
+        diffResult.dispatchUpdatesTo(this);
+    }
+
+    /**
+     * Updates/refreshes both the <i>note list</i> which is displayed on screen
+     * and the <i>full unfiltered note list</i>
+     * which some of its notes might not be displayed on screen.
+     * @param newNoteList The new note list containing the new data, to refresh/update to.
+     */
+    public void updateNoteListAndNotesFull(List<Note> newNoteList) {
+        final NoteDiffCallback diffCallback = new NoteDiffCallback(this.notes, newNoteList);
+        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
+
+        this.notes.clear();
+        this.notes.addAll(newNoteList);
+        this.notesFull.clear();
+        this.notesFull = new ArrayList<>(this.notes);
+        diffResult.dispatchUpdatesTo(this);
+    }
 
     /**
      * hideNoteTitleIfEmpty, hides Note Title from the screen if it is empty
@@ -299,6 +403,24 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         noteHolder.noteBodyText.setVisibility(View.VISIBLE);
         if (noteHolder.noteBodyText.getText().toString().equals(""))
             noteHolder.noteBodyText.setVisibility(View.GONE);
+    }
+
+    /**
+     * Add folder chips that is connected with each note.
+     */
+    private void addFolderChipsAtEachNote(NoteHolder noteHolder, Note note) {
+        List<Folder> foldersFromNoteList = NotesDB.getInstance(context).notesFoldersJoinDAO().getFoldersFromNote(note.getId());
+
+        noteHolder.folderChipGroup.removeAllViews();
+        for (Folder folder : foldersFromNoteList) {
+            noteHolder.folderChipGroup.addView(new Chip(context) {{
+                setId(ViewCompat.generateViewId());
+                setText(folder.getFolderName().trim());
+                setContentDescription("Folder chip");
+                setCheckable(false);
+                setClickable(false);
+            }});
+        }
     }
 
 }

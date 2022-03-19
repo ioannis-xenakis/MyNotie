@@ -59,5 +59,22 @@
     <string name="revert_changes_button_edit_note">Revert changes.</string>
     <string name="delete_note_button_edit_note">Delete note.</string>
     <string name="tooltip_add_new_note">Add new note.</string>
+    <string name="page_title_add_or_manage_folders">Manage folders</string>
+    <string name="content_description_manage_folders_navigation">Go back.</string>
+    <string name="content_description_add_new_folder_button">Add new folder.</string>
+    <string name="name_new_folder_edittext_hint">Name new folder.</string>
+    <string name="content_description_name_new_folder_clear_button">Clear name new folder edittext text.</string>
+    <string name="content_description_reject_new_folder_button">Reject adding new folder.</string>
+    <string name="content_description_accept_new_folder_button">Accept and add new folder.</string>
+    <string name="content_description_manage_folders_delete_folder">Delete folder.</string>
+    <string name="folder_name_hint_manage_folders">Folder name.</string>
+    <string name="content_description_manage_folders_cancel_renaming_folder">Cancel renaming folder.</string>
+    <string name="content_description_manage_folders_folder_list">Folder list.</string>
+    <string name="page_title_add_to_folders">Add to folders</string>
+    <string name="content_description_add_to_folders_navigation">Go back.</string>
+    <string name="content_description_add_to_folders_folder_list">Folder list.</string>
+    <string name="folder_name_hint_add_to_folders">Folder name.</string>
+    <string name="content_description_add_to_folders_cancel_renaming_folder">Cancel renaming folder button.</string>
+    <string name="content_description_add_to_folders_accept_renaming_folder">Accept renaming folder.</string>
 
 </resources>

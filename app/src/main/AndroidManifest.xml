@@ -20,30 +20,44 @@
     I'll be happy to help you, or discuss anything with you! -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.code_that_up.john_xenakis.my_notie">
 
     <application
         android:allowBackup="true"
-        android:fullBackupContent="true"
+        android:fullBackupContent="@xml/full_backup_content_rules"
+        android:dataExtractionRules="@xml/data_extraction_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:targetApi="s">
+
+        <!-- The AddToFoldersActivity is responsible for adding a note to the existing listed folders. -->
+        <activity
+            android:name=".AddToFoldersActivity"
+            android:exported="true"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+
+        <!-- The AddOrManageFoldersActivity is responsible for managing folders(Creating/deleting folders). -->
+        <activity
+            android:name=".AddOrManageFoldersActivity"
+            android:exported="true"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- The EditNoteActivity is responsible for editing new/existing note. -->
         <activity
-            android:name="com.code_that_up.john_xenakis.my_notie.EditNoteActivity"
+            android:name=".EditNoteActivity"
             android:windowSoftInputMode="stateHidden|adjustPan">
         </activity>
 
         <!-- The MainNotesActivity with the Main Note List layout (activity_my_notes.xml) -->
         <activity
-            android:name="com.code_that_up.john_xenakis.my_notie.MyNotesActivity"
-            android:label="@string/app_name"
+            android:name=".MyNotesActivity"
+            android:exported="true"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="stateHidden|adjustPan"
-            android:exported="true">
+            android:windowSoftInputMode="stateHidden|adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -52,4 +66,5 @@
             </intent-filter>
         </activity>
     </application>
+
 </manifest>

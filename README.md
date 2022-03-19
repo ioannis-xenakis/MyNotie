@@ -7,13 +7,11 @@ An android notepad for taking notes, write what you want and save them to see th
 <img src="screenshots/1.png" width="19%" />
 <img src="screenshots/2.png" width="19%" />
 <img src="screenshots/3.png" width="19%" />
+<img src="screenshots/4.png" width="19%" />
 </div>
 
 ### Latest Release
-Version 1.0.0 Alpha is out! [Try it here!](https://github.com/ioannis-xenakis/MyNotie/releases/download/v1.0.0-alpha/mynotie-v1.0.0-alpha.apk)
-
-### Under Development
-My Notie is not ready yet. It is **Under Development**.
+Version 1.0.0 Beta is ready! [Download it from here!](https://github.com/ioannis-xenakis/MyNotie/releases/download/v1.0.0-beta/mynotie-v1.0.0-beta.apk)
 
 ### Contribute
 You're welcome to contribute to anything you want :smiley: . In fact **everyone** beginners and experts, are welcome! I'll really appreciate it if you help me. :smiley:

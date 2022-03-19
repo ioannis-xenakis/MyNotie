@@ -5,6 +5,8 @@ import com.code_that_up.john_xenakis.my_notie.db.NotesDB;
 import com.code_that_up.john_xenakis.my_notie.adapters.NotesAdapter;
 import com.code_that_up.john_xenakis.my_notie.callbacks.MoreMenuButtonListener;
 import com.code_that_up.john_xenakis.my_notie.callbacks.NoteEventListener;
+import com.code_that_up.john_xenakis.my_notie.db.NotesFoldersJoinDAO;
+import com.code_that_up.john_xenakis.my_notie.model.Folder;
 import com.code_that_up.john_xenakis.my_notie.model.Note;
 import com.code_that_up.john_xenakis.my_notie.utils.SpacesItemGrid;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -34,6 +36,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -110,6 +113,26 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
      * The group/layout for the side navigation drawer.
      */
     private DrawerLayout drawerLayout;
+
+    /**
+     * The side navigation drawer.
+     */
+    private NavigationView navigationView;
+
+    /**
+     * The id number of the <i>all notes button(Menu Item)</i>, in navigation view(side navigation drawer).
+     */
+    private static final int ALL_NOTES_ID = -1;
+
+    /**
+     * The id number of the <i>go to add or manage folders button(Menu Item)</i>, in navigation view(side navigation drawer).
+     */
+    private static final int GO_TO_ADD_OR_MANAGE_FOLDERS_ID = -2;
+
+    /**
+     * The boolean state of, if the note in notes list is checked, or not.
+     */
+    private boolean isNoteChecked;
 
     /**
      * The app name.
@@ -196,8 +219,10 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
          */
         selectNotesTopBar.setNavigationOnClickListener(view -> {
             showPageTitleTopBar();
+            adapter.setAllCheckedNotesFull(false);
             adapter.setAllCheckedNotes(false);
             displaySelectedNotesCount();
+            searchEdittext.setText("");
         });
 
         //Add new note button, which adds/creates new note.
@@ -212,7 +237,7 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
         recyclerView.addOnScrollListener(onScrollListener);
 
         drawerLayout = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
         //Opens/Shows and Closes/Hides Side Navigation Drawer.
         final ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(
                 this,
@@ -233,6 +258,53 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
             drawerLayout.closeDrawer(GravityCompat.START);
         });
 
+        //The menu items(buttons) click mechanism for the side navigation drawer(in navigation view).
+        navigationView.setNavigationItemSelectedListener(menuItem -> {
+            int id = menuItem.getItemId();
+            if (id == ALL_NOTES_ID) {
+                onlyRefreshAndLoadAllNotes();
+                displaySelectedNotesCount();
+                pageTitleTopBar.setTitle(R.string.page_title);
+            } else if (id == GO_TO_ADD_OR_MANAGE_FOLDERS_ID) {
+                Intent manageFoldersActivityIntent = new Intent(getApplicationContext(), AddOrManageFoldersActivity.class);
+                startActivity(manageFoldersActivityIntent);
+            } else {
+                List<Folder> folderList = NotesDB.getInstance(this).foldersDAO().getAllFolders();
+                for (Folder folder : folderList) {
+                    if (id == folder.getId()) {
+                        loadNotesFromFolder(folder);
+                        displaySelectedNotesCount();
+                        pageTitleTopBar.setTitle(folder.getFolderName().trim());
+                    }
+                }
+            }
+            drawerLayout.closeDrawer(GravityCompat.START);
+            return true;
+        });
+
+        isNoteChecked = false;
+
+    }
+
+    /**
+     * inflates(creates), the menu items(buttons) and the menu, in navigation view(side navigation drawer).
+     */
+    private void inflateNavigationMenus() {
+        Menu menu = navigationView.getMenu();
+        menu.clear();
+        menu.add(Menu.NONE, ALL_NOTES_ID, Menu.NONE, "All notes")
+                .setIcon(R.drawable.note_icon)
+                .setCheckable(true)
+                .setChecked(true);
+        List<Folder> folderList = NotesDB.getInstance(this).foldersDAO().getAllFolders();
+        final SubMenu myFoldersSubMenu = menu.addSubMenu("My folders");
+        for (Folder folder : folderList) {
+            myFoldersSubMenu.add(Menu.NONE, folder.getId(), Menu.NONE, folder.getFolderName())
+                    .setIcon(R.drawable.folder_icon)
+                    .setCheckable(true);
+        }
+        menu.add(Menu.NONE, GO_TO_ADD_OR_MANAGE_FOLDERS_ID, Menu.NONE, "Add or manage folders")
+                .setIcon(R.drawable.new_folder_icon);
     }
 
     /**
@@ -259,6 +331,13 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
             super.onScrollStateChanged(recyclerView, newState);
         }
 
+        /**
+         * onScrolled runs, when user scrolls.
+         * onScrolled runs, <i>after</i> the scroll has completed.
+         * @param recyclerView The <i>Notes list</i> RecyclerView.
+         * @param dx The amount of horizontal scroll.
+         * @param dy The amount of vertical scroll.
+         */
         @Override
         public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
             super.onScrolled(recyclerView, dx, dy);
@@ -346,6 +425,8 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
         note.setChecked(!note.isChecked());
         noteHolder.noteCardView.setChecked(note.isChecked());
 
+        adapter.checkOrUncheckNote(note, note.isChecked(), 2);
+
         if (adapter.getCheckedNotes().size() > 0) {
             showSelectNotesTopBar();
         } else {
@@ -362,7 +443,8 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
      * @param menuItem the <i>select all notes</i> button.
      */
     public void onSelectAllNotesButtonClick(MenuItem menuItem) {
-        adapter.setAllCheckedNotes(adapter.getCheckedNotes().size() != adapter.notes.size());
+        isNoteChecked = !isNoteChecked;
+        adapter.setAllCheckedNotes(isNoteChecked);
         displaySelectedNotesCount();
     }
 
@@ -382,6 +464,7 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
             adapter.notesFull.remove(note);
             adapter.notifyItemRemoved(position);
         }
+        adapter.getCheckedNotes().clear();
 
         displaySelectedNotesCount();
         Toast.makeText(MyNotesActivity.this,  deletedNotes.size() + " notes deleted!", Toast.LENGTH_LONG).show();
@@ -406,9 +489,6 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
      * @param item the menu item/button(<i>select notes</i> button).
      */
     public void onSelectNotesButtonClick(MenuItem item) {
-        EditText searchEdittext = findViewById(R.id.search_edittext);
-        searchEdittext.setText("");
-
         showSelectNotesTopBar();
     }
 
@@ -421,7 +501,28 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
         ArrayList<Note> notes = new ArrayList<>(list);
         this.adapter = new NotesAdapter(notes, this, this);
         this.adapter.setListener(this, this);
+        this.adapter.initCheckedNotes();
         this.recyclerView.setAdapter(adapter);
+    }
+
+    /**
+     * Only refreshes the notes and not loads the whole adapter. Avoids calling setAdapter.
+     */
+    private void onlyRefreshAndLoadAllNotes() {
+        this.adapter.setAllCheckedNotes(false);
+        List<Note> list = dao.getNotes();
+        this.adapter.updateNoteListAndNotesFull(list);
+    }
+
+    /**
+     * Loads/displays/refreshes notes, only from a specific folder.
+     * @param folder The folder to display the notes from.
+     */
+    private void loadNotesFromFolder(Folder folder) {
+        this.adapter.setAllCheckedNotes(false);
+        NotesFoldersJoinDAO notesFoldersJoinDao = NotesDB.getInstance(this).notesFoldersJoinDAO();
+        List<Note> noteListFromFolder = notesFoldersJoinDao.getNotesFromFolder(folder.getId());
+        this.adapter.updateNoteListAndNotesFull(noteListFromFolder);
     }
 
     /**
@@ -457,7 +558,9 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
     @Override
     protected void onResume() {
         super.onResume();
+        inflateNavigationMenus();
         loadNotes(); //loads/reloads notes from database.
+        pageTitleTopBar.setTitle(R.string.page_title);
         displaySelectedNotesCount();
     }
 
@@ -510,6 +613,9 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
         notePopupMenu.setOnMenuItemClickListener(menuItem -> {
             int itemId = menuItem.getItemId();
             if (itemId == R.id.add_to_folder_button) {
+                Intent addToFolders = new Intent(this, AddToFoldersActivity.class);
+                addToFolders.putExtra(AddToFoldersActivity.NOTE_EXTRA_KEY, note.getId());
+                startActivity(addToFolders);
                 Log.d(TAG, "Add to folder button, clicked.");
                 return true;
             } else if (itemId == R.id.delete_only_this_note_button) {
@@ -518,6 +624,7 @@ public class MyNotesActivity extends AppCompatActivity implements NoteEventListe
                 dao.deleteNote(note);
                 adapter.notes.remove(note);
                 adapter.notesFull.remove(note);
+                adapter.getCheckedNotes().remove(note);
                 adapter.notifyItemRemoved(position);
                 if (note.isChecked())
                     displaySelectedNotesCount();

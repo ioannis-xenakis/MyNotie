@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
+
+        <ImageButton
+            android:id="@+id/delete_folder_button"
+            style="?attr/borderlessButtonStyle"
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
+            android:layout_marginLeft="@dimen/horizontal_space_manage_folders_buttons"
+            android:layout_marginStart="@dimen/horizontal_space_manage_folders_buttons"
+            android:layout_gravity="center_vertical"
+            android:visibility="visible"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/delete_icon"
+            android:contentDescription="@string/content_description_manage_folders_delete_folder" />
+
+        <ImageButton
+            android:id="@+id/cancel_renaming_folder_button"
+            style="?attr/borderlessButtonStyle"
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
+            android:layout_marginLeft="@dimen/horizontal_space_manage_folders_buttons"
+            android:layout_marginStart="@dimen/horizontal_space_manage_folders_buttons"
+            android:layout_gravity="center_vertical"
+            android:visibility="gone"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/reject_icon"
+            android:contentDescription="@string/content_description_manage_folders_cancel_renaming_folder"/>
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/folder_name_edittext"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginLeft="@dimen/left_space_folder_name_manage_folders"
+            android:layout_marginStart="@dimen/left_space_folder_name_manage_folders"
+            android:background="@null"
+            android:inputType="text"
+            android:maxLines="1"
+            android:imeOptions="actionDone"
+            android:ellipsize="end"
+            android:fontFamily="@font/roboto_regular"
+            android:textSize="16dp"
+            android:textColor="@color/colorBlack"
+            android:hint="@string/folder_name_hint_manage_folders"
+            android:textColorHint="#757575" />
+
+        <ImageButton
+            android:id="@+id/accept_renaming_folder_button"
+            style="?attr/borderlessButtonStyle"
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
+            android:layout_marginLeft="@dimen/left_space_folder_name_manage_folders"
+            android:layout_marginStart="@dimen/left_space_folder_name_manage_folders"
+            android:layout_marginRight="@dimen/horizontal_space_manage_folders_buttons"
+            android:layout_marginEnd="@dimen/horizontal_space_manage_folders_buttons"
+            android:layout_gravity="end"
+            android:visibility="gone"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/accept_icon" />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/separator_line_folder_manage_folders"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="@dimen/left_space_separator_line_folder_manage_folders"
+        android:layout_marginStart="@dimen/left_space_separator_line_folder_manage_folders"
+        android:background="@color/colorGrey" />
+
+</LinearLayout>
