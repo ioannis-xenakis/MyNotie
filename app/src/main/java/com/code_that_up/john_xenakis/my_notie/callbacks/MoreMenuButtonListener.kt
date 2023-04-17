@@ -1,7 +1,8 @@
-package com.code_that_up.john_xenakis.my_notie.utils;
+package com.code_that_up.john_xenakis.my_notie.callbacks
 
-import com.code_that_up.john_xenakis.my_notie.db.FoldersDAO;
-import com.code_that_up.john_xenakis.my_notie.model.Folder;
+import android.view.View
+import com.code_that_up.john_xenakis.my_notie.model.Note
+
 /*
     My Notie is a note taking app, write notes and save them to see them and remember later.
     Copyright (C) 2021  Ioannis Xenakis
@@ -21,28 +22,19 @@ import com.code_that_up.john_xenakis.my_notie.model.Folder;
 
     Anything you want to contact me for, contact me with an e-mail, at: Xenakis.i.Contact@gmail.com
     I'll be happy to help you, or discuss anything with you! */
-
 /**
- * <h2>FolderUtils</h2> is a class, which contains utilities/tools for folders.
+ * <h2>MoreMenuButtonListener</h2> is a listener for listening clicks on *More Menu Button* (three vertical dots button),
+ * that is on each note, from *MyNotesActivity*.
  * @author John/Ioannis Xenakis
  * @version 1.0
+ * @see [https://github.com/ioannis-xenakis/MyNotie](https://github.com/ioannis-xenakis/MyNotie) This project, is uploaded at Github. Visit it if you want!
  */
-public class FolderUtils {
-
+interface MoreMenuButtonListener {
     /**
-     * Increases a folder id number by one.
-     * @param folderDao The Data Object Access for folders, responsible for managing folder data, in database.
-     * @param folder The folder that its id, is incremented.
+     * onMoreMenuButtonClick, runs/is called, when *More Menu Button* is clicked.
+     * @param note the note.
+     * @param view the *More Menu Button*.
+     * @param position the notes position.
      */
-    public static void increaseFolderIdByOne(FoldersDAO folderDao, Folder folder) {
-        if (!folderDao.getListOfFolderIds().contains(folderDao.getMaxFolderId() + 1)) {
-            folder.setId(folderDao.getMaxFolderId() + 1);
-        } else {
-            int increasedFolderId = folderDao.getMaxFolderId() + 1;
-            while (folderDao.getListOfFolderIds().contains(increasedFolderId)) {
-                increasedFolderId++;
-            }
-            folder.setId(increasedFolderId);
-        }
-    }
+    fun onMoreMenuButtonClick(note: Note, view: View, position: Int)
 }

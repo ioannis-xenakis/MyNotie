@@ -20,8 +20,7 @@
     I'll be happy to help you, or discuss anything with you! -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.code_that_up.john_xenakis.my_notie">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <application
         android:allowBackup="true"

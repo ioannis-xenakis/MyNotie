@@ -1,16 +1,13 @@
-package com.code_that_up.john_xenakis.my_notie.db;
+package com.code_that_up.john_xenakis.my_notie.db
 
-import androidx.room.Dao;
-import androidx.room.Delete;
-import androidx.room.Insert;
-import androidx.room.OnConflictStrategy;
-import androidx.room.Query;
-import androidx.room.Update;
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import androidx.room.Update
+import com.code_that_up.john_xenakis.my_notie.model.Note
 
-import com.code_that_up.john_xenakis.my_notie.MyNotesActivity;
-import com.code_that_up.john_xenakis.my_notie.model.Note;
-
-import java.util.List;
 /*
     My Notie is a note taking app, write notes and save them to see them and remember later.
     Copyright (C) 2021  Ioannis Xenakis
@@ -30,44 +27,41 @@ import java.util.List;
 
     Anything you want to contact me for, contact me with an e-mail, at: Xenakis.i.Contact@gmail.com
     I'll be happy to help you, or discuss anything with you! */
-
 /**
  * <h2>NotesDAO</h2> is the Data Object Access for notes,
  * which is responsible for manipulating data and insert, delete and update notes, from database.
  * @author John/Ioannis Xenakis
  * @version 1.0
- * @see MyNotesActivity the activity/page which calls this java interface(NotesDAO.class) <br>
  */
 @Dao
-public interface NotesDAO {
-
+interface NotesDAO {
     /**
      * insertNote, inserts/adds new note to database.
      * @param note the note.
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE) //If the note exists, replace it.
-    void insertNote(Note note);
+    fun insertNote(note: Note)
 
     /**
      * deleteNote, deletes a note from database.
      * @param note the note.
      */
     @Delete
-    void deleteNote(Note note);
+    fun deleteNote(note: Note)
 
     /**
      * updateNote, updates an existing note from database.
      * @param note the note.
      */
     @Update
-    void updateNote(Note note);
+    fun updateNote(note: Note)
 
     /**
      * Gets all notes from database.
      * @return All existing notes.
      */
-    @Query("SELECT * FROM notes")
-    List<Note> getNotes();
+    @get:Query("SELECT * FROM notes")
+    val notes: List<Note>?
 
     /**
      * Gets a specific note, by specifying its id.
@@ -75,20 +69,19 @@ public interface NotesDAO {
      * @return the note.
      */
     @Query("SELECT * FROM notes WHERE noteId = :noteId")
-    Note getNoteById(int noteId);
+    fun getNoteById(noteId: Int): Note
 
     /**
      * Gets the last/highest note Id number.
      * @return The last/highest note Id number.
      */
-    @Query("SELECT MAX(noteId) FROM notes")
-    int getMaxNoteId();
+    @get:Query("SELECT MAX(noteId) FROM notes")
+    val maxNoteId: Int
 
     /**
      * Gets all the folder Ids in a list.
      * @return The folder Ids list.
      */
-    @Query("SELECT noteId FROM notes")
-    List<Integer> getListOfNoteIds();
-
+    @get:Query("SELECT noteId FROM notes")
+    val listOfNoteIds: List<Int?>?
 }
