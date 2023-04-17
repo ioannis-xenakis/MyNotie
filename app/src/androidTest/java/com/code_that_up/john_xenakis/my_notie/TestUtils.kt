@@ -1,22 +1,19 @@
-package com.code_that_up.john_xenakis.my_notie;
+package com.code_that_up.john_xenakis.my_notie
 
-import android.content.pm.ActivityInfo;
-import android.view.View;
-import android.widget.EditText;
+import android.content.pm.ActivityInfo
+import android.view.View
+import android.widget.EditText
+import androidx.recyclerview.widget.RecyclerView
+import androidx.test.espresso.Root
+import androidx.test.espresso.UiController
+import androidx.test.espresso.ViewAction
+import androidx.test.espresso.matcher.BoundedMatcher
+import androidx.test.espresso.matcher.RootMatchers
+import androidx.test.ext.junit.rules.ActivityScenarioRule
+import org.hamcrest.Description
+import org.hamcrest.Matcher
+import kotlin.jvm.internal.Intrinsics
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.test.espresso.Root;
-import androidx.test.espresso.UiController;
-import androidx.test.espresso.ViewAction;
-import androidx.test.espresso.matcher.BoundedMatcher;
-import androidx.test.ext.junit.rules.ActivityScenarioRule;
-
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-
-import static androidx.test.espresso.matcher.RootMatchers.isPlatformPopup;
-import static kotlin.jvm.internal.Intrinsics.checkNotNull;
 /*
     My Notie is a note taking app, write notes and save them to see them and remember later.
     Copyright (C) 2021  Ioannis Xenakis
@@ -36,34 +33,32 @@ import static kotlin.jvm.internal.Intrinsics.checkNotNull;
 
     Anything you want to contact me for, contact me with an e-mail, at: Xenakis.i.Contact@gmail.com
     I'll be happy to help you, or discuss anything with you! */
-
 /**
  * <h2>TestUtils</h2> is a class, which contains tools/utilities, for instrumentation tests.
  * @author John/Ioannis Xenakis
  * @version 1.0
  * @see MyNotesActivityTest The MyNotesActivity tests, uses TestUtils class.
  */
-public class TestUtils {
-
+object TestUtils {
     /**
      * Landscape screen orientation.
      */
-    public static int LANDSCAPE = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
+    var LANDSCAPE = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
 
     /**
      * Portrait screen orientation.
      */
-    public static int PORTRAIT = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+    var PORTRAIT = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
     /**
      * Reverse landscape screen orientation.
      */
-    public static int REVERSE_LANDSCAPE = ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE;
+    var REVERSE_LANDSCAPE = ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE
 
     /**
      * Reverse portrait screen orientation.
      */
-    public static int REVERSE_PORTRAIT = ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT;
+    var REVERSE_PORTRAIT = ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT
 
     /**
      * clickChildViewWithId, clicks on a child view(for ex. button), inside a parent(for ex. note),
@@ -71,20 +66,18 @@ public class TestUtils {
      * @param id child's id number(for ex. button) to specify the exact child view.
      * @return the clicking action on child view.
      */
-    public static ViewAction clickChildViewWithId(final int id) {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return null;
+    fun clickChildViewWithId(id: Int): ViewAction {
+        return object : ViewAction {
+            override fun getConstraints(): Matcher<View>? {
+                return null
             }
 
             /**
              * Gets the description for the child view(for ex. button).
              * @return The child views description text.
              */
-            @Override
-            public String getDescription() {
-                return "Click on button";
+            override fun getDescription(): String {
+                return "Click on button"
             }
 
             /**
@@ -92,12 +85,11 @@ public class TestUtils {
              * @param uiController the controller, which controls operations about ui action types(clicks, scrolls, swipes, etc.).
              * @param view the parent or note.
              */
-            @Override
-            public void perform(UiController uiController, View view) {
-                View v = view.findViewById(id);
-                v.performClick();
+            override fun perform(uiController: UiController, view: View) {
+                val v = view.findViewById<View>(id)
+                v.performClick()
             }
-        };
+        }
     }
 
     /**
@@ -107,33 +99,30 @@ public class TestUtils {
      * @param typedText The text that is typed in Edittext.
      * @return The typing action on Edittext.
      */
-    public static ViewAction typeEdittextWithId(final int id, final String typedText) {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return null;
+    fun typeEdittextWithId(id: Int, typedText: String?): ViewAction {
+        return object : ViewAction {
+            override fun getConstraints(): Matcher<View>? {
+                return null
             }
 
             /**
              * getDescription, gets the description of what this ViewAction does.
              * @return The description text.
              */
-            @Override
-            public String getDescription() {
-                return "Type on Edittext";
+            override fun getDescription(): String {
+                return "Type on Edittext"
             }
 
             /**
-             * perform, handles the main typing mechanism/part when typing. It is the heart of <i>performing</i> the actual typing.
+             * perform, handles the main typing mechanism/part when typing. It is the heart of *performing* the actual typing.
              * @param uiController The controller, which controls operations about ui action types(clicks, scrolls, swipes etc.).
              * @param view the parent of the edittext(for ex. a folder).
              */
-            @Override
-            public void perform(UiController uiController, View view) {
-                EditText editText = view.findViewById(id);
-                editText.setText(typedText);
+            override fun perform(uiController: UiController, view: View) {
+                val editText = view.findViewById<EditText>(id)
+                editText.setText(typedText)
             }
-        };
+        }
     }
 
     /**
@@ -143,17 +132,16 @@ public class TestUtils {
      * @param itemMatcher The matcher that will be given in order for the item to be found.
      * @return The matcher that found the item.
      */
-    public static Matcher<View> atPosition(final int position, @NonNull final Matcher<View> itemMatcher) {
-        checkNotNull(itemMatcher);
-        return new BoundedMatcher<View, RecyclerView>(RecyclerView.class) {
+    fun atPosition(position: Int, itemMatcher: Matcher<View?>): BoundedMatcher<View?, RecyclerView> {
+        Intrinsics.checkNotNull(itemMatcher)
+        return object : BoundedMatcher<View?, RecyclerView>(RecyclerView::class.java) {
             /**
              * describeTo, gives a description about the item.
              * @param description The description of the item.
              */
-            @Override
-            public void describeTo(Description description) {
-                description.appendText("has item at position: " + position);
-                itemMatcher.describeTo(description);
+            override fun describeTo(description: Description) {
+                description.appendText("has item at position: $position")
+                itemMatcher.describeTo(description)
             }
 
             /**
@@ -161,31 +149,26 @@ public class TestUtils {
              * @param view The item on RecyclerView.
              * @return The result of a found item on a RecyclerView.
              */
-            @Override
-            protected boolean matchesSafely(RecyclerView view) {
-                RecyclerView.ViewHolder viewHolder = view.findViewHolderForAdapterPosition(position);
-                if (viewHolder == null) {
-                    //has no item on such position.
-                    return false;
-                }
-                return itemMatcher.matches(viewHolder.itemView);
+            override fun matchesSafely(view: RecyclerView): Boolean {
+                val viewHolder = view.findViewHolderForAdapterPosition(position)
+                    ?: //has no item on such position.
+                    return false
+                return itemMatcher.matches(viewHolder.itemView)
             }
-        };
+        }
     }
 
     /**
      * switchOrientation, switches the screen orientation(e.g. Landscape) of the device.
      */
-    public static void switchOrientation(ActivityScenarioRule<?> rule, int orientation) {
-        rule.getScenario().onActivity(activity -> activity.setRequestedOrientation(orientation));
+    fun switchOrientation(rule: ActivityScenarioRule<*>, orientation: Int) {
+        rule.scenario.onActivity { activity -> activity.requestedOrientation = orientation }
     }
 
-    /**
-     * isPopupWindow, returns the popup window(if it exists) to act on it.
-     * @return the popup window.
-     */
-    public static Matcher<Root> isPopupWindow() {
-        return isPlatformPopup();
-    }
-
+    val isPopupWindow: Matcher<Root>
+        /**
+         * isPopupWindow, returns the popup window(if it exists) to act on it.
+         * @return the popup window.
+         */
+        get() = RootMatchers.isPlatformPopup()
 }

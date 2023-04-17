@@ -20,6 +20,9 @@ You can help me or contribute to my repo and give me ideas by creating a new git
 ### License
 This app/repo, is licensed by the [GNU General Public License(GPL) Version 3.](LICENSE)
 
+### Privacy policy
+[This is the privacy policy](PRIVACY_POLICY.md) that specifies if the app collects any personal data from you and if there is requested permissions that is needed from you.
+
 ### Tools/ide used
 Built with Android Studio.
 

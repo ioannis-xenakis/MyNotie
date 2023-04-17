@@ -1,17 +1,15 @@
-package com.code_that_up.john_xenakis.my_notie.db;
+package com.code_that_up.john_xenakis.my_notie.db
 
-import androidx.room.Dao;
-import androidx.room.Delete;
-import androidx.room.Insert;
-import androidx.room.OnConflictStrategy;
-import androidx.room.Query;
-import androidx.room.RoomWarnings;
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import androidx.room.RoomWarnings
+import com.code_that_up.john_xenakis.my_notie.model.Folder
+import com.code_that_up.john_xenakis.my_notie.model.Note
+import com.code_that_up.john_xenakis.my_notie.model.NoteFolderJoin
 
-import com.code_that_up.john_xenakis.my_notie.model.Folder;
-import com.code_that_up.john_xenakis.my_notie.model.Note;
-import com.code_that_up.john_xenakis.my_notie.model.NoteFolderJoin;
-
-import java.util.List;
 /*
     My Notie is a note taking app, write notes and save them to see them and remember later.
     Copyright (C) 2021  Ioannis Xenakis
@@ -31,37 +29,36 @@ import java.util.List;
 
     Anything you want to contact me for, contact me with an e-mail, at: Xenakis.i.Contact@gmail.com
     I'll be happy to help you, or discuss anything with you! */
-
 /**
  * <h2>NotesFoldersJoinDAO</h2> is the Data Object Access for the connection link between folders and notes,
- *  is responsible for manipulating data from database and is depending on a many-to-many database relationship
- *  (1 folder has many notes and 1 note has many folders).
+ * is responsible for manipulating data from database and is depending on a many-to-many database relationship
+ * (1 folder has many notes and 1 note has many folders).
  * @author John/Ioannis Xenakis
  * @version 1.0
  */
 @Dao
-public interface NotesFoldersJoinDAO {
+interface NotesFoldersJoinDAO {
     /**
      * Inserts/adds a new/replaces an existent noteFolderJoin(a link between a note and a folder).
      * @param noteFolderJoin The connection link between a note and a folder. The link that is added.
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertNoteFolderJoin(NoteFolderJoin noteFolderJoin);
+    fun insertNoteFolderJoin(noteFolderJoin: NoteFolderJoin)
 
     /**
      * Deletes an existent noteFolderJoin(a link between a note and a folder).
      * @param noteFolderJoin The connection link between a note and a folder. The link that is deleted.
      */
     @Delete
-    void deleteNoteNoteFolderJoin(NoteFolderJoin noteFolderJoin);
+    fun deleteNoteNoteFolderJoin(noteFolderJoin: NoteFolderJoin)
 
     /**
-     * Gets notes <i>only</i> from a specific folder.
+     * Gets notes *only* from a specific folder.
      * @param folderId The unique folder id number for choosing the folder.
      * @return The notes list from the folder.
      */
     @Query("SELECT * FROM notes INNER JOIN note_folder_join ON notes.noteId=note_folder_join.noteId WHERE note_folder_join.folderId=:folderId")
-    List<Note> getNotesFromFolder(final int folderId);
+    fun getNotesFromFolder(folderId: Int): List<Note>?
 
     /**
      * Gets only the folders that is associated/connected with 1 note, that is specified by the note Id number.
@@ -70,5 +67,5 @@ public interface NotesFoldersJoinDAO {
      */
     @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
     @Query("SELECT * FROM folders INNER JOIN note_folder_join ON folders.folderId=note_folder_join.folderId WHERE note_folder_join.noteId=:noteId")
-    List<Folder> getFoldersFromNote(final int noteId);
+    fun getFoldersFromNote(noteId: Int): List<Folder>
 }

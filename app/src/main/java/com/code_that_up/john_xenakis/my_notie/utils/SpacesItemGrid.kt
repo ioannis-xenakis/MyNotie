@@ -1,12 +1,10 @@
-package com.code_that_up.john_xenakis.my_notie.utils;
+package com.code_that_up.john_xenakis.my_notie.utils
 
-import android.graphics.Rect;
-import android.view.View;
+import android.graphics.Rect
+import android.view.View
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
-import org.jetbrains.annotations.NotNull;
 /*
     My Notie is a note taking app, write notes and save them to see them and remember later.
     Copyright (C) 2021  Ioannis Xenakis
@@ -26,33 +24,23 @@ import org.jetbrains.annotations.NotNull;
 
     Anything you want to contact me for, contact me with an e-mail, at: Xenakis.i.Contact@gmail.com
     I'll be happy to help you, or discuss anything with you! */
-
 /**
  * SpacesItemGrid, is a class for adding space between items(for ex. notes, in notes list),
  * when multiple columns are in grid.
  * @author John/Ioannis Xenakis
  * @version 1.0
  */
-public class SpacesItemGrid  extends RecyclerView.ItemDecoration {
+class SpacesItemGrid
+(
     /**
      * The spacing/space in pixels.
      */
-    private final int space;
+    private val space: Int,
     /**
      * The number of columns.
      */
-    private final int spanCount;
-
-    /**
-     * The Constructor needed for the SpacesItemGrid class, to be initialized and called in another class/activity.
-     * @param space the space/spacing.
-     * @param spanCount the number of columns.
-     */
-    public SpacesItemGrid(int space, int spanCount) {
-        this.space = space;
-        this.spanCount = spanCount;
-    }
-
+    private val spanCount: Int
+) : ItemDecoration() {
     /**
      * getItemOffsets is the main method to be called, for calculating the spaces needed for each item(or should say note).
      * @param outRect the direction to be added space.
@@ -60,12 +48,15 @@ public class SpacesItemGrid  extends RecyclerView.ItemDecoration {
      * @param parent the RecyclerView,(or notes list).
      * @param state the current state of the RecyclerView(or notes list).
      */
-    @Override
-    public void getItemOffsets(@NonNull @NotNull Rect outRect, @NonNull @NotNull View view, @NonNull @NotNull RecyclerView parent, @NonNull @NotNull RecyclerView.State state) {
-        int position = parent.getChildAdapterPosition(view); // item position.
-        int column = position % spanCount; // item column.
-
-        outRect.left = column * space / spanCount;
-        outRect.right = space - (column + 1) * space / spanCount;
+    override fun getItemOffsets(
+        outRect: Rect,
+        view: View,
+        parent: RecyclerView,
+        state: RecyclerView.State
+    ) {
+        val position = parent.getChildAdapterPosition(view) // item position.
+        val column = position % spanCount // item column.
+        outRect.left = column * space / spanCount
+        outRect.right = space - (column + 1) * space / spanCount
     }
 }

@@ -1,12 +1,12 @@
-package com.code_that_up.john_xenakis.my_notie.utils;
+package com.code_that_up.john_xenakis.my_notie.utils
 
-import com.code_that_up.john_xenakis.my_notie.db.NotesDAO;
-import com.code_that_up.john_xenakis.my_notie.model.Note;
+import com.code_that_up.john_xenakis.my_notie.db.NotesDAO
+import com.code_that_up.john_xenakis.my_notie.model.Note
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 /*
     My Notie is a note taking app, write notes and save them to see them and remember later.
     Copyright (C) 2021  Ioannis Xenakis
@@ -26,21 +26,21 @@ import java.util.Locale;
 
     Anything you want to contact me for, contact me with an e-mail, at: Xenakis.i.Contact@gmail.com
     I'll be happy to help you, or discuss anything with you! */
-
 /**
  * <h2>NoteUtils</h2> is a class, which contains utilities/tools for notes.
  * @author John/Ioannis Xenakis
  * @version 1.0
  */
-public class NoteUtils {
+object NoteUtils {
     /**
      * dateFromLong, creates and returns a date when the note is created/edited.
      * @param time the time/date the note is created/edited.
      * @return the time/date, the note is created/edited.
      */
-    public static String dateFromLong (long time) {
-        DateFormat format = new SimpleDateFormat("'Last edited: ' dd/MMM/yyyy ' ' hh:mm", Locale.US);
-        return format.format(new Date(time));
+    fun dateFromLong(time: Long): String {
+        val format: DateFormat =
+            SimpleDateFormat("'Last edited: ' dd/MMM/yyyy ' ' hh:mm", Locale.US)
+        return format.format(Date(time))
     }
 
     /**
@@ -48,15 +48,16 @@ public class NoteUtils {
      * @param noteDao The Data Object Access for notes which is responsible for manipulating data, from database.
      * @param note The note that its id, is incremented.
      */
-    public static void increaseNoteIdByOne (NotesDAO noteDao, Note note) {
-        if (!noteDao.getListOfNoteIds().contains(noteDao.getMaxNoteId() + 1)) {
-            note.setId(noteDao.getMaxNoteId() + 1);
+    @JvmStatic
+    fun increaseNoteIdByOne(noteDao: NotesDAO, note: Note) {
+        if (!noteDao.listOfNoteIds!!.contains(noteDao.maxNoteId + 1)) {
+            note.id = noteDao.maxNoteId + 1
         } else {
-            int increasedNoteId = noteDao.getMaxNoteId() + 1;
-            while (noteDao.getListOfNoteIds().contains(increasedNoteId)) {
-                increasedNoteId++;
+            var increasedNoteId = noteDao.maxNoteId + 1
+            while (noteDao.listOfNoteIds!!.contains(increasedNoteId)) {
+                increasedNoteId++
             }
-            note.setId(increasedNoteId);
+            note.id = increasedNoteId
         }
     }
 }
