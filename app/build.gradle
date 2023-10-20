@@ -25,6 +25,7 @@ android {
     sourceSets {
         androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
     }
+    namespace 'com.code_that_up.john_xenakis.my_notie'
 }
 
 dependencies {
