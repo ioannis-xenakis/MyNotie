@@ -1,14 +1,12 @@
-package com.code_that_up.john_xenakis.my_notie.db;
+package com.code_that_up.john_xenakis.my_notie.db
 
-import androidx.room.Dao;
-import androidx.room.Delete;
-import androidx.room.Insert;
-import androidx.room.Query;
-import androidx.room.Update;
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.Query
+import androidx.room.Update
+import com.code_that_up.john_xenakis.my_notie.model.Folder
 
-import com.code_that_up.john_xenakis.my_notie.model.Folder;
-
-import java.util.List;
 /*
     My Notie is a note taking app, write notes and save them to see them and remember later.
     Copyright (C) 2021  Ioannis Xenakis
@@ -28,7 +26,6 @@ import java.util.List;
 
     Anything you want to contact me for, contact me with an e-mail, at: Xenakis.i.Contact@gmail.com
     I'll be happy to help you, or discuss anything with you! */
-
 /**
  * <h2>FoldersDAO</h2> is the Data Object Access for folders,
  * which is responsible for manipulating data and insert, delete and update folders, from database.
@@ -36,48 +33,46 @@ import java.util.List;
  * @version 1.0
  */
 @Dao
-public interface FoldersDAO {
-
+interface FoldersDAO {
     /**
      * insertFolder, inserts/adds a new folder to the database.
      * @param folder The new folder.
      */
     @Insert
-    void insertFolder(Folder folder);
+    fun insertFolder(folder: Folder)
 
     /**
      * deleteFolder, deletes a folder from database.
      * @param folder The folder, to be deleted.
      */
     @Delete
-    void deleteFolder(Folder folder);
+    fun deleteFolder(folder: Folder)
 
     /**
      * updateFolder, updates an existing folder, from database.
      * @param folder The folder, to be updated.
      */
     @Update
-    void updateFolder(Folder folder);
+    fun updateFolder(folder: Folder)
 
     /**
      * Gets all folders, from database.
      * @return All existing folders.
      */
-    @Query("SELECT * FROM folders")
-    List<Folder> getAllFolders();
+    @get:Query("SELECT * FROM folders")
+    val allFolders: List<Folder?>?
 
     /**
      * Gets the last/higher folder Id number.
      * @return The last/higher folder Id number.
      */
-    @Query("SELECT MAX(folderId) FROM folders")
-    int getMaxFolderId();
+    @get:Query("SELECT MAX(folderId) FROM folders")
+    val maxFolderId: Int
 
     /**
      * Gets all the folder Id's in a list.
      * @return The folder Id's list.
      */
-    @Query("SELECT folderId FROM folders")
-    List<Integer> getListOfFolderIds();
-
+    @get:Query("SELECT folderId FROM folders")
+    val listOfFolderIds: List<Int?>?
 }
