@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    My Notie is a note taking app, write notes and save them to see them and remember later.
+    Copyright (C) 2021  Ioannis Xenakis
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+    Anything you want to contact me for, contact me with an e-mail, at: Xenakis.i.Contact@gmail.com
+    I'll be happy to help you, or discuss anything with you! -->
+
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/note"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/note_between_space"
+    android:clickable="true"
+    android:focusable="true"
+    android:checkable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:shapeAppearance="@style/ShapeAppearance.Notes.MediumComponent"
+    app:cardBackgroundColor="@color/colorWhite"
+    app:cardElevation="2dp">
+    <!-- Actual note that is added in notes list(RecyclerView called notes_list)
+    from my notes page(MyNotesActivity and activity_my_notes layout.) -->
+
+    <LinearLayout
+        android:id="@+id/noteLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <!-- Note title, note body text and note date. -->
+        <LinearLayout
+            android:id="@+id/note_text"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="10.5">
+
+            <!-- Note title text containing title of note. -->
+            <TextView
+                android:id="@+id/note_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_medium"
+                android:text="@string/note_title"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/note_title_text_size"
+                android:maxLines="2"
+                android:ellipsize="end" />
+
+            <!-- Note body text
+            containing the actual main content text of note. -->
+            <TextView
+                android:id="@+id/note_body_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_regular"
+                android:text="@string/note_body_text"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/note_body_text_size"
+                android:maxLines="2"
+                android:ellipsize="end" />
+
+            <!-- Chip group for displaying folders(chips) on a note. -->
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/folder_chip_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end" />
+
+            <!-- Note date text,
+            displaying the last date of edited/created note. -->
+            <TextView
+                android:id="@+id/note_date"
+                android:layout_width="wrap_content"
+                android:layout_height="16dp"
+                android:fontFamily="@font/roboto_light"
+                android:text="@string/note_date_text"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/note_date_text_size"
+                android:layout_gravity="end" />
+
+        </LinearLayout>
+
+        <!-- More menu button displaying dropdown menu:
+        Add to folder button.
+        Delete note(delete_only_this_note_button) button. -->
+        <Button
+            android:id="@+id/more_menu_button"
+            style="?attr/borderlessButtonStyle"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            app:icon="@drawable/more_vert"
+            app:iconTint="@color/colorBlack"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

@@ -1,0 +1,99 @@
+<!--
+    My Notie is a note taking app, write notes and save them to see them and remember later.
+    Copyright (C) 2021  Ioannis Xenakis
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+    Anything you want to contact me for, contact me with an e-mail, at: Xenakis.i.Contact@gmail.com
+    I'll be happy to help you, or discuss anything with you! -->
+
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="coordinatorLayoutStyle">@style/Widget.Support.CoordinatorLayout</item>
+        <item name="floatingActionButtonStyle">@style/Widget.Design.FloatingActionButton</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorOnPrimary">@color/colorBlack</item>
+        <item name="textAppearanceLargePopupMenu">@style/TextAppearance.MyNotie.Subtitle1</item>
+        <item name="textAppearanceSmallPopupMenu">@style/TextAppearance.MyNotie.Subtitle1</item>
+        <item name="popupMenuBackground">@drawable/popup_menu_background</item>
+        <item name="chipStyle">@style/ChipStyle</item>
+        <item name="chipGroupStyle">@style/ChipGroupStyle</item>
+    </style>
+
+    <style name="ChipStyle" parent="Widget.MaterialComponents.Chip.Action">
+        <item name="android:textAppearance">@style/ChipTextAppearance</item>
+        <item name="shapeAppearance">@style/ChipShapeAppearance</item>
+        <!-- "EnsureMinTouchTargetSize = false", disables/removes the unnecessary space from top and bottom chip.
+        That space is for ensuring the touch space size is not too small for user to tap.
+        Although in this case tap space is not needed, thus I removed that space. -->
+        <item name="ensureMinTouchTargetSize">false</item>
+    </style>
+
+    <style name="ChipGroupStyle" parent="Widget.MaterialComponents.ChipGroup">
+        <item name="chipSpacingHorizontal">3dp</item>
+        <item name="chipSpacingVertical">3dp</item>
+    </style>
+
+    <style name="ChipTextAppearance" parent="TextAppearance.MaterialComponents.Chip">
+        <item name="fontFamily">@font/roboto_light</item>
+    </style>
+
+    <style name="ChipShapeAppearance" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeBottomLeft">4dp</item>
+        <item name="cornerSizeBottomRight">4dp</item>
+        <item name="cornerSizeTopLeft">4dp</item>
+        <item name="cornerSizeTopRight">14dp</item>
+    </style>
+    
+    <style name="ShapeAppearance.Notes.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeBottomLeft">9dp</item>
+        <item name="cornerSizeBottomRight">9dp</item>
+        <item name="cornerSizeTopLeft">9dp</item>
+        <item name="cornerSizeTopRight">40dp</item>
+    </style>
+
+    <style name="ShapeAppearance.NoteEdittext.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeBottomLeft">9dp</item>
+        <item name="cornerSizeBottomRight">9dp</item>
+        <item name="cornerSizeTopLeft">9dp</item>
+        <item name="cornerSizeTopRight">40dp</item>
+    </style>
+
+    <style name="ShapeAppearance.Edittext.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name='cornerFamily'>rounded</item>
+        <item name="cornerSizeBottomLeft">9dp</item>
+        <item name="cornerSizeBottomRight">9dp</item>
+        <item name="cornerSizeTopLeft">9dp</item>
+        <item name="cornerSizeTopRight">40dp</item>
+    </style>
+
+    <style name="TextAppearance.MyNotie.Subtitle1" parent="TextAppearance.MaterialComponents.Subtitle1">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textColor">@color/colorBlack</item>
+    </style>
+    
+    <style name="FontStyleRobotoRegular">
+        <item name="android:fontFamily">@font/roboto_regular</item>
+    </style>
+
+</resources>

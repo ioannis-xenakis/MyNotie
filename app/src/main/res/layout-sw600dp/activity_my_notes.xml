@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    My Notie is a note taking app, write notes and save them to see them and remember later.
+    Copyright (C) 2021  Ioannis Xenakis
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+    Anything you want to contact me for, contact me with an e-mail, at: Xenakis.i.Contact@gmail.com
+    I'll be happy to help you, or discuss anything with you! -->
+
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/wooden_background"
+    tools:context=".MyNotesActivity">
+<!-- My notes activity is the starting activity when app starts. -->
+<!-- DrawerLayout needed for navigation drawer(navigation view). -->
+
+    <!-- The actual main content for My notes activity. -->
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- List(RecyclerView) containing the existing notes. -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/notes_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingHorizontal="@dimen/note_horizontal_edges_space"
+            android:paddingTop="@dimen/note_top_edge_space"
+            android:paddingBottom="@dimen/note_bot_edge_space"
+            android:clipToPadding="false" />
+
+        <!-- Top app bar with replaceable content. -->
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:liftOnScroll="true">
+
+            <!-- Top app bar with only page title. -->
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/top_app_bar_my_notes"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:visibility="visible"
+                app:title="@string/page_title"
+                app:menu="@menu/menu_bottom_top_bar"
+                app:navigationIcon="@drawable/menu_icon"
+                android:background="@color/colorPrimary"
+                app:layout_scrollFlags="scroll|enterAlways|snap" />
+
+            <!-- Top app bar for searching specific notes
+            depending on user input, in user input field
+            (EditText called with id search_edittext). -->
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/top_app_bar_search"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:visibility="gone"
+                android:background="@color/colorPrimary"
+                app:navigationIcon="@drawable/close_icon"
+                app:layout_scrollFlags="scroll|enterAlways|snap">
+
+                <!-- User input field(EditText) for user searching notes
+                depending on user typed text. -->
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/search_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="17dp"
+                    android:layout_marginRight="17dp"
+                    android:hint="@string/search_edittext_hint"
+                    android:cursorVisible="true"
+                    android:imeOptions="flagNoFullscreen" />
+
+            </com.google.android.material.appbar.MaterialToolbar>
+
+            <!-- Top app bar for selecting specific notes,
+            or all notes, for deleting them. -->
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/top_app_bar_select_notes"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:visibility="gone"
+                app:title="@string/notes_selected"
+                android:background="@color/colorPrimary"
+                app:navigationIcon="@drawable/close_icon"
+                app:navigationContentDescription="@string/content_description_select_notes_navigation"
+                app:layout_scrollFlags="scroll|enterAlways|snap"
+                app:menu="@menu/menu_top_bar_select_notes" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <!-- Floating action button(add_new_note) for adding new note. -->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/add_new_note"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fabCustomSize="63.96dp"
+            android:src="@drawable/add_note_icon"
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="19.5dp"
+            android:layout_marginRight="19.5dp"
+            android:layout_marginBottom="20.1dp"
+            android:contentDescription="@string/content_description_add_new_note" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <!-- Side Navigation Drawer(Navigation View) containing
+    selecting to see all notes,
+    folders,
+    adding new folders/managing existing ones. -->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:headerLayout="@layout/nav_header_layout"
+        app:itemTextAppearance="@style/FontStyleRobotoRegular"
+        app:itemTextColor="@color/colorSemiTranspBlack" />
+
+</androidx.drawerlayout.widget.DrawerLayout>
