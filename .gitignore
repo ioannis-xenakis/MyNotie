@@ -3,7 +3,6 @@
 /local.properties
 /.idea
 .DS_Store
-/build
 /captures
 .externalNativeBuild
 
@@ -17,6 +16,5 @@ local.properties
 *.log
 
 # Android Studio specific files
-*.iml
 *.ipr
 *.iws
