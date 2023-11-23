@@ -51,7 +51,7 @@
             android:ellipsize="end"
             android:fontFamily="@font/roboto_regular"
             android:textSize="16dp"
-            android:textColor="@color/colorBlack"
+            android:textColor="?attr/colorOnSurface"
             android:hint="@string/folder_name_hint_manage_folders"
             android:textColorHint="#757575" />
 
@@ -77,6 +77,6 @@
         android:layout_height="1dp"
         android:layout_marginLeft="@dimen/left_space_separator_line_folder_manage_folders"
         android:layout_marginStart="@dimen/left_space_separator_line_folder_manage_folders"
-        android:background="@color/colorGrey" />
+        android:background="?attr/dividerColor" />
 
 </LinearLayout>

@@ -25,23 +25,35 @@
         <!-- Customize your theme here. -->
         <item name="coordinatorLayoutStyle">@style/Widget.Support.CoordinatorLayout</item>
         <item name="floatingActionButtonStyle">@style/Widget.Design.FloatingActionButton</item>
-        <item name="colorPrimary">@color/blue</item>
-        <item name="colorPrimaryDark">@color/dark_blue</item>
-        <item name="colorAccent">@color/teal_blue</item>
-        <item name="colorOnPrimary">@color/black</item>
-        <item name="android:colorBackground">@color/white</item>
-        <item name="colorOnBackground">@color/black</item>
-        <item name="colorSurface">@color/white</item>
-        <item name="colorOnSurface">@color/black</item>
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimaryDark">@color/black</item>
+        <item name="colorAccent">@color/black</item>
+        <item name="colorPrimarySurface">@color/black</item>
+        <item name="colorOnPrimarySurface">@color/white</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="android:colorBackground">@color/black</item>
+        <item name="colorOnBackground">@color/white</item>
+        <item name="colorSurface">@color/black</item>
+        <item name="colorOnSurface">@color/white</item>
+        <item name="colorError">@color/white</item>
         <item name="dividerColor">@color/grey</item>
-        <item name="tickColor">@color/green</item>
-        <item name="colorControlNormal">@color/black</item>
+        <item name="tickColor">@color/white</item>
+        <item name="colorControlNormal">@color/white</item>
+        <item name="checkboxStyle">@style/CheckBoxStyle</item>
         <item name="textAppearanceLargePopupMenu">@style/TextAppearance.MyNotie.Subtitle1</item>
         <item name="textAppearanceSmallPopupMenu">@style/TextAppearance.MyNotie.Subtitle1</item>
         <item name="popupMenuBackground">@drawable/popup_menu_background</item>
         <item name="chipStyle">@style/ChipStyle</item>
         <item name="chipGroupStyle">@style/ChipGroupStyle</item>
         <item name="actionOverflowButtonStyle">@style/overflowButtonStyle</item>
+    </style>
+
+    <style name="CheckBoxStyle" parent="Widget.MaterialComponents.CompoundButton.CheckBox">
+        <item name="materialThemeOverlay">@style/CheckBoxThemeOverlayStyle</item>
+    </style>
+
+    <style name="CheckBoxThemeOverlayStyle" parent="">
+        <item name="colorAccent">@color/white</item>
     </style>
 
     <style name="overflowButtonStyle" parent="Widget.AppCompat.ActionButton.Overflow">
@@ -73,7 +85,7 @@
         <item name="cornerSizeTopLeft">4dp</item>
         <item name="cornerSizeTopRight">14dp</item>
     </style>
-    
+
     <style name="ShapeAppearance.Notes.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSizeBottomLeft">9dp</item>
@@ -101,9 +113,9 @@
     <style name="TextAppearance.MyNotie.Subtitle1" parent="TextAppearance.MaterialComponents.Subtitle1">
         <item name="fontFamily">@font/roboto_regular</item>
         <item name="android:fontFamily">@font/roboto_regular</item>
-        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:textColor">@color/white</item>
     </style>
-    
+
     <style name="FontStyleRobotoRegular">
         <item name="android:fontFamily">@font/roboto_regular</item>
     </style>

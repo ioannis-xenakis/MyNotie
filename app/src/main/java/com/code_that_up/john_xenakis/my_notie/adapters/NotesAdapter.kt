@@ -16,6 +16,7 @@ import com.code_that_up.john_xenakis.my_notie.callbacks.MoreMenuButtonListener
 import com.code_that_up.john_xenakis.my_notie.callbacks.NoteEventListener
 import com.code_that_up.john_xenakis.my_notie.db.NotesDB
 import com.code_that_up.john_xenakis.my_notie.model.Note
+import com.code_that_up.john_xenakis.my_notie.utils.NoteChangePayload
 import com.code_that_up.john_xenakis.my_notie.utils.NoteDiffCallback
 import com.code_that_up.john_xenakis.my_notie.utils.NoteUtils
 import com.google.android.material.button.MaterialButton
@@ -88,6 +89,33 @@ class NotesAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val v = LayoutInflater.from(context).inflate(R.layout.note_layout, parent, false)
         return NoteHolder(v)
+    }
+
+    /**
+     * Binds the needed data onto the viewHolder/note and displays each note to the proper position.
+     * @param holder The holder that holds the data of each note.
+     * @param position The position of the note, in the RecyclerView/note list.
+     * @param payloads Determines if any change/changes has been made in a note.
+     */
+    override fun onBindViewHolder(
+        holder: RecyclerView.ViewHolder,
+        position: Int,
+        payloads: MutableList<Any>
+    ) {
+        val noteHolder = holder as NoteHolder
+
+        when (val latestPayload = payloads.lastOrNull()) {
+            is NoteChangePayload.NoteTitle ->
+                noteHolder.noteTitle.text = latestPayload.newNoteTitle
+
+            is NoteChangePayload.NoteBodyText ->
+                noteHolder.noteBodyText.text = latestPayload.newNoteBodyText
+
+            is NoteChangePayload.NoteDateEdited ->
+                noteHolder.noteDate.text = NoteUtils.dateFromLong(latestPayload.newNoteDateEdited!!)
+
+            else -> onBindViewHolder(holder, position)
+        }
     }
 
     /**
@@ -330,8 +358,8 @@ class NotesAdapter(
      * Updates/refreshes the *note list(RecyclerView)*.
      * @param newNoteList The new note list containing the new data, to refresh/update to.
      */
-    fun updateNoteList(newNoteList: List<Note>?) {
-        val diffCallback = NoteDiffCallback(notes, newNoteList!!)
+    fun updateNoteList(newNoteList: List<Note>) {
+        val diffCallback = NoteDiffCallback(notes.toList(), newNoteList)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
         notes.clear()
         notes.addAll(newNoteList)
@@ -344,8 +372,8 @@ class NotesAdapter(
      * which some of its notes might not be displayed on screen.
      * @param newNoteList The new note list containing the new data, to refresh/update to.
      */
-    fun updateNoteListAndNotesFull(newNoteList: List<Note>?) {
-        val diffCallback = NoteDiffCallback(notes, newNoteList!!)
+    fun updateNoteListAndNotesFull(newNoteList: List<Note>) {
+        val diffCallback = NoteDiffCallback(notes, newNoteList)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
         notes.clear()
         notes.addAll(newNoteList)
@@ -382,11 +410,11 @@ class NotesAdapter(
         val foldersFromNoteList =
             NotesDB.getInstance(context)!!.notesFoldersJoinDAO()!!.getFoldersFromNote(note.id)
         noteHolder.folderChipGroup.removeAllViews()
-        for (folder in foldersFromNoteList!!) {
+        for (folder in foldersFromNoteList) {
             noteHolder.folderChipGroup.addView(object : Chip(context) {
                 init {
                     id = ViewCompat.generateViewId()
-                    text = folder!!.folderName!!.trim { it <= ' ' }
+                    text = folder.folderName!!.trim { it <= ' ' }
                     contentDescription = "Folder chip"
                     isCheckable = false
                     isClickable = false

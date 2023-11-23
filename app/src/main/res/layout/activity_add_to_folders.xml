@@ -23,7 +23,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/colorBlueGrey"
+    android:background="?android:attr/colorBackground"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AddToFoldersActivity">
@@ -34,7 +34,7 @@
         android:id="@+id/folder_list_add_to_folders"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@color/colorWhite"
+        android:background="?attr/colorSurface"
         app:layout_constraintTop_toBottomOf="@id/add_new_folder_layout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -64,7 +64,7 @@
             android:layout_height="?attr/actionBarSize"
             android:visibility="visible"
             app:title="@string/page_title_add_to_folders"
-            android:background="@color/colorWhite"
+            android:background="?attr/colorSurface"
             app:navigationIcon="@drawable/go_back_icon"
             app:navigationContentDescription="@string/content_description_add_to_folders_navigation"
             app:layout_scrollFlags="scroll|enterAlways|snap" />
@@ -82,7 +82,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginTop="@dimen/view_space_add_to_folders"
-        android:background="@color/colorWhite">
+        android:background="?attr/colorSurface">
 
         <!-- The button for adding new folder. -->
         <ImageButton
@@ -116,7 +116,6 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:shapeAppearanceOverlay="@style/ShapeAppearance.Edittext.SmallComponent"
-            app:boxStrokeColor="@color/colorPrimary"
             app:boxStrokeWidth="0dp"
             app:boxStrokeWidthFocused="2dp"
             android:hint="@string/name_new_folder_edittext_hint"

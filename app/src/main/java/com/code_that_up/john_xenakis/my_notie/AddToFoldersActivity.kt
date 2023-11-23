@@ -1,5 +1,7 @@
 package com.code_that_up.john_xenakis.my_notie
 
+import android.app.Activity
+import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.text.Editable
@@ -90,15 +92,10 @@ class AddToFoldersActivity : AppCompatActivity() {
         folderDao = NotesDB.getInstance(this)!!.foldersDAO()
         val orientation = resources.configuration.orientation
         val smallestScreenWidth = resources.configuration.smallestScreenWidthDp
-        val notesDAO = NotesDB.getInstance(this)!!.notesDAO()
 
         //Get the note from "My Notes Activity", to be added to folders.
         if (intent.extras != null) {
-            val id = intent.extras!!
-                .getInt(NOTE_EXTRA_KEY, 0)
-            note = notesDAO!!.getNoteById(id)
-        } else {
-            Log.e("MyNotie", "Note id is not found/is null.")
+            note = intent!!.extras!!.getParcelable(NOTE_KEY)
         }
 
         //For different screen orientations(Portrait or Landscape). Mobile phones only and smaller device screen sizes.
@@ -183,6 +180,17 @@ class AddToFoldersActivity : AppCompatActivity() {
         topAppBar.setNavigationOnClickListener { finish() }
     }
 
+    override fun finish() {
+        val editNoteIntent = Intent(this, EditNoteActivity::class.java)
+        val checkedFolderList = foldersAdapter?.getCheckedFolders()!!
+        val unCheckedFolderList = foldersAdapter?.getUnCheckedFolders()!!
+        editNoteIntent.putExtra(NOTE_KEY, note)
+        editNoteIntent.putParcelableArrayListExtra(FOLDER_LIST_KEY, ArrayList(checkedFolderList))
+        editNoteIntent.putParcelableArrayListExtra(UNCHECKED_FOLDERS_KEY, ArrayList(unCheckedFolderList))
+        setResult(Activity.RESULT_OK, editNoteIntent)
+        super.finish()
+    }
+
     /**
      * saveNewFolder, saves and adds the new folder, to the database and folders list.
      * @param name_new_folder_text The Material Edittext "Name new folder text" for user to type his new folder name.
@@ -221,42 +229,21 @@ class AddToFoldersActivity : AppCompatActivity() {
      * in *folders list*.
      */
     private fun loadFolders() {
-        val notesFoldersJoinDao = NotesDB.getInstance(this)!!.notesFoldersJoinDAO()
-        val folderList = folderDao!!.allFolders
-        val checkedFolderList = notesFoldersJoinDao!!.getFoldersFromNote(
-            note!!.id
-        )
-        val folders = ArrayList(folderList!!)
-        checkAlreadyCheckedFolders(checkedFolderList, folderList)
+        val folderList = folderDao!!.allFolders?.let { ArrayList(it) }
+        val checkedFolderList = intent.extras?.getParcelableArrayList<Folder>(FOLDER_LIST_KEY)
+        val unCheckedFolderList = intent.extras?.getParcelableArrayList<Folder>(UNCHECKED_FOLDERS_KEY)
+        note = intent.extras?.getParcelable(NOTE_KEY)
+
         foldersAdapter = FoldersAddToFoldersAdapter(
-            folders,
+            folderList,
             checkedFolderList?.toMutableList(),
+            unCheckedFolderList?.toMutableList(),
             note!!,
             this,
-            folderDao!!,
-            notesFoldersJoinDao
+            folderDao!!
         )
+        foldersAdapter!!.checkAlreadyCheckedFolders()
         foldersListRv!!.adapter = foldersAdapter
-    }
-
-    /**
-     * Checks the already checked state of checkbox in a folder and loads all checked folders.
-     * @param checkedFolderList The folder list that contains the checked folders.
-     * @param folderList The list of all folders that exist.
-     */
-    private fun checkAlreadyCheckedFolders(
-        checkedFolderList: List<Folder?>?,
-        folderList: List<Folder?>?
-    ) {
-        if (checkedFolderList != null && folderList != null) {
-            for (checkedFolder in checkedFolderList) {
-                for (folder in folderList) {
-                    if (checkedFolder!!.id == folder!!.id) {
-                        folder.checked = true
-                    }
-                }
-            }
-        }
     }
 
     /**
@@ -298,5 +285,20 @@ class AddToFoldersActivity : AppCompatActivity() {
          * The id number of the note, that *identifies* the note, to be added to folders.
          */
         const val NOTE_EXTRA_KEY = "note_id"
+
+        /**
+         * The note extra key for accessing note as an object.
+         */
+        const val NOTE_KEY = "note"
+
+        /**
+         * The folder list key for accessing folder list.
+         */
+        const val FOLDER_LIST_KEY = "folder_list"
+
+        /**
+         * The unchecked folders list extra key for accessing unchecked folder list.
+         */
+        const val UNCHECKED_FOLDERS_KEY = "unchecked_folder_list"
     }
 }

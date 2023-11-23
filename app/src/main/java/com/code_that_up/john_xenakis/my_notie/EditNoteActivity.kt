@@ -1,15 +1,21 @@
 package com.code_that_up.john_xenakis.my_notie
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.appcompat.app.AppCompatActivity
+import com.code_that_up.john_xenakis.my_notie.db.FoldersDAO
 
 import com.code_that_up.john_xenakis.my_notie.db.NotesDAO
 import com.code_that_up.john_xenakis.my_notie.db.NotesDB.Companion.getInstance
+import com.code_that_up.john_xenakis.my_notie.db.NotesFoldersJoinDAO
+import com.code_that_up.john_xenakis.my_notie.model.Folder
 import com.code_that_up.john_xenakis.my_notie.model.Note
+import com.code_that_up.john_xenakis.my_notie.model.NoteFolderJoin
 import com.code_that_up.john_xenakis.my_notie.utils.NoteUtils
 import com.code_that_up.john_xenakis.my_notie.utils.OtherUtils
 import com.google.android.material.appbar.MaterialToolbar
@@ -64,6 +70,26 @@ class EditNoteActivity : AppCompatActivity() {
     private var notesDAO: NotesDAO? = null
 
     /**
+     * The folders DAO(Data Object Access) for accessing folder objects(folders), from database.
+     */
+    private var foldersDAO: FoldersDAO? = null
+
+    /**
+     * The notesFoldersJoin DAO(Data Object Access) which is responsible for accessing notesFoldersJoin object, from database.
+     */
+    private var notesFoldersJoinDAO: NotesFoldersJoinDAO? = null
+
+    /**
+     * The folder list with only checked folders.
+     */
+    private var checkedFolderList: ArrayList<Folder>? = null
+
+    /**
+     * The folder list with only unchecked folders.
+     */
+    private var unCheckedFolderList: ArrayList<Folder>? = null
+
+    /**
      * The note title text when first appears and gets created, when this Activity loads.
      */
     private var oldNoteTitle: String? = null
@@ -88,6 +114,8 @@ class EditNoteActivity : AppCompatActivity() {
         noteBodyText = findViewById(R.id.note_body_text)
         val topAppBar = findViewById<MaterialToolbar>(R.id.top_app_bar_edit_note)
         notesDAO = getInstance(this)!!.notesDAO()
+        foldersDAO = getInstance(this)!!.foldersDAO()
+        notesFoldersJoinDAO = getInstance(this)!!.notesFoldersJoinDAO()
         if (intent.extras != null) {
             val id = intent.extras!!
                 .getInt(NOTE_EXTRA_KEY, 0)
@@ -102,6 +130,8 @@ class EditNoteActivity : AppCompatActivity() {
         }
         oldNoteTitle = Objects.requireNonNull(noteTitle!!.text).toString()
         oldNoteBodyText = Objects.requireNonNull(noteBodyText!!.text).toString()
+        checkedFolderList = ArrayList(notesFoldersJoinDAO!!.getFoldersFromNote(note!!.id))
+        unCheckedFolderList = ArrayList()
 
         //Left arrow/Go back icon, on Top App Bar.
         topAppBar.setNavigationOnClickListener { finish() }
@@ -122,9 +152,11 @@ class EditNoteActivity : AppCompatActivity() {
         if (noteTitleString == "" && noteBodyTextString == "") {
             notesDAO!!.deleteNote(note!!)
         } else if (oldNoteTitle == noteTitleString && oldNoteBodyText == noteBodyTextString) {
+            saveNoteToFolders()
             finishNoSave()
         } else {
             saveNewNoteOrUpdateNote()
+            saveNoteToFolders()
         }
     }
 
@@ -149,6 +181,21 @@ class EditNoteActivity : AppCompatActivity() {
                 e.printStackTrace()
                 Toast.makeText(applicationContext, "Saving note failed!", Toast.LENGTH_SHORT).show()
             }
+        }
+    }
+
+    /**
+     * Saves note to checked folders.
+     */
+    private fun saveNoteToFolders() {
+        for (unCheckedFolder in unCheckedFolderList!!) {
+            val noteFolderJoin = NoteFolderJoin(note!!.id, unCheckedFolder.id)
+            notesFoldersJoinDAO!!.deleteNoteNoteFolderJoin(noteFolderJoin)
+        }
+
+        for (checkedFolder in checkedFolderList!!) {
+            val noteFolderJoin = NoteFolderJoin(note!!.id, checkedFolder.id)
+            notesFoldersJoinDAO!!.insertNoteFolderJoin(noteFolderJoin)
         }
     }
 
@@ -198,16 +245,28 @@ class EditNoteActivity : AppCompatActivity() {
      */
     fun onAddToFoldersButtonClick(menuItem: MenuItem?) {
         if (note != null) {
-            saveNewNoteOrUpdateNote()
-            isItNewNote = false
             val addToFolder = Intent(this, AddToFoldersActivity::class.java)
             Log.d(TAG, "AddToFoldersButtonClick, note id: " + note!!.id)
             addToFolder.putExtra(AddToFoldersActivity.NOTE_EXTRA_KEY, note!!.id)
-            startActivity(addToFolder)
+            addToFolder.putExtra(AddToFoldersActivity.NOTE_KEY, note)
+            addToFolder.putParcelableArrayListExtra(AddToFoldersActivity.FOLDER_LIST_KEY, checkedFolderList)
+            addToFolder.putParcelableArrayListExtra(AddToFoldersActivity.UNCHECKED_FOLDERS_KEY, unCheckedFolderList)
+            resultLauncher.launch(addToFolder)
         } else {
             Log.d(TAG, "Note is null(doesn't exist).")
             Toast.makeText(applicationContext, "Adding to folders failed!", Toast.LENGTH_SHORT)
                 .show()
+        }
+    }
+
+    /**
+     * The result launcher for managing/launching other activities,
+     * together with managing/setting results for returning from another activity, values.
+     */
+    private var resultLauncher = registerForActivityResult(StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            checkedFolderList = result.data?.extras?.getParcelableArrayList(AddToFoldersActivity.FOLDER_LIST_KEY)
+            unCheckedFolderList = result.data?.extras?.getParcelableArrayList(AddToFoldersActivity.UNCHECKED_FOLDERS_KEY)
         }
     }
 

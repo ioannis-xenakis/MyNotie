@@ -58,7 +58,7 @@
                 android:layout_height="?attr/actionBarSize"
                 android:visibility="visible"
                 app:title="@string/page_title"
-                android:background="@color/colorWhite"
+                android:background="?attr/colorSurface"
                 app:layout_scrollFlags="scroll|enterAlways|snap" />
 
             <!-- Top app bar for searching specific notes
@@ -69,7 +69,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:visibility="gone"
-                android:background="@color/colorWhite"
+                android:background="?attr/colorSurface"
                 app:navigationIcon="@drawable/close_icon"
                 app:layout_scrollFlags="scroll|enterAlways|snap">
 
@@ -95,7 +95,7 @@
                 android:layout_height="?attr/actionBarSize"
                 android:visibility="gone"
                 app:title="@string/notes_selected"
-                android:background="@color/colorWhite"
+                android:background="?attr/colorSurface"
                 app:navigationIcon="@drawable/close_icon"
                 app:navigationContentDescription="@string/content_description_select_notes_navigation"
                 app:layout_scrollFlags="scroll|enterAlways|snap"
@@ -113,7 +113,7 @@
             android:layout_width="match_parent"
             android:layout_height="63.96dp"
             android:layout_gravity="bottom"
-            style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
+            style="@style/Widget.MaterialComponents.BottomAppBar.PrimarySurface"
             app:navigationIcon="@drawable/menu_icon"
             app:menu="@menu/menu_bottom_top_bar"
             app:buttonGravity="center_vertical"
@@ -145,6 +145,6 @@
         android:layout_gravity="start"
         app:headerLayout="@layout/nav_header_layout"
         app:itemTextAppearance="@style/FontStyleRobotoRegular"
-        app:itemTextColor="@color/colorSemiTranspBlack" />
+        app:itemTextColor="?attr/colorOnSurface" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

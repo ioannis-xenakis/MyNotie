@@ -49,6 +49,7 @@
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.AppBarLayout.PrimarySurface"
             app:liftOnScroll="true">
 
             <!-- Top app bar with only page title. -->
@@ -60,7 +61,6 @@
                 app:title="@string/page_title"
                 app:menu="@menu/menu_bottom_top_bar"
                 app:navigationIcon="@drawable/menu_icon"
-                android:background="@color/colorPrimary"
                 app:layout_scrollFlags="scroll|enterAlways|snap" />
 
             <!-- Top app bar for searching specific notes
@@ -71,7 +71,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:visibility="gone"
-                android:background="@color/colorPrimary"
                 app:navigationIcon="@drawable/close_icon"
                 app:layout_scrollFlags="scroll|enterAlways|snap">
 
@@ -97,7 +96,6 @@
                 android:layout_height="?attr/actionBarSize"
                 android:visibility="gone"
                 app:title="@string/notes_selected"
-                android:background="@color/colorPrimary"
                 app:navigationIcon="@drawable/close_icon"
                 app:navigationContentDescription="@string/content_description_select_notes_navigation"
                 app:layout_scrollFlags="scroll|enterAlways|snap"
@@ -131,6 +129,6 @@
         android:layout_gravity="start"
         app:headerLayout="@layout/nav_header_layout"
         app:itemTextAppearance="@style/FontStyleRobotoRegular"
-        app:itemTextColor="@color/colorSemiTranspBlack" />
+        app:itemTextColor="?attr/colorOnSurface" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

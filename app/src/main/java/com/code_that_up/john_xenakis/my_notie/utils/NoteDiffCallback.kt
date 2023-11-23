@@ -22,6 +22,30 @@ import com.code_that_up.john_xenakis.my_notie.model.Note
 
     Anything you want to contact me for, contact me with an e-mail, at: Xenakis.i.Contact@gmail.com
     I'll be happy to help you, or discuss anything with you! */
+
+/**
+ * The payload/change in a note.
+ */
+sealed interface NoteChangePayload {
+    /**
+     * The changed note title.
+     * @param newNoteTitle The new note title.
+     */
+    data class NoteTitle(val newNoteTitle: String?): NoteChangePayload
+
+    /**
+     * The changed note body text.
+     * @param newNoteBodyText The new note body text.
+     */
+    data class NoteBodyText(val newNoteBodyText: String?): NoteChangePayload
+
+    /**
+     * The changed note date "edited".
+     * @param newNoteDateEdited The new note date "edited".
+     */
+    data class NoteDateEdited(val newNoteDateEdited: Long?): NoteChangePayload
+}
+
 /**
  * <h2>NoteDiffCallback</h2> is a class, which is responsible for refreshing and animating the notes with DiffUtil library.
  * Especially detecting note changes between the old/previous note list state and the new note list state and refreshes/animates accordingly depending on the changes.
@@ -75,6 +99,31 @@ class NoteDiffCallback
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
         val oldNote = oldNoteList[oldItemPosition]
         val newNote = newNoteList[newItemPosition]
-        return oldNote.noteTitle == newNote.noteTitle
+        return oldNote.noteTitle == newNote.noteTitle && oldNote.noteBodyText == newNote.noteBodyText
+    }
+
+    /**
+     * Gets the change/payload in a note.
+     * @param oldNotePosition The position of the old note.
+     * @param newNotePosition The position of the new note.
+     */
+    override fun getChangePayload(oldNotePosition: Int, newNotePosition: Int): Any? {
+        val oldNote = oldNoteList[oldNotePosition]
+        val newNote = newNoteList[newNotePosition]
+        return when {
+            oldNote.noteTitle != newNote.noteTitle -> {
+                NoteChangePayload.NoteTitle(newNote.noteTitle)
+            }
+
+            oldNote.noteBodyText != newNote.noteBodyText -> {
+                NoteChangePayload.NoteBodyText(newNote.noteBodyText)
+            }
+
+            oldNote.noteDate != newNote.noteDate -> {
+                NoteChangePayload.NoteDateEdited(newNote.noteDate)
+            }
+
+            else -> super.getChangePayload(oldNotePosition, newNotePosition)
+        }
     }
 }
