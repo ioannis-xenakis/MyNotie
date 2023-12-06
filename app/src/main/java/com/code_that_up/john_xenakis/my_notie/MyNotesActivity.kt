@@ -8,6 +8,7 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.SubMenu
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
@@ -93,6 +94,18 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
      * The RecyclerView, or the **notes list** which displays all the existing notes, on **My notes** page.
      */
     private var recyclerView: RecyclerView? = null
+
+    /**
+     * The id number of the checked navigation menu item
+     * (for ex. a checked folder, or "All notes" menu item).
+     */
+    private var navMenuItemCheckedId: Int = ALL_NOTES_ID
+
+    /**
+     * The "My folders" sub menu of the navigation view,
+     * containing the folders as menu items.
+     */
+    private var myFoldersSubMenu: SubMenu? = null
 
     /**
      * The layoutManager **lays out** and manages all notes in an grid/order, in *notes list*, for *My notes* page.
@@ -230,6 +243,7 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
                     onlyRefreshAndLoadAllNotes()
                     displaySelectedNotesCount()
                     pageTitleTopBar!!.setTitle(R.string.page_title)
+                    navMenuItemCheckedId = ALL_NOTES_ID
                 }
                 GO_TO_ADD_OR_MANAGE_FOLDERS_ID -> {
                     val manageFoldersActivityIntent =
@@ -243,6 +257,7 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
                             loadNotesFromFolder(folder)
                             displaySelectedNotesCount()
                             pageTitleTopBar!!.title = folder.folderName!!.trim { it <= ' ' }
+                            navMenuItemCheckedId = id
                         }
                     }
                 }
@@ -251,6 +266,7 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
             true
         }
         isNoteChecked = false
+        inflateNavigationMenus()
     }
 
     /**
@@ -262,12 +278,14 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
         menu.add(Menu.NONE, ALL_NOTES_ID, Menu.NONE, "All notes")
             .setIcon(R.drawable.note_icon)
             .setCheckable(true).isChecked = true
+
         val folderList = NotesDB.getInstance(this)!!.foldersDAO()!!.allFolders
-        val myFoldersSubMenu = menu.addSubMenu("My folders")
+        myFoldersSubMenu = menu.addSubMenu("My folders")
         for (folder in folderList!!) {
-            myFoldersSubMenu.add(Menu.NONE, folder!!.id, Menu.NONE, folder.folderName)
+            myFoldersSubMenu!!.add(Menu.NONE, folder!!.id, Menu.NONE, folder.folderName)
                 .setIcon(R.drawable.folder_icon).isCheckable = true
         }
+
         menu.add(Menu.NONE, GO_TO_ADD_OR_MANAGE_FOLDERS_ID, Menu.NONE, "Add or manage folders")
             .setIcon(R.drawable.new_folder_icon)
     }
@@ -472,7 +490,7 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
     private fun onlyRefreshAndLoadAllNotes() {
         adapter!!.setAllCheckedNotes(false)
         val list = dao!!.notes
-        adapter!!.updateNoteListAndNotesFull(list)
+        adapter!!.updateNoteListAndNotesFull(list!!)
     }
 
     /**
@@ -483,7 +501,42 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
         adapter!!.setAllCheckedNotes(false)
         val notesFoldersJoinDao = NotesDB.getInstance(this)!!.notesFoldersJoinDAO()
         val noteListFromFolder = notesFoldersJoinDao!!.getNotesFromFolder(folder.id)
-        adapter!!.updateNoteListAndNotesFull(noteListFromFolder)
+        adapter!!.updateNoteListAndNotesFull(noteListFromFolder!!)
+    }
+
+    /**
+     * Updates the folders in Navigation Drawer(Navigation View).
+     * @param folderList The list of folders.
+     */
+    private fun updateFoldersInNavDrawer(folderList: List<Folder?>?) {
+        myFoldersSubMenu!!.clear()
+
+        for (folder in folderList!!) {
+            myFoldersSubMenu!!.add(Menu.NONE, folder!!.id, Menu.NONE, folder.folderName)
+                .setIcon(R.drawable.folder_icon).isCheckable = true
+        }
+        navigationView!!.setCheckedItem(navMenuItemCheckedId)
+    }
+
+    /**
+     * If navigation menu item is already checked, do the proper action.
+     * @param folderList The list of folders.
+     */
+    private fun ifNavMenuItemCheckedDo(folderList: List<Folder?>?) {
+        when(val id = navMenuItemCheckedId) {
+            ALL_NOTES_ID -> {
+                onlyRefreshAndLoadAllNotes()
+                pageTitleTopBar!!.setTitle(R.string.page_title)
+            }
+            else -> {
+                for (folder in folderList!!) {
+                    if (id == folder!!.id) {
+                        loadNotesFromFolder(folder)
+                        pageTitleTopBar!!.title = folder.folderName
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -518,10 +571,9 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
      */
     override fun onResume() {
         super.onResume()
-        inflateNavigationMenus()
-        loadNotes() //loads/reloads notes from database.
-        pageTitleTopBar!!.setTitle(R.string.page_title)
-        displaySelectedNotesCount()
+        val folderList = NotesDB.getInstance(this)!!.foldersDAO()!!.allFolders
+        updateFoldersInNavDrawer(folderList)
+        ifNavMenuItemCheckedDo(folderList)
     }
 
     /**
