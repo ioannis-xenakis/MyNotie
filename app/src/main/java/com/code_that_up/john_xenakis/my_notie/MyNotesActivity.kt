@@ -12,10 +12,10 @@ import android.view.SubMenu
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
-import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.PopupMenu
 import androidx.appcompat.widget.Toolbar
 import androidx.appcompat.widget.TooltipCompat
 import androidx.core.view.GravityCompat
@@ -389,7 +389,7 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
      */
     private fun displaySelectedNotesCount() {
         selectNotesTopBar!!.title =
-            adapter!!.getCheckedNotes().size.toString() + " notes selected."
+            adapter!!.getCheckedNotes().size.toString() + " notes selected"
     }
 
     /**
