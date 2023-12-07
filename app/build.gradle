@@ -24,6 +24,8 @@ android {
             arg('room.schemaLocation', "$projectDir/schemas")
         }
         multiDexEnabled = true
+
+        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {

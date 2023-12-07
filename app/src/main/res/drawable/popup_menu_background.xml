@@ -20,6 +20,6 @@
     I'll be happy to help you, or discuss anything with you! -->
 
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="@color/colorWhite" />
+    <solid android:color="?attr/colorSurface" />
     <corners android:radius="9dp" />
 </shape>

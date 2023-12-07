@@ -46,11 +46,10 @@
         app:shapeAppearanceOverlay="@style/ShapeAppearance.NoteEdittext.SmallComponent"
         app:boxStrokeWidth="0dp"
         app:boxStrokeWidthFocused="0dp"
-        app:boxBackgroundColor="@color/colorWhite"
+        app:boxBackgroundColor="?attr/colorSurface"
         android:hint="@string/note_title_hint"
         app:endIconMode="clear_text"
         app:endIconCheckable="true"
-        app:endIconTint="@color/colorSemiTranspBlack"
         app:endIconContentDescription="@string/content_description_note_title_clear_text_button"
         app:hintAnimationEnabled="true">
 
@@ -82,11 +81,10 @@
         app:shapeAppearanceOverlay="@style/ShapeAppearance.NoteEdittext.SmallComponent"
         app:boxStrokeWidth="0dp"
         app:boxStrokeWidthFocused="0dp"
-        app:boxBackgroundColor="@color/colorWhite"
+        app:boxBackgroundColor="?attr/colorSurface"
         android:hint="@string/note_body_text_hint"
         app:endIconMode="clear_text"
         app:endIconCheckable="true"
-        app:endIconTint="@color/colorSemiTranspBlack"
         app:endIconContentDescription="@string/content_description_note_body_text_clear_text_button"
         app:hintAnimationEnabled="true">
 
@@ -121,7 +119,7 @@
             android:layout_height="?attr/actionBarSize"
             android:visibility="visible"
             app:title="@string/page_title_edit_note"
-            android:background="@color/colorWhite"
+            android:background="?attr/colorSurface"
             app:navigationIcon="@drawable/go_back_icon"
             app:navigationContentDescription="@string/content_description_edit_note_navigation"
             app:layout_scrollFlags="scroll|enterAlways|snap"

@@ -30,7 +30,7 @@
     android:checkable="true"
     android:foreground="?android:attr/selectableItemBackground"
     app:shapeAppearance="@style/ShapeAppearance.Notes.MediumComponent"
-    app:cardBackgroundColor="@color/colorWhite"
+    app:cardBackgroundColor="?attr/colorSurface"
     app:cardElevation="2dp">
     <!-- Actual note that is added in notes list(RecyclerView called notes_list)
     from my notes page(MyNotesActivity and activity_my_notes layout.) -->
@@ -56,7 +56,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_medium"
                 android:text="@string/note_title"
-                android:textColor="@color/colorBlack"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="@dimen/note_title_text_size"
                 android:maxLines="2"
                 android:ellipsize="end" />
@@ -69,7 +69,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_regular"
                 android:text="@string/note_body_text"
-                android:textColor="@color/colorBlack"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="@dimen/note_body_text_size"
                 android:maxLines="2"
                 android:ellipsize="end" />
@@ -89,7 +89,7 @@
                 android:layout_height="16dp"
                 android:fontFamily="@font/roboto_light"
                 android:text="@string/note_date_text"
-                android:textColor="@color/colorBlack"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="@dimen/note_date_text_size"
                 android:layout_gravity="end" />
 
@@ -105,7 +105,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             app:icon="@drawable/more_vert"
-            app:iconTint="@color/colorBlack"
+            app:iconTint="?attr/colorOnSurface"
             android:layout_weight="1" />
 
     </LinearLayout>
