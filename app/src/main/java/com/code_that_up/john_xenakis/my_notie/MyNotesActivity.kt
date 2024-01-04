@@ -1,5 +1,6 @@
 package com.code_that_up.john_xenakis.my_notie
 
+import android.app.Activity
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
@@ -13,6 +14,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
@@ -29,8 +31,10 @@ import com.code_that_up.john_xenakis.my_notie.callbacks.MoreMenuButtonListener
 import com.code_that_up.john_xenakis.my_notie.callbacks.NoteEventListener
 import com.code_that_up.john_xenakis.my_notie.db.NotesDAO
 import com.code_that_up.john_xenakis.my_notie.db.NotesDB
+import com.code_that_up.john_xenakis.my_notie.db.NotesFoldersJoinDAO
 import com.code_that_up.john_xenakis.my_notie.model.Folder
 import com.code_that_up.john_xenakis.my_notie.model.Note
+import com.code_that_up.john_xenakis.my_notie.model.NoteFolderJoin
 import com.code_that_up.john_xenakis.my_notie.utils.SpacesItemGrid
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomappbar.BottomAppBar
@@ -86,6 +90,21 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
     private var dao: NotesDAO? = null
 
     /**
+     * Dao needed for accessing notesFoldersJoin, in database.
+     */
+    private var notesFoldersDAO: NotesFoldersJoinDAO? = null
+
+    /**
+     * List containing only checked folders.
+     */
+    private var checkedFolders: ArrayList<Folder>? = null
+
+    /**
+     * List containing only unchecked folders.
+     */
+    private var unCheckedFolders: ArrayList<Folder>? = null
+
+    /**
      * Adapter for notes, which works as an exchange between the user interface and actual data.
      */
     private var adapter: NotesAdapter? = null
@@ -136,6 +155,8 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
         pageTitleTopBar = findViewById(R.id.top_app_bar_my_notes)
         setSupportActionBar(appBar)
         val smallestScreenWidth = resources.configuration.smallestScreenWidthDp
+
+        notesFoldersDAO = NotesDB.getInstance(this)!!.notesFoldersJoinDAO()
 
         //For different screen orientations(Portrait or Landscape). Mobile phones only and smaller device screen sizes.
         recyclerView = findViewById(R.id.notes_list)
@@ -267,6 +288,8 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
         }
         isNoteChecked = false
         inflateNavigationMenus()
+
+        checkedFolders = ArrayList()
     }
 
     /**
@@ -557,6 +580,22 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
     }
 
     /**
+     * Saves a note to folders.
+     * @param note The note to be saved in folders.
+     */
+    private fun saveNoteToFolders(note: Note?) {
+        for (unCheckedFolder in unCheckedFolders!!) {
+            val noteFolderJoin = NoteFolderJoin(note?.id!!, unCheckedFolder.id)
+            notesFoldersDAO!!.deleteNoteNoteFolderJoin(noteFolderJoin)
+        }
+
+        for (checkedFolder in checkedFolders!!) {
+            val noteFolderJoin = NoteFolderJoin(note?.id!!, checkedFolder.id)
+            notesFoldersDAO!!.insertNoteFolderJoin(noteFolderJoin)
+        }
+    }
+
+    /**
      * openNote, opens an existing note, to edit, in EditNoteActivity.java
      */
     private fun openNote(note: Note?) {
@@ -621,9 +660,14 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
         notePopupMenu.setOnMenuItemClickListener { menuItem: MenuItem ->
             val itemId = menuItem.itemId
             if (itemId == R.id.add_to_folder_button) {
+                checkedFolders = ArrayList(notesFoldersDAO!!.getFoldersFromNote(note.id))
+                unCheckedFolders = ArrayList()
                 val addToFolders = Intent(this, AddToFoldersActivity::class.java)
                 addToFolders.putExtra(AddToFoldersActivity.NOTE_EXTRA_KEY, note.id)
-                startActivity(addToFolders)
+                addToFolders.putExtra(AddToFoldersActivity.NOTE_KEY, note)
+                addToFolders.putParcelableArrayListExtra(AddToFoldersActivity.FOLDER_LIST_KEY, checkedFolders)
+                addToFolders.putParcelableArrayListExtra(AddToFoldersActivity.UNCHECKED_FOLDERS_KEY, unCheckedFolders)
+                resultLauncher.launch(addToFolders)
                 Log.d(TAG, "Add to folder button, clicked.")
                 return@setOnMenuItemClickListener true
             } else if (itemId == R.id.delete_only_this_note_button) {
@@ -647,6 +691,19 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
             false
         }
         notePopupMenu.show()
+    }
+
+    /**
+     * The result launcher for managing/launching other activities and passing/getting results/data
+     * from/to other activities.
+     */
+    private var resultLauncher = registerForActivityResult(StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val note: Note? = result.data?.extras?.getParcelable(AddToFoldersActivity.NOTE_KEY)
+            checkedFolders = result.data?.extras?.getParcelableArrayList(AddToFoldersActivity.FOLDER_LIST_KEY)
+            unCheckedFolders = result.data?.extras?.getParcelableArrayList(AddToFoldersActivity.UNCHECKED_FOLDERS_KEY)
+            saveNoteToFolders(note)
+        }
     }
 
     companion object {

@@ -1,8 +1,12 @@
 package com.code_that_up.john_xenakis.my_notie.model
 
+import android.os.Parcel
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.parcelize.Parceler
+import kotlinx.parcelize.Parcelize
 
 /*
     My Notie is a note taking app, write notes and save them to see them and remember later.
@@ -29,9 +33,9 @@ import androidx.room.PrimaryKey
  * @author John/Ioannis Xenakis
  * @version 1.0
  */
+@Parcelize
 @Entity(tableName = "folders")
-class Folder
-{
+class Folder() : Parcelable {
     /**
      * The primary key and the id number, for identifying an unique folder, in *folders* entity/table.
      */
@@ -48,4 +52,23 @@ class Folder
      * The checked state of the checkbox in the folder.
      */
     var checked = false
+
+    constructor(parcel: Parcel) : this() {
+        id = parcel.readInt()
+        folderName = parcel.readString()
+        checked = parcel.readByte() != 0.toByte()
+    }
+
+    companion object : Parceler<Folder> {
+
+        override fun Folder.write(parcel: Parcel, flags: Int) {
+            parcel.writeInt(id)
+            parcel.writeString(folderName)
+            parcel.writeByte(if (checked) 1 else 0)
+        }
+
+        override fun create(parcel: Parcel): Folder {
+            return Folder(parcel)
+        }
+    }
 }

@@ -13,10 +13,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.code_that_up.john_xenakis.my_notie.R
 import com.code_that_up.john_xenakis.my_notie.db.FoldersDAO
-import com.code_that_up.john_xenakis.my_notie.db.NotesFoldersJoinDAO
 import com.code_that_up.john_xenakis.my_notie.model.Folder
 import com.code_that_up.john_xenakis.my_notie.model.Note
-import com.code_that_up.john_xenakis.my_notie.model.NoteFolderJoin
 import com.code_that_up.john_xenakis.my_notie.utils.OtherUtils
 import com.google.android.material.textfield.TextInputEditText
 import java.util.Objects
@@ -57,11 +55,15 @@ class FoldersAddToFoldersAdapter
     /**
      * The folders list, which is displayed at screen.
      */
-    private val folders: ArrayList<Folder?>,
+    private val folders: ArrayList<Folder?>?,
     /**
      * The checked folders of the folders list.
      */
     private val checkedFolders: MutableList<Folder?>?,
+    /**
+     * The unchecked folders list.
+     */
+    private val unCheckedFolders: MutableList<Folder?>?,
     /**
      * The note to be added to folders.
      */
@@ -74,10 +76,6 @@ class FoldersAddToFoldersAdapter
      * Dao(Data Access Object) needed for managing folders, in database.
      */
     private val foldersDao: FoldersDAO,
-    /**
-     * Dao(Data Access Object) needed for managing the links between a note and a folder, in database.
-     */
-    private val notesFoldersJoinDao: NotesFoldersJoinDAO
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     /**
      * OnCreateViewHolder gets called/runs, when a folder is *created*.
@@ -88,7 +86,7 @@ class FoldersAddToFoldersAdapter
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val v = LayoutInflater.from(context)
             .inflate(R.layout.folder_add_to_folders_layout, parent, false)
-        return FolderHolder(v, this, notesFoldersJoinDao)
+        return FolderHolder(v, this)
     }
 
     /**
@@ -101,7 +99,6 @@ class FoldersAddToFoldersAdapter
         val folderHolder = holder as FolderHolder
         val folder = getFolder(position)
         folderHolder.folderName.setText(folder.folderName)
-
         //Load up the already checked folders when "Add To Folders Activity" loads up and check them.
         folderHolder.setData(note, folder)
         folderHolder.checkBoxAddToFolders.isChecked = folder.checked
@@ -113,7 +110,7 @@ class FoldersAddToFoldersAdapter
      * @return The folder.
      */
     private fun getFolder(position: Int): Folder {
-        return folders[position]!!
+        return folders?.get(position)!!
     }
 
     /**
@@ -121,7 +118,7 @@ class FoldersAddToFoldersAdapter
      * @param folder The folder to be added.
      */
     fun addFolder(folder: Folder) {
-        folders.add(folder)
+        folders?.add(folder)
     }
 
     /**
@@ -130,7 +127,49 @@ class FoldersAddToFoldersAdapter
      * @return The folders position.
      */
     fun getFolderPosition(folder: Folder): Int {
-        return folders.indexOf(folder)
+        return folders?.indexOf(folder)!!
+    }
+
+    /**
+     * Gets a checked folder from the checked folder list.
+     * @param position The position of the checked folder in list.
+     * @return The checked folder.
+     */
+    fun getCheckedFolder(position: Int): Folder {
+        return checkedFolders!!.get(position)!!
+    }
+
+    /**
+     * Gets an unchecked folder from unchecked folder list.
+     * @param position The position of the unchecked folder in list.
+     * @return The unchecked folder.
+     */
+    fun getUnCheckedFolder(position: Int): Folder {
+        return unCheckedFolders!!.get(position)!!
+    }
+
+    /**
+     * Adds the unchecked folder to the unchecked folders list.
+     * @param unCheckedFolder The folder that is unchecked.
+     */
+    fun addUnCheckedFolder(unCheckedFolder: Folder?) {
+        unCheckedFolders?.add(unCheckedFolder)
+    }
+
+    /**
+     * Removes the unchecked folder from the unchecked folders list.
+     * @param unCheckedFolder The unchecked folder to be removed.
+     */
+    fun removeUnCheckedFolder(unCheckedFolder: Folder?) {
+        unCheckedFolders?.remove(unCheckedFolder)
+    }
+
+    /**
+     * Gets the unchecked folders list.
+     * @return The unchecked folders list.
+     */
+    fun getUnCheckedFolders(): MutableList<Folder?>? {
+        return unCheckedFolders
     }
 
     /**
@@ -150,12 +189,33 @@ class FoldersAddToFoldersAdapter
     }
 
     /**
+     * Gets the list of checked folders.
+     */
+    fun getCheckedFolders(): MutableList<Folder?>? {
+        return checkedFolders
+    }
+
+    /**
+     * Checks the already checked folders.
+     */
+    fun checkAlreadyCheckedFolders() {
+        for (checkedFolder in checkedFolders!!) {
+            for (folder in folders!!) {
+                if (checkedFolder?.id == folder?.id) {
+                    folder?.checked = true
+                    checkedFolders[checkedFolders.indexOf(checkedFolder)] = folder
+                }
+            }
+        }
+    }
+
+    /**
      * Gets and returns the sum of all folders or how many the folders are, in the database/folders list,
      * displayed in *folders list* RecyclerView.
      * @return The sum number of all the folders in folders list.
      */
     override fun getItemCount(): Int {
-        return folders.size
+        return folders?.size!!
     }
 
     /**
@@ -164,7 +224,6 @@ class FoldersAddToFoldersAdapter
     class FolderHolder(
         itemView: View,
         adapter: FoldersAddToFoldersAdapter,
-        notesFoldersJoinDao: NotesFoldersJoinDAO
     ) : RecyclerView.ViewHolder(itemView) {
         /**
          * The folder name that user typed;
@@ -179,17 +238,17 @@ class FoldersAddToFoldersAdapter
         /**
          * CancelRenamingFolder button, cancels renaming folder and reverts back the folder name to the previous name.
          */
-        var cancelRenamingFolder: ImageButton
+        private var cancelRenamingFolder: ImageButton
 
         /**
          * AcceptRenamingFolder button, accepts and saves the folder.
          */
-        var acceptRenamingFolder: ImageButton
+        private var acceptRenamingFolder: ImageButton
 
         /**
          * The adapter for the recyclerview(folders), in AddToFoldersActivity.
          */
-        var adapter: FoldersAddToFoldersAdapter
+        private var adapter: FoldersAddToFoldersAdapter
 
         /**
          * The note to be added in the folders.
@@ -202,12 +261,6 @@ class FoldersAddToFoldersAdapter
         var folder: Folder? = null
 
         /**
-         * The Data Object Access("Dao" for short) for having a connection between a note and a folder
-         * and manipulating them(adding/deleting/updating/querying) in the database.
-         */
-        var notesFoldersJoinDao: NotesFoldersJoinDAO
-
-        /**
          * The constructor needed, for initializing/creating this *FolderHolder* class.
          */
         init {
@@ -215,7 +268,6 @@ class FoldersAddToFoldersAdapter
             cancelRenamingFolder = itemView.findViewById(R.id.cancel_renaming_folder_button)
             acceptRenamingFolder = itemView.findViewById(R.id.accept_renaming_folder_button)
             folderName = itemView.findViewById(R.id.folder_name_edittext)
-            this.notesFoldersJoinDao = notesFoldersJoinDao
             this.adapter = adapter
 
             /*
@@ -224,15 +276,19 @@ class FoldersAddToFoldersAdapter
             Remove note from folder when checkBox is unchecked.
              */checkBoxAddToFolders.setOnClickListener {
                 val isChecked = checkBoxAddToFolders.isChecked
-                val noteFolderJoin = NoteFolderJoin(note!!.id, folder!!.id)
                 if (isChecked) {
                     folder!!.checked = true
-                    adapter.addCheckedFolder(folder)
-                    notesFoldersJoinDao.insertNoteFolderJoin(noteFolderJoin)
+
+                    if (adapter.checkedFolders!!.any { it!!.id == folder!!.id }) {
+                        adapter.checkedFolders[adapter.checkedFolders.indexOfFirst { it?.id == folder?.id }] = folder
+                    } else {
+                        adapter.addCheckedFolder(folder)
+                    }
+                    adapter.removeUnCheckedFolder(folder)
                 } else {
                     folder!!.checked = false
                     adapter.removeCheckedFolder(folder)
-                    notesFoldersJoinDao.deleteNoteNoteFolderJoin(noteFolderJoin)
+                    adapter.addUnCheckedFolder(folder)
                 }
             }
 

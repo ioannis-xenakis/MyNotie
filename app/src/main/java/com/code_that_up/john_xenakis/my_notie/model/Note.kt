@@ -1,9 +1,13 @@
 package com.code_that_up.john_xenakis.my_notie.model
 
+import android.os.Parcel
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
+import kotlinx.parcelize.Parceler
+import kotlinx.parcelize.Parcelize
 
 /*
     My Notie is a note taking app, write notes and save them to see them and remember later.
@@ -30,8 +34,9 @@ import androidx.room.PrimaryKey
  * @author John/Ioannis Xenakis
  * @version 1.0
  */
+@Parcelize
 @Entity(tableName = "notes")
-class Note
+class Note(): Parcelable
 {
     /**
      * The primary key and the id number, for identifying a unique note, in *notes* entity/table.
@@ -70,6 +75,15 @@ class Note
     @Ignore
     var isChecked = false
 
+    constructor(parcel: Parcel) : this() {
+        id = parcel.readInt()
+        folderId = parcel.readInt()
+        noteTitle = parcel.readString()
+        noteBodyText = parcel.readString()
+        noteDate = parcel.readLong()
+        isChecked = parcel.readByte() != 0.toByte()
+    }
+
     /**
      * toString, converts any given input, into *String*
      * @return the notes id and note date.
@@ -79,5 +93,21 @@ class Note
                 "id=" + id +
                 ", noteDate=" + noteDate +
                 '}'
+    }
+
+    companion object : Parceler<Note> {
+
+        override fun Note.write(parcel: Parcel, flags: Int) {
+            parcel.writeInt(id)
+            parcel.writeInt(folderId)
+            parcel.writeString(noteTitle)
+            parcel.writeString(noteBodyText)
+            parcel.writeLong(noteDate)
+            parcel.writeByte(if (isChecked) 1 else 0)
+        }
+
+        override fun create(parcel: Parcel): Note {
+            return Note(parcel)
+        }
     }
 }
