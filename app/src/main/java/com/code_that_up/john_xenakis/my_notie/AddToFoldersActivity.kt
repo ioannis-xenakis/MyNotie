@@ -244,6 +244,7 @@ class AddToFoldersActivity : AppCompatActivity() {
         )
         foldersAdapter!!.checkAlreadyCheckedFolders()
         foldersListRv!!.adapter = foldersAdapter
+        checkedFolderList?.clear()
     }
 
     /**

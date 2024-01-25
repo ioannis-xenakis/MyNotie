@@ -593,6 +593,8 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
             val noteFolderJoin = NoteFolderJoin(note?.id!!, checkedFolder.id)
             notesFoldersDAO!!.insertNoteFolderJoin(noteFolderJoin)
         }
+        checkedFolders?.clear()
+        unCheckedFolders?.clear()
     }
 
     /**
