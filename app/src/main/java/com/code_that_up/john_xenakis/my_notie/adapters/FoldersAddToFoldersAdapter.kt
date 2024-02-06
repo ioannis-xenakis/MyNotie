@@ -1,6 +1,7 @@
 package com.code_that_up.john_xenakis.my_notie.adapters
 
 import android.content.Context
+import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -199,8 +200,11 @@ class FoldersAddToFoldersAdapter
      * Checks the already checked folders.
      */
     fun checkAlreadyCheckedFolders() {
+        for (folder in folders!!) {
+            folder?.checked = false
+        }
         for (checkedFolder in checkedFolders!!) {
-            for (folder in folders!!) {
+            for (folder in folders) {
                 if (checkedFolder?.id == folder?.id) {
                     folder?.checked = true
                     checkedFolders[checkedFolders.indexOf(checkedFolder)] = folder
@@ -279,11 +283,7 @@ class FoldersAddToFoldersAdapter
                 if (isChecked) {
                     folder!!.checked = true
 
-                    if (adapter.checkedFolders!!.any { it!!.id == folder!!.id }) {
-                        adapter.checkedFolders[adapter.checkedFolders.indexOfFirst { it?.id == folder?.id }] = folder
-                    } else {
-                        adapter.addCheckedFolder(folder)
-                    }
+                    adapter.addCheckedFolder(folder)
                     adapter.removeUnCheckedFolder(folder)
                 } else {
                     folder!!.checked = false
