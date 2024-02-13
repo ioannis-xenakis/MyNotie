@@ -1,7 +1,6 @@
 package com.code_that_up.john_xenakis.my_notie.adapters
 
 import android.content.Context
-import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -65,6 +64,11 @@ class FoldersAddToFoldersAdapter
      * The unchecked folders list.
      */
     private val unCheckedFolders: MutableList<Folder?>?,
+    /**
+     * The new checked folders that are checked,
+     * only the moment the user checked and not from db.
+     */
+    private val newCheckedFolders: MutableList<Folder?>?,
     /**
      * The note to be added to folders.
      */
@@ -132,24 +136,6 @@ class FoldersAddToFoldersAdapter
     }
 
     /**
-     * Gets a checked folder from the checked folder list.
-     * @param position The position of the checked folder in list.
-     * @return The checked folder.
-     */
-    fun getCheckedFolder(position: Int): Folder {
-        return checkedFolders!!.get(position)!!
-    }
-
-    /**
-     * Gets an unchecked folder from unchecked folder list.
-     * @param position The position of the unchecked folder in list.
-     * @return The unchecked folder.
-     */
-    fun getUnCheckedFolder(position: Int): Folder {
-        return unCheckedFolders!!.get(position)!!
-    }
-
-    /**
      * Adds the unchecked folder to the unchecked folders list.
      * @param unCheckedFolder The folder that is unchecked.
      */
@@ -194,6 +180,20 @@ class FoldersAddToFoldersAdapter
      */
     fun getCheckedFolders(): MutableList<Folder?>? {
         return checkedFolders
+    }
+
+    /**
+     * Gets the newly checked folders and clears them after that.
+     */
+    fun getNewCheckedFolders(): MutableList<Folder?>? {
+        return newCheckedFolders
+    }
+
+    /**
+     * Clears the newly checked folders list.
+     */
+    fun clearNewCheckedFolders() {
+        newCheckedFolders?.clear()
     }
 
     /**
@@ -283,10 +283,13 @@ class FoldersAddToFoldersAdapter
                 if (isChecked) {
                     folder!!.checked = true
 
+                    adapter.newCheckedFolders?.add(folder)
                     adapter.addCheckedFolder(folder)
                     adapter.removeUnCheckedFolder(folder)
                 } else {
                     folder!!.checked = false
+
+                    adapter.newCheckedFolders?.remove(folder)
                     adapter.removeCheckedFolder(folder)
                     adapter.addUnCheckedFolder(folder)
                 }

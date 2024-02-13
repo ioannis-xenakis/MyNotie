@@ -90,6 +90,16 @@ class EditNoteActivity : AppCompatActivity() {
     private var unCheckedFolderList: ArrayList<Folder>? = null
 
     /**
+     * The newly checked folder list that contains the folders that are newly checked.
+     */
+    private var newCheckedFolderList: ArrayList<Folder>? = ArrayList()
+
+    /**
+     * The class for determining if folders have any changes on being checked/unchecked.
+     */
+    private var isCheckedFoldersChanged: Boolean = false
+
+    /**
      * The note title text when first appears and gets created, when this Activity loads.
      */
     private var oldNoteTitle: String? = null
@@ -132,6 +142,7 @@ class EditNoteActivity : AppCompatActivity() {
         oldNoteBodyText = Objects.requireNonNull(noteBodyText!!.text).toString()
         checkedFolderList = ArrayList(notesFoldersJoinDAO!!.getFoldersFromNote(note!!.id))
         unCheckedFolderList = ArrayList()
+        newCheckedFolderList = ArrayList()
 
         //Left arrow/Go back icon, on Top App Bar.
         topAppBar.setNavigationOnClickListener { finish() }
@@ -188,14 +199,18 @@ class EditNoteActivity : AppCompatActivity() {
      * Saves note to checked folders.
      */
     private fun saveNoteToFolders() {
-        for (unCheckedFolder in unCheckedFolderList!!) {
-            val noteFolderJoin = NoteFolderJoin(note!!.id, unCheckedFolder.id)
-            notesFoldersJoinDAO!!.deleteNoteNoteFolderJoin(noteFolderJoin)
-        }
+        if (isCheckedFoldersChanged) {
+            for (unCheckedFolder in unCheckedFolderList!!) {
+                val noteFolderJoin = NoteFolderJoin(note!!.id, unCheckedFolder.id)
+                notesFoldersJoinDAO!!.deleteNoteNoteFolderJoin(noteFolderJoin)
+                Log.d(TAG, "EditNote saveToFolders deleteUnCheckedFolder: ${unCheckedFolder.folderName}")
+            }
 
-        for (checkedFolder in checkedFolderList!!) {
-            val noteFolderJoin = NoteFolderJoin(note!!.id, checkedFolder.id)
-            notesFoldersJoinDAO!!.insertNoteFolderJoin(noteFolderJoin)
+            for (checkedFolder in newCheckedFolderList!!) {
+                val noteFolderJoin = NoteFolderJoin(note!!.id, checkedFolder.id)
+                notesFoldersJoinDAO!!.insertNoteFolderJoin(noteFolderJoin)
+                Log.d(TAG, "EditNote saveToFolders insertCheckedFolder: ${checkedFolder.folderName}")
+            }
         }
     }
 
@@ -221,7 +236,7 @@ class EditNoteActivity : AppCompatActivity() {
      * when the delete note button is clicked from the user.
      * @param menuItem The *Delete note* button.
      */
-    fun onDeleteNoteClick(menuItem: MenuItem?) {
+    fun onDeleteNoteClick(@Suppress("UNUSED_PARAMETER") menuItem: MenuItem?) {
         notesDAO!!.deleteNote(note!!)
         finishNoSave()
         Toast.makeText(applicationContext, "Note deleted!", Toast.LENGTH_SHORT).show()
@@ -232,7 +247,7 @@ class EditNoteActivity : AppCompatActivity() {
      * when *Revert changes* button is clicked from the user.
      * @param menuItem The *Revert changes* button.
      */
-    fun onRevertChangesClick(menuItem: MenuItem?) {
+    fun onRevertChangesClick(@Suppress("UNUSED_PARAMETER") menuItem: MenuItem?) {
         noteTitle!!.setText(oldNoteTitle)
         noteBodyText!!.setText(oldNoteBodyText)
         Toast.makeText(applicationContext, "Changes Reverted!", Toast.LENGTH_SHORT).show()
@@ -243,7 +258,7 @@ class EditNoteActivity : AppCompatActivity() {
      * when *Add to folders* button is clicked from the user.
      * @param menuItem The *Add to folders* button.
      */
-    fun onAddToFoldersButtonClick(menuItem: MenuItem?) {
+    fun onAddToFoldersButtonClick(@Suppress("UNUSED_PARAMETER") menuItem: MenuItem?) {
         if (note != null) {
             val addToFolder = Intent(this, AddToFoldersActivity::class.java)
             Log.d(TAG, "AddToFoldersButtonClick, note id: " + note!!.id)
@@ -251,6 +266,8 @@ class EditNoteActivity : AppCompatActivity() {
             addToFolder.putExtra(AddToFoldersActivity.NOTE_KEY, note)
             addToFolder.putParcelableArrayListExtra(AddToFoldersActivity.FOLDER_LIST_KEY, checkedFolderList)
             addToFolder.putParcelableArrayListExtra(AddToFoldersActivity.UNCHECKED_FOLDERS_KEY, unCheckedFolderList)
+            addToFolder.putParcelableArrayListExtra(AddToFoldersActivity.NEW_CHECKED_FOLDERS_KEY, newCheckedFolderList)
+            addToFolder.putExtra(AddToFoldersActivity.IS_CHECKED_FOLDERS_CHANGED_KEY, isCheckedFoldersChanged)
             resultLauncher.launch(addToFolder)
         } else {
             Log.d(TAG, "Note is null(doesn't exist).")
@@ -263,10 +280,16 @@ class EditNoteActivity : AppCompatActivity() {
      * The result launcher for managing/launching other activities,
      * together with managing/setting results for returning from another activity, values.
      */
+    @Suppress("DEPRECATION")
     private var resultLauncher = registerForActivityResult(StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             checkedFolderList = result.data?.extras?.getParcelableArrayList(AddToFoldersActivity.FOLDER_LIST_KEY)
             unCheckedFolderList = result.data?.extras?.getParcelableArrayList(AddToFoldersActivity.UNCHECKED_FOLDERS_KEY)
+            newCheckedFolderList = result.data?.extras?.getParcelableArrayList(AddToFoldersActivity.NEW_CHECKED_FOLDERS_KEY)
+            isCheckedFoldersChanged = result
+                .data
+                ?.extras
+                ?.getBoolean(AddToFoldersActivity.IS_CHECKED_FOLDERS_CHANGED_KEY)!!
         }
     }
 
