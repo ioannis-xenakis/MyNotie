@@ -34,6 +34,7 @@ import com.code_that_up.john_xenakis.my_notie.db.NotesFoldersJoinDAO
 import com.code_that_up.john_xenakis.my_notie.model.Folder
 import com.code_that_up.john_xenakis.my_notie.model.Note
 import com.code_that_up.john_xenakis.my_notie.model.NoteFolderJoin
+import com.code_that_up.john_xenakis.my_notie.utils.OtherUtils.openKeyboard
 import com.code_that_up.john_xenakis.my_notie.utils.SpacesItemGrid
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomappbar.BottomAppBar
@@ -82,6 +83,11 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
      * Top bar for users, to select notes, and act(for ex. delete) on them.
      */
     private var selectNotesTopBar: MaterialToolbar? = null
+
+    /**
+     * The search edittext to search for notes.
+     */
+    private lateinit var searchEdittext: EditText
 
     /**
      * Dao needed for managing notes, in database.
@@ -188,7 +194,7 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
           Note search functionality for search edittext on search top bar.
           Text changed listener runs when text is changed inside a Edittext, either the user changes it, or from a code functionality.
          */
-        val searchEdittext = findViewById<EditText>(R.id.search_edittext)
+        searchEdittext = findViewById(R.id.search_edittext)
         searchEdittext.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
             override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
@@ -206,6 +212,7 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
         searchTopBar!!.setNavigationOnClickListener {
             closeKeyboard()
             searchEdittext.setText("")
+            searchEdittext.clearFocus()
             if (adapter!!.getCheckedNotes().isNotEmpty()) {
                 showSelectNotesTopBar()
             } else {
@@ -486,6 +493,8 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
      */
     fun onSearchButtonClick(@Suppress("UNUSED_PARAMETER") menuItem: MenuItem?) {
         showSearchTopBar()
+        searchEdittext.requestFocus()
+        openKeyboard(this)
     }
 
     /**
