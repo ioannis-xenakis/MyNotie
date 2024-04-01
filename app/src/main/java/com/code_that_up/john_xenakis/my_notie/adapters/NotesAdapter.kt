@@ -288,10 +288,12 @@ class NotesAdapter(
                 note.isChecked = false
             }
 
-            2 -> if (isChecked) {
-                checkedNotes.add(note)
-            } else {
-                checkedNotes.remove(note)
+            2 -> {
+                if (isChecked) {
+                    checkedNotes.add(note)
+                } else {
+                    checkedNotes.remove(note)
+                }
             }
 
             else -> Log.d("MyNotie", "Checked mode doesnt exist. Choose 1 or 2.")
