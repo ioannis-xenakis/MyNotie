@@ -385,6 +385,18 @@ class NotesAdapter(
     }
 
     /**
+     * Updates only notesFull list with a diffCallback.
+     * @param newNotesFull The new notesFull list to update from.
+     */
+    fun updateNotesFull(newNotesFull: List<Note>) {
+        val diffCallback = NoteDiffCallback(notesFull, newNotesFull)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+        notesFull.clear()
+        notesFull.addAll(newNotesFull)
+        diffResult.dispatchUpdatesTo(this)
+    }
+
+    /**
      * hideNoteTitleIfEmpty, hides Note Title from the screen if it is empty
      * and takes less android device resources.
      * @param noteHolder The holder for all the views inside each note.

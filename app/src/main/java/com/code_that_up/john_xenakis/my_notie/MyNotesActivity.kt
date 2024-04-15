@@ -120,6 +120,12 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
     private var newCheckedFolders: ArrayList<Folder>? = ArrayList()
 
     /**
+     * The saved notesFull list
+     * (for ex. saved from onSaveInstanceState when screen rotation happens).
+     */
+    private var savedNoteFullList: ArrayList<Note>? = ArrayList()
+
+    /**
      * Adapter for notes, which works as an exchange between the user interface and actual data.
      */
     private var adapter: NotesAdapter? = null
@@ -196,8 +202,9 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
         dao = NotesDB.getInstance(this)!!.notesDAO()
         @Suppress("DEPRECATION") var savedNoteList = savedInstanceState
             ?.getParcelableArrayList<Note>(NOTE_LIST_KEY)
-        @Suppress("DEPRECATION") var savedNoteFullList = savedInstanceState
-            ?.getParcelableArrayList<Note>(NOTE_FULL_LIST_KEY)
+        @Suppress("DEPRECATION")
+        savedNoteFullList = savedInstanceState
+            ?.getParcelableArrayList(NOTE_FULL_LIST_KEY)
         @Suppress("DEPRECATION") var savedCheckedNotes = savedInstanceState
             ?.getParcelableArrayList<Note>(CHECKED_NOTES_KEY)
         if (savedInstanceState == null) {
@@ -601,7 +608,10 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
             displaySelectedNotesCount()
         }
 
-        adapter!!.updateNoteListAndNotesFull(changedNotes)
+        adapter!!.updateNoteList(changedNotes)
+        if (savedNoteFullList != null) {
+            adapter!!.updateNotesFull(savedNoteFullList!!)
+        }
     }
 
     /**
