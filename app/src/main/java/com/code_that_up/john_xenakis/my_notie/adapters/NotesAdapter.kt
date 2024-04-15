@@ -288,10 +288,12 @@ class NotesAdapter(
                 note.isChecked = false
             }
 
-            2 -> if (isChecked) {
-                checkedNotes.add(note)
-            } else {
-                checkedNotes.remove(note)
+            2 -> {
+                if (isChecked) {
+                    checkedNotes.add(note)
+                } else {
+                    checkedNotes.remove(note)
+                }
             }
 
             else -> Log.d("MyNotie", "Checked mode doesnt exist. Choose 1 or 2.")
@@ -379,6 +381,18 @@ class NotesAdapter(
         notes.addAll(newNoteList)
         notesFull.clear()
         notesFull = ArrayList(notes)
+        diffResult.dispatchUpdatesTo(this)
+    }
+
+    /**
+     * Updates only notesFull list with a diffCallback.
+     * @param newNotesFull The new notesFull list to update from.
+     */
+    fun updateNotesFull(newNotesFull: List<Note>) {
+        val diffCallback = NoteDiffCallback(notesFull, newNotesFull)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+        notesFull.clear()
+        notesFull.addAll(newNotesFull)
         diffResult.dispatchUpdatesTo(this)
     }
 

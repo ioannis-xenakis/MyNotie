@@ -1,5 +1,8 @@
 # ![logo_mynotie](https://user-images.githubusercontent.com/37518738/122807098-d21d4c80-d2d3-11eb-9d75-0c86004fca23.png)  My Notie
 
+[![Download app from Google Play](/badges/download-google-play.svg)](https://play.google.com/store/apps/details?id=com.code_that_up.john_xenakis.my_notie)
+[![Download app from Github](/badges/download-github.svg)](https://github.com/ioannis-xenakis/MyNotie/releases/latest/download/mynotie-v1.0.5.apk)
+
 An android notepad for taking notes, write what you want and save them to see them later.
 
 ### Screenshots
@@ -9,9 +12,6 @@ An android notepad for taking notes, write what you want and save them to see th
 <img src="screenshots/3.png" width="19%" />
 <img src="screenshots/4.png" width="19%" />
 </div>
-
-### Latest Release
-Version 1.0.0 is ready! [Download it from here!](https://github.com/ioannis-xenakis/MyNotie/releases/download/v1.0.0/mynotie-v1.0.0.apk)
 
 ### Contribute
 You're welcome to contribute to anything you want :smiley: . In fact **everyone** beginners and experts, are welcome! I'll really appreciate it if you help me. :smiley:

@@ -6,7 +6,6 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -61,6 +60,21 @@ class AddToFoldersActivity : AppCompatActivity() {
     private var foldersListRv: RecyclerView? = null
 
     /**
+     * Unchanged checked folders list as when it was first created.
+     */
+    private var unChangedCheckedFolders: MutableList<Folder?>? = mutableListOf()
+
+    /**
+     * The list of folders that is checked.
+     */
+    private var checkedFolderList: MutableList<Folder?>? = mutableListOf()
+
+    /**
+     * The boolean indicating if the checked folders are changed or checked/unchecked.
+     */
+    private var isCheckedFoldersChanged: Boolean = false
+
+    /**
      * The dao needed(Data Access Object), for managing folders, in database.
      */
     private var folderDao: FoldersDAO? = null
@@ -95,6 +109,7 @@ class AddToFoldersActivity : AppCompatActivity() {
 
         //Get the note from "My Notes Activity", to be added to folders.
         if (intent.extras != null) {
+            @Suppress("DEPRECATION")
             note = intent!!.extras!!.getParcelable(NOTE_KEY)
         }
 
@@ -182,30 +197,53 @@ class AddToFoldersActivity : AppCompatActivity() {
 
     override fun finish() {
         val editNoteIntent = Intent(this, EditNoteActivity::class.java)
-        val checkedFolderList = foldersAdapter?.getCheckedFolders()!!
-        val unCheckedFolderList = foldersAdapter?.getUnCheckedFolders()!!
+
+        checkedFolderList = foldersAdapter?.getCheckedFolders()!!
+        val unCheckedFolderList = foldersAdapter?.getUnCheckedFolders()
+        val newCheckedFolders = foldersAdapter?.getNewCheckedFolders()!!
+
+        getIsCheckedFoldersChanged()
+
+        editNoteIntent.putExtra(IS_CHECKED_FOLDERS_CHANGED_KEY, isCheckedFoldersChanged)
         editNoteIntent.putExtra(NOTE_KEY, note)
-        editNoteIntent.putParcelableArrayListExtra(FOLDER_LIST_KEY, ArrayList(checkedFolderList))
-        editNoteIntent.putParcelableArrayListExtra(UNCHECKED_FOLDERS_KEY, ArrayList(unCheckedFolderList))
+        editNoteIntent.putParcelableArrayListExtra(NEW_CHECKED_FOLDERS_KEY, ArrayList(newCheckedFolders))
+        editNoteIntent.putParcelableArrayListExtra(FOLDER_LIST_KEY, ArrayList(checkedFolderList!!))
+        editNoteIntent.putParcelableArrayListExtra(UNCHECKED_FOLDERS_KEY, ArrayList(unCheckedFolderList!!))
         setResult(Activity.RESULT_OK, editNoteIntent)
+        foldersAdapter?.clearNewCheckedFolders()
         super.finish()
     }
 
     /**
-     * saveNewFolder, saves and adds the new folder, to the database and folders list.
-     * @param name_new_folder_text The Material Edittext "Name new folder text" for user to type his new folder name.
+     * Gets the isCheckedFoldersChanged boolean
+     * for knowing if any folder is checked from the list.
+     * @return The boolean for determining if more checked folders are added/removed.
      */
-    private fun saveNewFolder(name_new_folder_text: TextInputEditText) {
+    private fun getIsCheckedFoldersChanged() {
+        if (checkedFolderList!!.any { checked ->
+                unChangedCheckedFolders!!.any { it?.id != checked?.id }
+        } && checkedFolderList?.size != unChangedCheckedFolders?.size) {
+            isCheckedFoldersChanged = true
+        } else if (checkedFolderList?.size != unChangedCheckedFolders?.size) {
+            isCheckedFoldersChanged = true
+        }
+    }
+
+    /**
+     * saveNewFolder, saves and adds the new folder, to the database and folders list.
+     * @param nameNewFolderText The Material Edittext "Name new folder text" for user to type his new folder name.
+     */
+    private fun saveNewFolder(nameNewFolderText: TextInputEditText) {
         try {
             OtherUtils.closeKeyboard(this)
             val folder = Folder()
             FolderUtils.increaseFolderIdByOne(folderDao!!, folder)
-            folder.folderName = Objects.requireNonNull(name_new_folder_text.text).toString()
+            folder.folderName = Objects.requireNonNull(nameNewFolderText.text).toString()
             folderDao!!.insertFolder(folder)
             foldersAdapter!!.addFolder(folder)
             foldersAdapter!!.notifyItemInserted(foldersAdapter!!.getFolderPosition(folder))
-            name_new_folder_text.setText("")
-            name_new_folder_text.clearFocus()
+            nameNewFolderText.setText("")
+            nameNewFolderText.clearFocus()
             Toast.makeText(applicationContext, "New folder created!", Toast.LENGTH_SHORT).show()
         } catch (e: Exception) {
             e.printStackTrace()
@@ -228,57 +266,66 @@ class AddToFoldersActivity : AppCompatActivity() {
      * Loads/displays/refreshes all folders,
      * in *folders list*.
      */
+    @Suppress("DEPRECATION")
     private fun loadFolders() {
         val folderList = folderDao!!.allFolders?.let { ArrayList(it) }
-        val checkedFolderList = intent.extras?.getParcelableArrayList<Folder>(FOLDER_LIST_KEY)
+        checkedFolderList = intent.extras?.getParcelableArrayList<Folder>(FOLDER_LIST_KEY)
         val unCheckedFolderList = intent.extras?.getParcelableArrayList<Folder>(UNCHECKED_FOLDERS_KEY)
+        val newCheckedFolderList = intent
+            .extras
+            ?.getParcelableArrayList<Folder>(NEW_CHECKED_FOLDERS_KEY)
+        isCheckedFoldersChanged = intent.extras?.getBoolean(IS_CHECKED_FOLDERS_CHANGED_KEY)!!
+        unChangedCheckedFolders?.addAll(checkedFolderList!!)
         note = intent.extras?.getParcelable(NOTE_KEY)
 
         foldersAdapter = FoldersAddToFoldersAdapter(
             folderList,
             checkedFolderList?.toMutableList(),
             unCheckedFolderList?.toMutableList(),
+            newCheckedFolderList?.toMutableList(),
             note!!,
             this,
             folderDao!!
         )
         foldersAdapter!!.checkAlreadyCheckedFolders()
         foldersListRv!!.adapter = foldersAdapter
+
         checkedFolderList?.clear()
+        unCheckedFolderList?.clear()
     }
 
     /**
      * hideAcceptRejectNewFolderButtons, hides the "Accept new folder" and "Reject new folder" buttons,
      * and hides the "Add new folder button".
-     * @param add_new_folder_button The "Add new folder" button.
-     * @param reject_new_folder_button The "Reject new folder" button.
-     * @param accept_new_folder_button The "Accept new folder" button.
+     * @param addNewFolderButton The "Add new folder" button.
+     * @param rejectNewFolderButton The "Reject new folder" button.
+     * @param acceptNewFolderButton The "Accept new folder" button.
      */
     private fun hideAcceptRejectNewFolderButtons(
-        add_new_folder_button: ImageButton,
-        reject_new_folder_button: ImageButton,
-        accept_new_folder_button: ImageButton
+        addNewFolderButton: ImageButton,
+        rejectNewFolderButton: ImageButton,
+        acceptNewFolderButton: ImageButton
     ) {
-        add_new_folder_button.visibility = View.VISIBLE
-        reject_new_folder_button.visibility = View.GONE
-        accept_new_folder_button.visibility = View.GONE
+        addNewFolderButton.visibility = View.VISIBLE
+        rejectNewFolderButton.visibility = View.GONE
+        acceptNewFolderButton.visibility = View.GONE
     }
 
     /**
      * showAcceptRejectNewFolderButtons, shows the "Accept new folder" and "Reject new folder" buttons
      * and hides the "Add new folder" button.
-     * @param add_new_folder_button The "Add new folder" button.
-     * @param reject_new_folder_button The "Reject new folder" button.
-     * @param accept_new_folder_button The "Accept new folder" button.
+     * @param addNewFolderButton The "Add new folder" button.
+     * @param rejectNewFolderButton The "Reject new folder" button.
+     * @param acceptNewFolderButton The "Accept new folder" button.
      */
     private fun showAcceptRejectNewFolderButtons(
-        add_new_folder_button: ImageButton,
-        reject_new_folder_button: ImageButton,
-        accept_new_folder_button: ImageButton
+        addNewFolderButton: ImageButton,
+        rejectNewFolderButton: ImageButton,
+        acceptNewFolderButton: ImageButton
     ) {
-        add_new_folder_button.visibility = View.GONE
-        reject_new_folder_button.visibility = View.VISIBLE
-        accept_new_folder_button.visibility = View.VISIBLE
+        addNewFolderButton.visibility = View.GONE
+        rejectNewFolderButton.visibility = View.VISIBLE
+        acceptNewFolderButton.visibility = View.VISIBLE
     }
 
     companion object {
@@ -301,5 +348,15 @@ class AddToFoldersActivity : AppCompatActivity() {
          * The unchecked folders list extra key for accessing unchecked folder list.
          */
         const val UNCHECKED_FOLDERS_KEY = "unchecked_folder_list"
+
+        /**
+         * The newly checked folders list extra key for accessing new checked folder list.
+         */
+        const val NEW_CHECKED_FOLDERS_KEY = "new_checked_folder_list"
+
+        /**
+         * The isFoldersChanged key for accessing isFoldersChanged boolean.
+         */
+        const val IS_CHECKED_FOLDERS_CHANGED_KEY = "is_checked_folders_changed"
     }
 }

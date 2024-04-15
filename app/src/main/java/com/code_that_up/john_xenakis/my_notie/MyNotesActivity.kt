@@ -6,7 +6,6 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.SubMenu
@@ -35,6 +34,7 @@ import com.code_that_up.john_xenakis.my_notie.db.NotesFoldersJoinDAO
 import com.code_that_up.john_xenakis.my_notie.model.Folder
 import com.code_that_up.john_xenakis.my_notie.model.Note
 import com.code_that_up.john_xenakis.my_notie.model.NoteFolderJoin
+import com.code_that_up.john_xenakis.my_notie.utils.OtherUtils.openKeyboard
 import com.code_that_up.john_xenakis.my_notie.utils.SpacesItemGrid
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomappbar.BottomAppBar
@@ -85,6 +85,11 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
     private var selectNotesTopBar: MaterialToolbar? = null
 
     /**
+     * The search edittext to search for notes.
+     */
+    private lateinit var searchEdittext: EditText
+
+    /**
      * Dao needed for managing notes, in database.
      */
     private var dao: NotesDAO? = null
@@ -95,6 +100,11 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
     private var notesFoldersDAO: NotesFoldersJoinDAO? = null
 
     /**
+     * The boolean for deciding if notes are initialized or not.
+     */
+    private var isNotesNotInit: Boolean = true
+
+    /**
      * List containing only checked folders.
      */
     private var checkedFolders: ArrayList<Folder>? = null
@@ -103,6 +113,17 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
      * List containing only unchecked folders.
      */
     private var unCheckedFolders: ArrayList<Folder>? = null
+
+    /**
+     * List containing only the **newly** checked folders and not the old/existing checked ones.
+     */
+    private var newCheckedFolders: ArrayList<Folder>? = ArrayList()
+
+    /**
+     * The saved notesFull list
+     * (for ex. saved from onSaveInstanceState when screen rotation happens).
+     */
+    private var savedNoteFullList: ArrayList<Note>? = ArrayList()
 
     /**
      * Adapter for notes, which works as an exchange between the user interface and actual data.
@@ -177,14 +198,30 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
             noteSpacing(recyclerView, 3)
         }
         recyclerView!!.layoutManager = layoutManager
+
         dao = NotesDB.getInstance(this)!!.notesDAO()
-        loadNotes()
+        @Suppress("DEPRECATION") var savedNoteList = savedInstanceState
+            ?.getParcelableArrayList<Note>(NOTE_LIST_KEY)
+        @Suppress("DEPRECATION")
+        savedNoteFullList = savedInstanceState
+            ?.getParcelableArrayList(NOTE_FULL_LIST_KEY)
+        @Suppress("DEPRECATION") var savedCheckedNotes = savedInstanceState
+            ?.getParcelableArrayList<Note>(CHECKED_NOTES_KEY)
+        if (savedInstanceState == null) {
+            @Suppress("DEPRECATION")
+            savedNoteList = intent.extras?.getParcelableArrayList(NOTE_LIST_KEY)
+            @Suppress("DEPRECATION")
+            savedNoteFullList = intent.extras?.getParcelableArrayList(NOTE_FULL_LIST_KEY)
+            @Suppress("DEPRECATION")
+            savedCheckedNotes = intent.extras?.getParcelableArrayList(CHECKED_NOTES_KEY)
+        }
+        loadNotes(savedNoteList, savedNoteFullList, savedCheckedNotes)
 
         /*
           Note search functionality for search edittext on search top bar.
           Text changed listener runs when text is changed inside a Edittext, either the user changes it, or from a code functionality.
          */
-        val searchEdittext = findViewById<EditText>(R.id.search_edittext)
+        searchEdittext = findViewById(R.id.search_edittext)
         searchEdittext.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
             override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
@@ -202,6 +239,7 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
         searchTopBar!!.setNavigationOnClickListener {
             closeKeyboard()
             searchEdittext.setText("")
+            searchEdittext.clearFocus()
             if (adapter!!.getCheckedNotes().isNotEmpty()) {
                 showSelectNotesTopBar()
             } else {
@@ -257,11 +295,26 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
             drawerLayout!!.closeDrawer(GravityCompat.START)
         }
 
+        //Checking previous checked navigation menu item, before the switched screen orientation.
+        if (savedInstanceState?.getInt(NAV_MENU_ITEM_ID_KEY) != null) {
+            navMenuItemCheckedId = savedInstanceState.getInt(NAV_MENU_ITEM_ID_KEY)
+            navigationView!!.setCheckedItem(savedInstanceState.getInt(NAV_MENU_ITEM_ID_KEY))
+        }
+        //Scroll the notes list recyclerview to previous scrolled position, before switched screen orientation.
+        if (savedInstanceState?.getInt(RV_SCROLL_POSITION_KEY) != null) {
+            recyclerView!!.scrollToPosition(savedInstanceState.getInt(RV_SCROLL_POSITION_KEY))
+        }
+        if (savedInstanceState?.getString(TOP_BAR_TITLE_KEY) != null || savedInstanceState?.getString(
+                TOP_BAR_TITLE_KEY) != "") {
+            pageTitleTopBar?.title = savedInstanceState?.getString(TOP_BAR_TITLE_KEY)
+        }
+
         //The menu items(buttons) click mechanism for the side navigation drawer(in navigation view).
         navigationView!!.setNavigationItemSelectedListener { menuItem: MenuItem ->
             when (val id = menuItem.itemId) {
                 ALL_NOTES_ID -> {
-                    onlyRefreshAndLoadAllNotes()
+                    adapter!!.setAllCheckedNotes(false)
+                    refreshAllNewUncheckedNotes()
                     displaySelectedNotesCount()
                     pageTitleTopBar!!.setTitle(R.string.page_title)
                     navMenuItemCheckedId = ALL_NOTES_ID
@@ -275,6 +328,7 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
                     val folderList = NotesDB.getInstance(this)!!.foldersDAO()!!.allFolders
                     for (folder in folderList!!) {
                         if (id == folder!!.id) {
+                            adapter!!.setAllCheckedNotes(false)
                             loadNotesFromFolder(folder)
                             displaySelectedNotesCount()
                             pageTitleTopBar!!.title = folder.folderName!!.trim { it <= ' ' }
@@ -290,6 +344,7 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
         inflateNavigationMenus()
 
         checkedFolders = ArrayList()
+        newCheckedFolders = ArrayList()
     }
 
     /**
@@ -411,8 +466,10 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
      * the user has.
      */
     private fun displaySelectedNotesCount() {
-        selectNotesTopBar!!.title =
-            adapter!!.getCheckedNotes().size.toString() + " notes selected"
+        if (selectNotesTopBar != null) {
+            selectNotesTopBar!!.title =
+                adapter!!.getCheckedNotes().size.toString() + " notes selected"
+        }
     }
 
     /**
@@ -439,7 +496,7 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
      * in *notes list*, in *My notes* Activity.
      * @param menuItem the *select all notes* button.
      */
-    fun onSelectAllNotesButtonClick(menuItem: MenuItem?) {
+    fun onSelectAllNotesButtonClick(@Suppress("UNUSED_PARAMETER") menuItem: MenuItem?) {
         isNoteChecked = !isNoteChecked
         adapter!!.setAllCheckedNotes(isNoteChecked)
         displaySelectedNotesCount()
@@ -452,7 +509,7 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
      * user have selected.
      * @param menuItem the menu item/button(*delete selected notes* button).
      */
-    fun onDeleteSelectedNotesButtonClick(menuItem: MenuItem?) {
+    fun onDeleteSelectedNotesButtonClick(@Suppress("UNUSED_PARAMETER") menuItem: MenuItem?) {
         val deletedNotes = ArrayList(
             adapter!!.getCheckedNotes()
         )
@@ -479,8 +536,10 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
      * that allows user to search existing notes.
      * @param menuItem the menu item/button(*search* button).
      */
-    fun onSearchButtonClick(menuItem: MenuItem?) {
+    fun onSearchButtonClick(@Suppress("UNUSED_PARAMETER") menuItem: MenuItem?) {
         showSearchTopBar()
+        searchEdittext.requestFocus()
+        openKeyboard(this)
     }
 
     /**
@@ -490,28 +549,75 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
      * that allows user to select notes.
      * @param item the menu item/button(*select notes* button).
      */
-    fun onSelectNotesButtonClick(item: MenuItem?) {
+    fun onSelectNotesButtonClick(@Suppress("UNUSED_PARAMETER") item: MenuItem?) {
         showSelectNotesTopBar()
     }
 
     /**
      * loadNotes, loads/displays/refreshes all the existing notes,
      * in *notes list*.
+     * @param savedNoteList The saved note list.
+     * @param savedNoteFullList The full unfiltered note list.
+     * @param savedCheckedNotes The saved checked notes.
      */
-    private fun loadNotes() {
-        val list = dao!!.notes
-        val notes = ArrayList(list!!)
+    private fun loadNotes(
+        savedNoteList: ArrayList<Note>? = arrayListOf(),
+        savedNoteFullList: ArrayList<Note>? = arrayListOf(),
+        savedCheckedNotes: ArrayList<Note>? = arrayListOf()
+    ) {
+        var notes = ArrayList<Note>()
+
+        if (savedNoteList != null) {
+            notes.addAll(savedNoteList)
+        } else {
+            notes = ArrayList(dao!!.notes!!)
+        }
+
         adapter = NotesAdapter(notes, this, this)
+        if(savedNoteFullList != null) {
+            adapter!!.notesFull.clear()
+            adapter!!.notesFull.addAll(savedNoteFullList)
+        }
         adapter!!.setListener(this, this)
         adapter!!.initCheckedNotes()
+
+        if (savedCheckedNotes != null) {
+            for (savedCheckedNote in savedCheckedNotes) {
+                adapter!!.getCheckedNotes().add(savedCheckedNote)
+            }
+        }
+
         recyclerView!!.adapter = adapter
+        isNotesNotInit = false
+        displaySelectedNotesCount()
     }
 
     /**
      * Only refreshes the notes and not loads the whole adapter. Avoids calling setAdapter.
      */
     private fun onlyRefreshAndLoadAllNotes() {
-        adapter!!.setAllCheckedNotes(false)
+        val list = dao!!.notes
+        val changedNotes = arrayListOf<Note>()
+        if (!list.isNullOrEmpty()) {
+            changedNotes.addAll(adapter!!.notes)
+            for (changedNote in changedNotes) {
+                if (changedNote.isChecked) {
+                    adapter!!.checkOrUncheckNote(changedNote, true, 1)
+                }
+            }
+            displaySelectedNotesCount()
+        }
+
+        adapter!!.updateNoteList(changedNotes)
+        if (savedNoteFullList != null) {
+            adapter!!.updateNotesFull(savedNoteFullList!!)
+        }
+    }
+
+    /**
+     * Refreshes all new notes being unchecked, from database.
+     */
+    private fun refreshAllNewUncheckedNotes() {
         val list = dao!!.notes
         adapter!!.updateNoteListAndNotesFull(list!!)
     }
@@ -521,7 +627,6 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
      * @param folder The folder to display the notes from.
      */
     private fun loadNotesFromFolder(folder: Folder) {
-        adapter!!.setAllCheckedNotes(false)
         val notesFoldersJoinDao = NotesDB.getInstance(this)!!.notesFoldersJoinDAO()
         val noteListFromFolder = notesFoldersJoinDao!!.getNotesFromFolder(folder.id)
         adapter!!.updateNoteListAndNotesFull(noteListFromFolder!!)
@@ -550,12 +655,24 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
             ALL_NOTES_ID -> {
                 onlyRefreshAndLoadAllNotes()
                 pageTitleTopBar!!.setTitle(R.string.page_title)
+                if (adapter!!.getCheckedNotes().isNotEmpty()) {
+                    showSelectNotesTopBar()
+                    displaySelectedNotesCount()
+                } else {
+                    showPageTitleTopBar()
+                }
             }
             else -> {
                 for (folder in folderList!!) {
                     if (id == folder!!.id) {
                         loadNotesFromFolder(folder)
                         pageTitleTopBar!!.title = folder.folderName
+                        if (adapter!!.getCheckedNotes().isNotEmpty()) {
+                            showSelectNotesTopBar()
+                            displaySelectedNotesCount()
+                        } else {
+                            showPageTitleTopBar()
+                        }
                     }
                 }
             }
@@ -582,19 +699,27 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
     /**
      * Saves a note to folders.
      * @param note The note to be saved in folders.
+     * @param isCheckedFoldersChanged The boolean that determines
+     * if there's any changes made to checked folders.
      */
-    private fun saveNoteToFolders(note: Note?) {
-        for (unCheckedFolder in unCheckedFolders!!) {
-            val noteFolderJoin = NoteFolderJoin(note?.id!!, unCheckedFolder.id)
-            notesFoldersDAO!!.deleteNoteNoteFolderJoin(noteFolderJoin)
-        }
+    private fun saveNoteToFolders(
+        note: Note?,
+        isCheckedFoldersChanged: Boolean
+    ) {
+        if (isCheckedFoldersChanged) {
+            for (unCheckedFolder in unCheckedFolders!!) {
+                val noteFolderJoin = NoteFolderJoin(note?.id!!, unCheckedFolder.id)
+                notesFoldersDAO!!.deleteNoteNoteFolderJoin(noteFolderJoin)
+            }
+            unCheckedFolders?.clear()
 
-        for (checkedFolder in checkedFolders!!) {
-            val noteFolderJoin = NoteFolderJoin(note?.id!!, checkedFolder.id)
-            notesFoldersDAO!!.insertNoteFolderJoin(noteFolderJoin)
+            for (checkedFolder in newCheckedFolders!!) {
+                val noteFolderJoin = NoteFolderJoin(note?.id!!, checkedFolder.id)
+                notesFoldersDAO!!.insertNoteFolderJoin(noteFolderJoin)
+            }
+            newCheckedFolders?.clear()
+            checkedFolders?.clear()
         }
-        checkedFolders?.clear()
-        unCheckedFolders?.clear()
     }
 
     /**
@@ -615,6 +740,16 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
         val folderList = NotesDB.getInstance(this)!!.foldersDAO()!!.allFolders
         updateFoldersInNavDrawer(folderList)
         ifNavMenuItemCheckedDo(folderList)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putParcelableArrayList(NOTE_LIST_KEY, adapter?.notes)
+        outState.putParcelableArrayList(NOTE_FULL_LIST_KEY, adapter?.notesFull)
+        outState.putParcelableArrayList(CHECKED_NOTES_KEY, adapter?.getCheckedNotes())
+        outState.putInt(RV_SCROLL_POSITION_KEY, layoutManager?.findFirstVisibleItemPosition()!!)
+        outState.putString(TOP_BAR_TITLE_KEY, pageTitleTopBar!!.title.toString())
+        outState.putInt(NAV_MENU_ITEM_ID_KEY, navMenuItemCheckedId)
+        super.onSaveInstanceState(outState)
     }
 
     /**
@@ -662,18 +797,19 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
         notePopupMenu.setOnMenuItemClickListener { menuItem: MenuItem ->
             val itemId = menuItem.itemId
             if (itemId == R.id.add_to_folder_button) {
+                newCheckedFolders = ArrayList()
                 checkedFolders = ArrayList(notesFoldersDAO!!.getFoldersFromNote(note.id))
                 unCheckedFolders = ArrayList()
                 val addToFolders = Intent(this, AddToFoldersActivity::class.java)
                 addToFolders.putExtra(AddToFoldersActivity.NOTE_EXTRA_KEY, note.id)
                 addToFolders.putExtra(AddToFoldersActivity.NOTE_KEY, note)
+                addToFolders.putExtra(AddToFoldersActivity.IS_CHECKED_FOLDERS_CHANGED_KEY, false)
+                addToFolders.putParcelableArrayListExtra(AddToFoldersActivity.NEW_CHECKED_FOLDERS_KEY, newCheckedFolders)
                 addToFolders.putParcelableArrayListExtra(AddToFoldersActivity.FOLDER_LIST_KEY, checkedFolders)
                 addToFolders.putParcelableArrayListExtra(AddToFoldersActivity.UNCHECKED_FOLDERS_KEY, unCheckedFolders)
                 resultLauncher.launch(addToFolders)
-                Log.d(TAG, "Add to folder button, clicked.")
                 return@setOnMenuItemClickListener true
             } else if (itemId == R.id.delete_only_this_note_button) {
-                Log.d(TAG, "Delete note button, clicked.")
                 dao!!.deleteNote(note)
                 adapter!!.notes.remove(note)
                 adapter!!.notesFull.remove(note)
@@ -687,7 +823,6 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
                     displaySelectedNotesCount()
                 }
                 Toast.makeText(this@MyNotesActivity, "Note deleted!", Toast.LENGTH_LONG).show()
-                Log.d(TAG, "Delete note button, finished.")
                 return@setOnMenuItemClickListener true
             }
             false
@@ -699,12 +834,20 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
      * The result launcher for managing/launching other activities and passing/getting results/data
      * from/to other activities.
      */
+    @Suppress("DEPRECATION")
     private var resultLauncher = registerForActivityResult(StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             val note: Note? = result.data?.extras?.getParcelable(AddToFoldersActivity.NOTE_KEY)
             checkedFolders = result.data?.extras?.getParcelableArrayList(AddToFoldersActivity.FOLDER_LIST_KEY)
             unCheckedFolders = result.data?.extras?.getParcelableArrayList(AddToFoldersActivity.UNCHECKED_FOLDERS_KEY)
-            saveNoteToFolders(note)
+            newCheckedFolders = result
+                .data
+                ?.extras
+                ?.getParcelableArrayList(AddToFoldersActivity.NEW_CHECKED_FOLDERS_KEY)
+            val isCheckedFoldersChanged = result.data?.extras?.
+                getBoolean(AddToFoldersActivity.IS_CHECKED_FOLDERS_CHANGED_KEY)
+
+            saveNoteToFolders(note, isCheckedFoldersChanged!!)
         }
     }
 
@@ -720,8 +863,33 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
         private const val GO_TO_ADD_OR_MANAGE_FOLDERS_ID = -2
 
         /**
-         * The app name.
+         * The intent extra key for retrieving/manipulating note list.
          */
-        const val TAG = "MyNotie"
+        private const val NOTE_LIST_KEY = "note_list"
+
+        /**
+         * The whole unfiltered note list.
+         */
+        private const val NOTE_FULL_LIST_KEY = "note_full_list"
+
+        /**
+         * The intent extra key for retrieving/manipulating checked note list.
+         */
+        private const val CHECKED_NOTES_KEY = "checked_notes"
+
+        /**
+         * The intent extra key for retrieving/manipulating navigation menus checked item id.
+         */
+        private  const val NAV_MENU_ITEM_ID_KEY = "nav_item_id"
+
+        /**
+         * The intent extra key for retrieving recyclerviews(note list) scroll position.
+         */
+        private const val RV_SCROLL_POSITION_KEY = "rv_scroll_position"
+
+        /**
+         * The intent extra key for manipulating top bar title.
+         */
+        private const val TOP_BAR_TITLE_KEY = "top_bar_title"
     }
 }
