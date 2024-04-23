@@ -31,7 +31,7 @@
         <item name="colorPrimarySurface">@color/black</item>
         <item name="colorOnPrimarySurface">@color/white</item>
         <item name="colorOnPrimary">@color/white</item>
-        <item name="android:colorBackground">@color/black</item>
+        <item name="android:colorBackground">@color/lighter_black</item>
         <item name="colorOnBackground">@color/white</item>
         <item name="colorSurface">@color/black</item>
         <item name="colorOnSurface">@color/white</item>
@@ -88,10 +88,7 @@
 
     <style name="ShapeAppearance.Notes.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">
         <item name="cornerFamily">rounded</item>
-        <item name="cornerSizeBottomLeft">9dp</item>
-        <item name="cornerSizeBottomRight">9dp</item>
-        <item name="cornerSizeTopLeft">9dp</item>
-        <item name="cornerSizeTopRight">40dp</item>
+        <item name="cornerSize">27dp</item>
     </style>
 
     <style name="ShapeAppearance.NoteEdittext.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">

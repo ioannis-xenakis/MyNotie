@@ -15,6 +15,7 @@ import com.code_that_up.john_xenakis.my_notie.R
 import com.code_that_up.john_xenakis.my_notie.callbacks.MoreMenuButtonListener
 import com.code_that_up.john_xenakis.my_notie.callbacks.NoteEventListener
 import com.code_that_up.john_xenakis.my_notie.db.NotesDB
+import com.code_that_up.john_xenakis.my_notie.db.NotesFoldersJoinDAO
 import com.code_that_up.john_xenakis.my_notie.model.Note
 import com.code_that_up.john_xenakis.my_notie.utils.NoteChangePayload
 import com.code_that_up.john_xenakis.my_notie.utils.NoteDiffCallback
@@ -126,40 +127,38 @@ class NotesAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val noteHolder = holder as NoteHolder
         val note = getNote(position)
-        if (note != null) {
-            //Entering text to each Text fields.
-            noteHolder.noteTitle.text = note.noteTitle
-            noteHolder.noteBodyText.text = note.noteBodyText
-            noteHolder.noteDate.text = NoteUtils.dateFromLong(note.noteDate)
+        //Entering text to each Text fields.
+        noteHolder.noteTitle.text = note.noteTitle
+        noteHolder.noteBodyText.text = note.noteBodyText
+        noteHolder.noteDate.text = NoteUtils.dateFromLong(note.noteDate)
 
-            //When clicking on note(note title, note body text, note date).
-            noteHolder.itemView.setOnClickListener {
-                listener!!.onNoteClick(
-                    note,
-                    noteHolder
-                )
-            }
-
-            noteHolder.noteCardView.isChecked = note.isChecked
-
-            //When long clicking(holding click) on note(note title, note body text, note date).
-            noteHolder.itemView.setOnLongClickListener {
-                listener!!.onNoteLongClick(note, noteHolder)
-                true
-            }
-
-            noteHolder.moreMenu.setOnClickListener { view: View? ->
-                moreMenuButtonListener.onMoreMenuButtonClick(
-                    note,
-                    view!!,
-                    noteHolder.bindingAdapterPosition
-                )
-            }
-
-            hideNoteTitleIfEmpty(noteHolder)
-            hideNoteBodyTextIfEmpty(noteHolder)
-            addFolderChipsAtEachNote(noteHolder, note)
+        //When clicking on note(note title, note body text, note date).
+        noteHolder.itemView.setOnClickListener {
+            listener!!.onNoteClick(
+                note,
+                noteHolder
+            )
         }
+
+        noteHolder.noteCardView.isChecked = note.isChecked
+
+        //When long clicking(holding click) on note(note title, note body text, note date).
+        noteHolder.itemView.setOnLongClickListener {
+            listener!!.onNoteLongClick(note, noteHolder)
+            true
+        }
+
+        noteHolder.moreMenu.setOnClickListener { view: View? ->
+            moreMenuButtonListener.onMoreMenuButtonClick(
+                note,
+                view!!,
+                noteHolder.bindingAdapterPosition
+            )
+        }
+
+        hideNoteTitleIfEmpty(noteHolder)
+        hideNoteBodyTextIfEmpty(noteHolder)
+        addFolderChipsAtEachNote(noteHolder, note)
     }
 
     /**
@@ -195,15 +194,21 @@ class NotesAdapter(
     class NoteHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         /**
          * Note title, that the user writes.<br></br>
-         * Note body text, or the main text of note, that the user writes.<br></br>
-         * Note date is the date which the note has been created/last edited.
          */
         var noteTitle: TextView
+
+        /**
+         * Note body text, or the main text of note, that the user writes.<br></br>
+         */
         var noteBodyText: TextView
+
+        /**
+         * Note date is the date which the note has been created/last edited.
+         */
         var noteDate: TextView
 
         /**
-         * moreMenu button (three vertical dots icon), that diplays the vertical dropdown menu when clicked.
+         * moreMenu button (three vertical dots icon), that displays the vertical dropdown menu when clicked.
          */
         var moreMenu: MaterialButton
 
@@ -244,6 +249,14 @@ class NotesAdapter(
      */
     fun getCheckedNotes(): ArrayList<Note> {
         return checkedNotes
+    }
+
+    /**
+     * Sets/replaces/copies the checked notes list.
+     * @param listToCheckFrom The list that replaces/copies the checked notes list.
+     */
+    fun setCheckedNotes(listToCheckFrom: ArrayList<Note>) {
+        checkedNotes = listToCheckFrom
     }
 
     /**
@@ -296,7 +309,7 @@ class NotesAdapter(
                 }
             }
 
-            else -> Log.d("MyNotie", "Checked mode doesnt exist. Choose 1 or 2.")
+            else -> Log.d("MyNotie", "Checked mode doesn't exist. Choose 1 or 2.")
         }
     }
 
@@ -385,14 +398,18 @@ class NotesAdapter(
     }
 
     /**
-     * Updates only notesFull list with a diffCallback.
-     * @param newNotesFull The new notesFull list to update from.
+     * Updates/refreshes both the *note list* which is displayed on screen
+     * and the *full unfiltered note list*
+     * which some of its notes might not be displayed on screen.
+     * @param newNoteList The new note list containing the new data, to refresh/update to.
      */
-    fun updateNotesFull(newNotesFull: List<Note>) {
-        val diffCallback = NoteDiffCallback(notesFull, newNotesFull)
+    fun updateNoteListAndNotesFull(newNoteList: List<Note>, notesFoldersJoinDAO: NotesFoldersJoinDAO?) {
+        val diffCallback = NoteDiffCallback(notes, newNoteList, notesFoldersJoinDAO)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
+        notes.clear()
+        notes.addAll(newNoteList)
         notesFull.clear()
-        notesFull.addAll(newNotesFull)
+        notesFull = ArrayList(notes)
         diffResult.dispatchUpdatesTo(this)
     }
 

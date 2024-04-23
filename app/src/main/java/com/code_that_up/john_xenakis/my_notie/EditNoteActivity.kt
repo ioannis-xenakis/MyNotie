@@ -203,13 +203,11 @@ class EditNoteActivity : AppCompatActivity() {
             for (unCheckedFolder in unCheckedFolderList!!) {
                 val noteFolderJoin = NoteFolderJoin(note!!.id, unCheckedFolder.id)
                 notesFoldersJoinDAO!!.deleteNoteNoteFolderJoin(noteFolderJoin)
-                Log.d(TAG, "EditNote saveToFolders deleteUnCheckedFolder: ${unCheckedFolder.folderName}")
             }
 
             for (checkedFolder in newCheckedFolderList!!) {
                 val noteFolderJoin = NoteFolderJoin(note!!.id, checkedFolder.id)
                 notesFoldersJoinDAO!!.insertNoteFolderJoin(noteFolderJoin)
-                Log.d(TAG, "EditNote saveToFolders insertCheckedFolder: ${checkedFolder.folderName}")
             }
         }
     }

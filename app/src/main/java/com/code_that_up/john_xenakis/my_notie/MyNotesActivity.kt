@@ -120,10 +120,16 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
     private var newCheckedFolders: ArrayList<Folder>? = ArrayList()
 
     /**
-     * The saved notesFull list
+     * The saved notesFull list before activity is killed and recreated.
      * (for ex. saved from onSaveInstanceState when screen rotation happens).
      */
     private var savedNoteFullList: ArrayList<Note>? = ArrayList()
+
+    /**
+     * The saved note list before activity is killed and recreated.
+     * (for ex. saved from onSaveInstanceState when screen rotation happens)
+     */
+    private var savedNoteList: ArrayList<Note>? = ArrayList()
 
     /**
      * Adapter for notes, which works as an exchange between the user interface and actual data.
@@ -200,7 +206,8 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
         recyclerView!!.layoutManager = layoutManager
 
         dao = NotesDB.getInstance(this)!!.notesDAO()
-        @Suppress("DEPRECATION") var savedNoteList = savedInstanceState
+        @Suppress("DEPRECATION")
+        savedNoteList = savedInstanceState
             ?.getParcelableArrayList<Note>(NOTE_LIST_KEY)
         @Suppress("DEPRECATION")
         savedNoteFullList = savedInstanceState
@@ -314,6 +321,12 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
             when (val id = menuItem.itemId) {
                 ALL_NOTES_ID -> {
                     adapter!!.setAllCheckedNotes(false)
+                    adapter!!.getCheckedNotes().clear()
+                    if (adapter!!.getCheckedNotes().isNotEmpty()) {
+                        showSelectNotesTopBar()
+                    } else {
+                        showPageTitleTopBar()
+                    }
                     refreshAllNewUncheckedNotes()
                     displaySelectedNotesCount()
                     pageTitleTopBar!!.setTitle(R.string.page_title)
@@ -329,6 +342,12 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
                     for (folder in folderList!!) {
                         if (id == folder!!.id) {
                             adapter!!.setAllCheckedNotes(false)
+                            adapter!!.getCheckedNotes().clear()
+                            if (adapter!!.getCheckedNotes().isNotEmpty()) {
+                                showSelectNotesTopBar()
+                            } else {
+                                showPageTitleTopBar()
+                            }
                             loadNotesFromFolder(folder)
                             displaySelectedNotesCount()
                             pageTitleTopBar!!.title = folder.folderName!!.trim { it <= ' ' }
@@ -341,6 +360,9 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
             true
         }
         isNoteChecked = false
+        if (savedInstanceState?.getBoolean(IS_NOTE_CHECKED_KEY) != null) {
+            isNoteChecked = savedInstanceState.getBoolean(IS_NOTE_CHECKED_KEY)
+        }
         inflateNavigationMenus()
 
         checkedFolders = ArrayList()
@@ -516,8 +538,8 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
         for (note in adapter!!.getCheckedNotes()) {
             val position = adapter!!.notes.indexOf(note)
             dao!!.deleteNote(note)
-            adapter!!.notes.remove(note)
-            adapter!!.notesFull.remove(note)
+            adapter!!.notes.removeAt(position)
+            adapter!!.notesFull.removeAt(position)
             adapter!!.notifyItemRemoved(position)
         }
         adapter!!.getCheckedNotes().clear()
@@ -565,10 +587,10 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
         savedNoteFullList: ArrayList<Note>? = arrayListOf(),
         savedCheckedNotes: ArrayList<Note>? = arrayListOf()
     ) {
-        var notes = ArrayList<Note>()
+        val notes: ArrayList<Note>
 
         if (savedNoteList != null) {
-            notes.addAll(savedNoteList)
+            notes = ArrayList(savedNoteList)
         } else {
             notes = ArrayList(dao!!.notes!!)
         }
@@ -596,22 +618,29 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
      * Only refreshes the notes and not loads the whole adapter. Avoids calling setAdapter.
      */
     private fun onlyRefreshAndLoadAllNotes() {
-        val list = dao!!.notes
-        val changedNotes = arrayListOf<Note>()
-        if (!list.isNullOrEmpty()) {
-            changedNotes.addAll(adapter!!.notes)
-            for (changedNote in changedNotes) {
-                if (changedNote.isChecked) {
-                    adapter!!.checkOrUncheckNote(changedNote, true, 1)
+        val changedNotes = ArrayList(dao!!.notes!!)
+        if (changedNotes.isNotEmpty()) {
+            for (note in adapter?.notes!!) {
+                for (changedNote in changedNotes) {
+                    if (note.id == changedNote.id) {
+                        changedNote.isChecked = note.isChecked
+                    }
                 }
             }
+
+            adapter?.getCheckedNotes()?.clear()
+            for (changedNote in changedNotes) {
+                if (changedNote.isChecked) {
+                    adapter?.getCheckedNotes()?.add(changedNote)
+                }
+            }
+            adapter?.setCheckedNotes(ArrayList(adapter!!.getCheckedNotes().sortedBy { it.id }))
+
             displaySelectedNotesCount()
         }
 
-        adapter!!.updateNoteList(changedNotes)
-        if (savedNoteFullList != null) {
-            adapter!!.updateNotesFull(savedNoteFullList!!)
-        }
+        val notesFoldersJoinDAO = NotesDB.getInstance(this)?.notesFoldersJoinDAO()
+        adapter?.updateNoteListAndNotesFull(changedNotes, notesFoldersJoinDAO)
     }
 
     /**
@@ -627,9 +656,40 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
      * @param folder The folder to display the notes from.
      */
     private fun loadNotesFromFolder(folder: Folder) {
-        val notesFoldersJoinDao = NotesDB.getInstance(this)!!.notesFoldersJoinDAO()
-        val noteListFromFolder = notesFoldersJoinDao!!.getNotesFromFolder(folder.id)
-        adapter!!.updateNoteListAndNotesFull(noteListFromFolder!!)
+        val notesFoldersJoinDao = NotesDB.getInstance(this)?.notesFoldersJoinDAO()
+        val noteListFromFolder = ArrayList(notesFoldersJoinDao?.getNotesFromFolder(folder.id)!!)
+
+        for (note in adapter!!.notes) {
+            for (noteFromFolder in noteListFromFolder) {
+                if (note.id == noteFromFolder.id) {
+                    noteListFromFolder[noteListFromFolder.indexOf(noteFromFolder)] = note
+                }
+            }
+        }
+
+        displaySelectedNotesCount()
+
+        adapter?.updateNoteListAndNotesFull(noteListFromFolder)
+    }
+
+    /**
+     * Loads/displays/refreshes notes, only from a specific folder.
+     * @param folder The folder to display the notes from.
+     */
+    private fun loadNotesFromFolderWithDao(folder: Folder) {
+        val noteListFromFolder = ArrayList(notesFoldersDAO?.getNotesFromFolder(folder.id)!!)
+
+        for (note in adapter!!.notes) {
+            for (noteFromFolder in noteListFromFolder) {
+                if (note.id == noteFromFolder.id) {
+                    noteListFromFolder[noteListFromFolder.indexOf(noteFromFolder)] = note
+                }
+            }
+        }
+
+        displaySelectedNotesCount()
+
+        adapter!!.updateNoteListAndNotesFull(noteListFromFolder, notesFoldersDAO)
     }
 
     /**
@@ -654,8 +714,8 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
         when(val id = navMenuItemCheckedId) {
             ALL_NOTES_ID -> {
                 onlyRefreshAndLoadAllNotes()
-                pageTitleTopBar!!.setTitle(R.string.page_title)
-                if (adapter!!.getCheckedNotes().isNotEmpty()) {
+                pageTitleTopBar?.setTitle(R.string.page_title)
+                if (adapter?.getCheckedNotes()?.isNotEmpty() == true) {
                     showSelectNotesTopBar()
                     displaySelectedNotesCount()
                 } else {
@@ -664,10 +724,10 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
             }
             else -> {
                 for (folder in folderList!!) {
-                    if (id == folder!!.id) {
-                        loadNotesFromFolder(folder)
-                        pageTitleTopBar!!.title = folder.folderName
-                        if (adapter!!.getCheckedNotes().isNotEmpty()) {
+                    if (id == folder?.id) {
+                        loadNotesFromFolderWithDao(folder)
+                        pageTitleTopBar?.title = folder.folderName
+                        if (adapter?.getCheckedNotes()?.isNotEmpty() == true) {
                             showSelectNotesTopBar()
                             displaySelectedNotesCount()
                         } else {
@@ -744,12 +804,26 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
 
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putParcelableArrayList(NOTE_LIST_KEY, adapter?.notes)
+        outState.putBoolean(IS_NOTE_CHECKED_KEY, isNoteChecked)
         outState.putParcelableArrayList(NOTE_FULL_LIST_KEY, adapter?.notesFull)
         outState.putParcelableArrayList(CHECKED_NOTES_KEY, adapter?.getCheckedNotes())
         outState.putInt(RV_SCROLL_POSITION_KEY, layoutManager?.findFirstVisibleItemPosition()!!)
         outState.putString(TOP_BAR_TITLE_KEY, pageTitleTopBar!!.title.toString())
         outState.putInt(NAV_MENU_ITEM_ID_KEY, navMenuItemCheckedId)
         super.onSaveInstanceState(outState)
+    }
+
+
+    @Suppress("DEPRECATION")
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+
+        val savedCheckedNotes = savedInstanceState
+            .getParcelableArrayList<Note>(CHECKED_NOTES_KEY)
+        savedNoteList = savedInstanceState.getParcelableArrayList(NOTE_LIST_KEY)
+        savedNoteFullList = savedInstanceState.getParcelableArrayList(NOTE_FULL_LIST_KEY)
+
+        loadNotes(savedNoteList, savedNoteFullList, savedCheckedNotes)
     }
 
     /**
@@ -767,10 +841,9 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
      * @param noteHolder the holder that holds content/buttons in a note.
      */
     override fun onNoteClick(note: Note?, noteHolder: NoteHolder?) {
-        if (adapter!!.getCheckedNotes().size > 0 || selectNotesTopBar!!.visibility == View.VISIBLE) selectNote(
-            note,
-            noteHolder
-        ) else {
+        if (adapter!!.getCheckedNotes().size > 0 || selectNotesTopBar!!.visibility == View.VISIBLE) {
+            selectNote(note, noteHolder)
+        } else {
             openNote(note)
         }
     }
@@ -811,8 +884,8 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
                 return@setOnMenuItemClickListener true
             } else if (itemId == R.id.delete_only_this_note_button) {
                 dao!!.deleteNote(note)
-                adapter!!.notes.remove(note)
-                adapter!!.notesFull.remove(note)
+                adapter!!.notes.removeAt(adapter?.notes!!.indexOf(note))
+                adapter!!.notesFull.removeAt(position)
                 adapter!!.getCheckedNotes().remove(note)
                 adapter!!.notifyItemRemoved(position)
                 if (note.isChecked) displaySelectedNotesCount()
@@ -876,6 +949,11 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
          * The intent extra key for retrieving/manipulating checked note list.
          */
         private const val CHECKED_NOTES_KEY = "checked_notes"
+
+        /**
+         * The intent extra key for obtaining/saving isNoteChecked boolean.
+         */
+        private const val IS_NOTE_CHECKED_KEY = "is_note_checked"
 
         /**
          * The intent extra key for retrieving/manipulating navigation menus checked item id.
