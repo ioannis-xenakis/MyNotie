@@ -25,7 +25,7 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/wooden_background"
+    android:background="?android:colorBackground"
     tools:context=".MyNotesActivity">
 <!-- My notes activity is the starting activity when app starts. -->
 <!-- DrawerLayout needed for navigation drawer(navigation view). -->

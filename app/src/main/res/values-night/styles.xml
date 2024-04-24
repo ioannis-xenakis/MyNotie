@@ -31,7 +31,7 @@
         <item name="colorPrimarySurface">@color/black</item>
         <item name="colorOnPrimarySurface">@color/white</item>
         <item name="colorOnPrimary">@color/white</item>
-        <item name="android:colorBackground">@color/black</item>
+        <item name="android:colorBackground">@color/lighter_black</item>
         <item name="colorOnBackground">@color/white</item>
         <item name="colorSurface">@color/black</item>
         <item name="colorOnSurface">@color/white</item>

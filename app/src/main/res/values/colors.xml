@@ -24,10 +24,11 @@
     <color name="dark_blue">#0069C0</color>
     <color name="teal_blue">#00E5FF</color>
     <color name="black">#090909</color>
+    <color name="lighter_black">#424242</color>
     <color name="semi_transp_black">#75000000</color>
     <color name="white">#FFFFFF</color>
     <color name="bluish_grey">#D8E0E6</color>
-    <color name="grey">#E3E3E3</color>
+    <color name="grey">#ECECEC</color>
     <color name="green">#00DD00</color>
 
 </resources>
