@@ -76,10 +76,7 @@
     
     <style name="ShapeAppearance.Notes.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">
         <item name="cornerFamily">rounded</item>
-        <item name="cornerSizeBottomLeft">9dp</item>
-        <item name="cornerSizeBottomRight">9dp</item>
-        <item name="cornerSizeTopLeft">9dp</item>
-        <item name="cornerSizeTopRight">40dp</item>
+        <item name="cornerSize">27dp</item>
     </style>
 
     <style name="ShapeAppearance.NoteEdittext.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">

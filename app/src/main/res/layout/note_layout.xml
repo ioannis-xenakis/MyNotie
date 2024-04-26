@@ -29,6 +29,10 @@
     android:focusable="true"
     android:checkable="true"
     android:foreground="?android:attr/selectableItemBackground"
+    app:contentPaddingLeft="@dimen/horizontal_content_space_in_note"
+    app:contentPaddingRight="@dimen/horizontal_content_space_in_note"
+    app:contentPaddingBottom="@dimen/vertical_content_space_in_note"
+    app:contentPaddingTop="@dimen/vertical_content_space_in_note"
     app:shapeAppearance="@style/ShapeAppearance.Notes.MediumComponent"
     app:cardBackgroundColor="?attr/colorSurface"
     app:cardElevation="2dp">
