@@ -15,6 +15,7 @@ import com.code_that_up.john_xenakis.my_notie.R
 import com.code_that_up.john_xenakis.my_notie.callbacks.MoreMenuButtonListener
 import com.code_that_up.john_xenakis.my_notie.callbacks.NoteEventListener
 import com.code_that_up.john_xenakis.my_notie.db.NotesDB
+import com.code_that_up.john_xenakis.my_notie.db.NotesFoldersJoinDAO
 import com.code_that_up.john_xenakis.my_notie.model.Note
 import com.code_that_up.john_xenakis.my_notie.utils.NoteChangePayload
 import com.code_that_up.john_xenakis.my_notie.utils.NoteDiffCallback
@@ -203,7 +204,7 @@ class NotesAdapter(
         var noteDate: TextView
 
         /**
-         * moreMenu button (three vertical dots icon), that diplays the vertical dropdown menu when clicked.
+         * moreMenu button (three vertical dots icon), that displays the vertical dropdown menu when clicked.
          */
         var moreMenu: MaterialButton
 
@@ -296,7 +297,7 @@ class NotesAdapter(
                 }
             }
 
-            else -> Log.d("MyNotie", "Checked mode doesnt exist. Choose 1 or 2.")
+            else -> Log.d("MyNotie", "Checked mode doesn't exist. Choose 1 or 2.")
         }
     }
 
@@ -385,14 +386,18 @@ class NotesAdapter(
     }
 
     /**
-     * Updates only notesFull list with a diffCallback.
-     * @param newNotesFull The new notesFull list to update from.
+     * Updates/refreshes both the *note list* which is displayed on screen
+     * and the *full unfiltered note list*
+     * which some of its notes might not be displayed on screen.
+     * @param newNoteList The new note list containing the new data, to refresh/update to.
      */
-    fun updateNotesFull(newNotesFull: List<Note>) {
-        val diffCallback = NoteDiffCallback(notesFull, newNotesFull)
+    fun updateNoteListAndNotesFull(newNoteList: List<Note>, notesFoldersJoinDAO: NotesFoldersJoinDAO?) {
+        val diffCallback = NoteDiffCallback(notes, newNoteList, notesFoldersJoinDAO)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
+        notes.clear()
+        notes.addAll(newNoteList)
         notesFull.clear()
-        notesFull.addAll(newNotesFull)
+        notesFull = ArrayList(notes)
         diffResult.dispatchUpdatesTo(this)
     }
 

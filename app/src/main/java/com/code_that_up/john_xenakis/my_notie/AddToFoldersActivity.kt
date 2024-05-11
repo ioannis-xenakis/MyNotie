@@ -62,12 +62,12 @@ class AddToFoldersActivity : AppCompatActivity() {
     /**
      * Unchanged checked folders list as when it was first created.
      */
-    private var unChangedCheckedFolders: MutableList<Folder?>? = mutableListOf()
+    private var unChangedCheckedFolders: ArrayList<Folder?>? = arrayListOf()
 
     /**
      * The list of folders that is checked.
      */
-    private var checkedFolderList: MutableList<Folder?>? = mutableListOf()
+    private var checkedFolderList: ArrayList<Folder?>? = arrayListOf()
 
     /**
      * The boolean indicating if the checked folders are changed or checked/unchecked.
@@ -202,7 +202,7 @@ class AddToFoldersActivity : AppCompatActivity() {
         val unCheckedFolderList = foldersAdapter?.getUnCheckedFolders()
         val newCheckedFolders = foldersAdapter?.getNewCheckedFolders()!!
 
-        getIsCheckedFoldersChanged()
+        checkedFoldersChanged(newCheckedFolders)
 
         editNoteIntent.putExtra(IS_CHECKED_FOLDERS_CHANGED_KEY, isCheckedFoldersChanged)
         editNoteIntent.putExtra(NOTE_KEY, note)
@@ -215,18 +215,11 @@ class AddToFoldersActivity : AppCompatActivity() {
     }
 
     /**
-     * Gets the isCheckedFoldersChanged boolean
-     * for knowing if any folder is checked from the list.
-     * @return The boolean for determining if more checked folders are added/removed.
+     * Decides if checked folders are changed or not.
+     * @param newCheckedFolders The newly checked folders that isnt yet added to database.
      */
-    private fun getIsCheckedFoldersChanged() {
-        if (checkedFolderList!!.any { checked ->
-                unChangedCheckedFolders!!.any { it?.id != checked?.id }
-        } && checkedFolderList?.size != unChangedCheckedFolders?.size) {
-            isCheckedFoldersChanged = true
-        } else if (checkedFolderList?.size != unChangedCheckedFolders?.size) {
-            isCheckedFoldersChanged = true
-        }
+    private fun checkedFoldersChanged(newCheckedFolders: ArrayList<Folder?>?) {
+        isCheckedFoldersChanged = newCheckedFolders?.isNotEmpty()!! || checkedFolderList?.size != unChangedCheckedFolders?.size
     }
 
     /**
@@ -280,9 +273,9 @@ class AddToFoldersActivity : AppCompatActivity() {
 
         foldersAdapter = FoldersAddToFoldersAdapter(
             folderList,
-            checkedFolderList?.toMutableList(),
-            unCheckedFolderList?.toMutableList(),
-            newCheckedFolderList?.toMutableList(),
+            checkedFolderList,
+            unCheckedFolderList,
+            newCheckedFolderList,
             note!!,
             this,
             folderDao!!
@@ -290,8 +283,6 @@ class AddToFoldersActivity : AppCompatActivity() {
         foldersAdapter!!.checkAlreadyCheckedFolders()
         foldersListRv!!.adapter = foldersAdapter
 
-        checkedFolderList?.clear()
-        unCheckedFolderList?.clear()
     }
 
     /**

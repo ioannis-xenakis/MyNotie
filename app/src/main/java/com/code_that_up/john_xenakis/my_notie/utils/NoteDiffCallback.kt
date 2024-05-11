@@ -1,6 +1,7 @@
 package com.code_that_up.john_xenakis.my_notie.utils
 
 import androidx.recyclerview.widget.DiffUtil
+import com.code_that_up.john_xenakis.my_notie.db.NotesFoldersJoinDAO
 import com.code_that_up.john_xenakis.my_notie.model.Note
 
 /*
@@ -62,7 +63,11 @@ class NoteDiffCallback
     /**
      * The new note list state, after refreshing.
      */
-    private val newNoteList: List<Note>
+    private val newNoteList: List<Note>,
+    /**
+     * The Data Access Object for relationship between notes and folders.
+     */
+    private val notesFoldersJoinDAO: NotesFoldersJoinDAO? = null
 ) : DiffUtil.Callback() {
     /**
      * Gets the size number of the old/previous note list or how many notes are left in old note list.
@@ -99,7 +104,10 @@ class NoteDiffCallback
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
         val oldNote = oldNoteList[oldItemPosition]
         val newNote = newNoteList[newItemPosition]
-        return oldNote.noteTitle == newNote.noteTitle && oldNote.noteBodyText == newNote.noteBodyText
+        val foldersFromOldNote = notesFoldersJoinDAO?.getFoldersFromNote(oldNote.id)
+        val foldersFromNewNote = notesFoldersJoinDAO?.getFoldersFromNote(newNote.id)
+        return oldNote.noteTitle == newNote.noteTitle && oldNote.noteBodyText == newNote.noteBodyText &&
+                foldersFromNewNote == foldersFromOldNote && newNote.isChecked == oldNote.isChecked
     }
 
     /**

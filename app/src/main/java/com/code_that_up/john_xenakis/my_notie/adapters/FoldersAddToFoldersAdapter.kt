@@ -59,16 +59,16 @@ class FoldersAddToFoldersAdapter
     /**
      * The checked folders of the folders list.
      */
-    private val checkedFolders: MutableList<Folder?>?,
+    private val checkedFolders: ArrayList<Folder?>?,
     /**
      * The unchecked folders list.
      */
-    private val unCheckedFolders: MutableList<Folder?>?,
+    private val unCheckedFolders: ArrayList<Folder?>?,
     /**
      * The new checked folders that are checked,
      * only the moment the user checked and not from db.
      */
-    private val newCheckedFolders: MutableList<Folder?>?,
+    private val newCheckedFolders: ArrayList<Folder?>?,
     /**
      * The note to be added to folders.
      */
@@ -155,7 +155,7 @@ class FoldersAddToFoldersAdapter
      * Gets the unchecked folders list.
      * @return The unchecked folders list.
      */
-    fun getUnCheckedFolders(): MutableList<Folder?>? {
+    fun getUnCheckedFolders(): ArrayList<Folder?>? {
         return unCheckedFolders
     }
 
@@ -178,14 +178,14 @@ class FoldersAddToFoldersAdapter
     /**
      * Gets the list of checked folders.
      */
-    fun getCheckedFolders(): MutableList<Folder?>? {
+    fun getCheckedFolders(): ArrayList<Folder?>? {
         return checkedFolders
     }
 
     /**
      * Gets the newly checked folders and clears them after that.
      */
-    fun getNewCheckedFolders(): MutableList<Folder?>? {
+    fun getNewCheckedFolders(): ArrayList<Folder?>? {
         return newCheckedFolders
     }
 
