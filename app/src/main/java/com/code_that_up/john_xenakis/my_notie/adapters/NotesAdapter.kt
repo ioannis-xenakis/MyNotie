@@ -127,40 +127,38 @@ class NotesAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val noteHolder = holder as NoteHolder
         val note = getNote(position)
-        if (note != null) {
-            //Entering text to each Text fields.
-            noteHolder.noteTitle.text = note.noteTitle
-            noteHolder.noteBodyText.text = note.noteBodyText
-            noteHolder.noteDate.text = NoteUtils.dateFromLong(note.noteDate)
+        //Entering text to each Text fields.
+        noteHolder.noteTitle.text = note.noteTitle
+        noteHolder.noteBodyText.text = note.noteBodyText
+        noteHolder.noteDate.text = NoteUtils.dateFromLong(note.noteDate)
 
-            //When clicking on note(note title, note body text, note date).
-            noteHolder.itemView.setOnClickListener {
-                listener!!.onNoteClick(
-                    note,
-                    noteHolder
-                )
-            }
-
-            noteHolder.noteCardView.isChecked = note.isChecked
-
-            //When long clicking(holding click) on note(note title, note body text, note date).
-            noteHolder.itemView.setOnLongClickListener {
-                listener!!.onNoteLongClick(note, noteHolder)
-                true
-            }
-
-            noteHolder.moreMenu.setOnClickListener { view: View? ->
-                moreMenuButtonListener.onMoreMenuButtonClick(
-                    note,
-                    view!!,
-                    noteHolder.bindingAdapterPosition
-                )
-            }
-
-            hideNoteTitleIfEmpty(noteHolder)
-            hideNoteBodyTextIfEmpty(noteHolder)
-            addFolderChipsAtEachNote(noteHolder, note)
+        //When clicking on note(note title, note body text, note date).
+        noteHolder.itemView.setOnClickListener {
+            listener!!.onNoteClick(
+                note,
+                noteHolder
+            )
         }
+
+        noteHolder.noteCardView.isChecked = note.isChecked
+
+        //When long clicking(holding click) on note(note title, note body text, note date).
+        noteHolder.itemView.setOnLongClickListener {
+            listener!!.onNoteLongClick(note, noteHolder)
+            true
+        }
+
+        noteHolder.moreMenu.setOnClickListener { view: View? ->
+            moreMenuButtonListener.onMoreMenuButtonClick(
+                note,
+                view!!,
+                noteHolder.bindingAdapterPosition
+            )
+        }
+
+        hideNoteTitleIfEmpty(noteHolder)
+        hideNoteBodyTextIfEmpty(noteHolder)
+        addFolderChipsAtEachNote(noteHolder, note)
     }
 
     /**
@@ -196,11 +194,17 @@ class NotesAdapter(
     class NoteHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         /**
          * Note title, that the user writes.<br></br>
-         * Note body text, or the main text of note, that the user writes.<br></br>
-         * Note date is the date which the note has been created/last edited.
          */
         var noteTitle: TextView
+
+        /**
+         * Note body text, or the main text of note, that the user writes.<br></br>
+         */
         var noteBodyText: TextView
+
+        /**
+         * Note date is the date which the note has been created/last edited.
+         */
         var noteDate: TextView
 
         /**
@@ -245,6 +249,14 @@ class NotesAdapter(
      */
     fun getCheckedNotes(): ArrayList<Note> {
         return checkedNotes
+    }
+
+    /**
+     * Sets/replaces/copies the checked notes list.
+     * @param listToCheckFrom The list that replaces/copies the checked notes list.
+     */
+    fun setCheckedNotes(listToCheckFrom: ArrayList<Note>) {
+        checkedNotes = listToCheckFrom
     }
 
     /**

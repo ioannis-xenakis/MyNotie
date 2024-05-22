@@ -106,8 +106,7 @@ class NoteDiffCallback
         val newNote = newNoteList[newItemPosition]
         val foldersFromOldNote = notesFoldersJoinDAO?.getFoldersFromNote(oldNote.id)
         val foldersFromNewNote = notesFoldersJoinDAO?.getFoldersFromNote(newNote.id)
-        return oldNote.noteTitle == newNote.noteTitle && oldNote.noteBodyText == newNote.noteBodyText &&
-                foldersFromNewNote == foldersFromOldNote && newNote.isChecked == oldNote.isChecked
+        return oldNote.noteTitle == newNote.noteTitle && oldNote.noteBodyText == newNote.noteBodyText && foldersFromNewNote == foldersFromOldNote
     }
 
     /**

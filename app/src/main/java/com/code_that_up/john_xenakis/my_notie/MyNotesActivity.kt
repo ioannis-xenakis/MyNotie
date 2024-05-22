@@ -618,23 +618,29 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
      * Only refreshes the notes and not loads the whole adapter. Avoids calling setAdapter.
      */
     private fun onlyRefreshAndLoadAllNotes() {
-        val list = dao!!.notes
-        val changedNotes = arrayListOf<Note>()
-        if (!list.isNullOrEmpty()) {
-            changedNotes.addAll(list)
-
-            for (note in adapter!!.notes) {
+        val changedNotes = ArrayList(dao!!.notes!!)
+        if (changedNotes.isNotEmpty()) {
+            for (note in adapter?.notes!!) {
                 for (changedNote in changedNotes) {
                     if (note.id == changedNote.id) {
-                        changedNotes[changedNotes.indexOf(changedNote)] = note
+                        changedNote.isChecked = note.isChecked
                     }
                 }
             }
 
+            adapter?.getCheckedNotes()?.clear()
+            for (changedNote in changedNotes) {
+                if (changedNote.isChecked) {
+                    adapter?.getCheckedNotes()?.add(changedNote)
+                }
+            }
+            adapter?.setCheckedNotes(ArrayList(adapter!!.getCheckedNotes().sortedBy { it.id }))
+
             displaySelectedNotesCount()
         }
 
-        adapter!!.updateNoteListAndNotesFull(changedNotes, notesFoldersDAO)
+        val notesFoldersJoinDAO = NotesDB.getInstance(this)?.notesFoldersJoinDAO()
+        adapter?.updateNoteListAndNotesFull(changedNotes, notesFoldersJoinDAO)
     }
 
     /**
@@ -798,8 +804,6 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
 
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putParcelableArrayList(NOTE_LIST_KEY, adapter?.notes)
-        intent.extras?.putParcelableArrayList(NOTE_LIST_KEY, adapter?.notes)
-        intent.extras?.putParcelableArrayList(NOTE_FULL_LIST_KEY, adapter?.notesFull)
         outState.putBoolean(IS_NOTE_CHECKED_KEY, isNoteChecked)
         outState.putParcelableArrayList(NOTE_FULL_LIST_KEY, adapter?.notesFull)
         outState.putParcelableArrayList(CHECKED_NOTES_KEY, adapter?.getCheckedNotes())
@@ -807,6 +811,19 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
         outState.putString(TOP_BAR_TITLE_KEY, pageTitleTopBar!!.title.toString())
         outState.putInt(NAV_MENU_ITEM_ID_KEY, navMenuItemCheckedId)
         super.onSaveInstanceState(outState)
+    }
+
+
+    @Suppress("DEPRECATION")
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+
+        val savedCheckedNotes = savedInstanceState
+            .getParcelableArrayList<Note>(CHECKED_NOTES_KEY)
+        savedNoteList = savedInstanceState.getParcelableArrayList(NOTE_LIST_KEY)
+        savedNoteFullList = savedInstanceState.getParcelableArrayList(NOTE_FULL_LIST_KEY)
+
+        loadNotes(savedNoteList, savedNoteFullList, savedCheckedNotes)
     }
 
     /**
@@ -867,7 +884,7 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
                 return@setOnMenuItemClickListener true
             } else if (itemId == R.id.delete_only_this_note_button) {
                 dao!!.deleteNote(note)
-                adapter!!.notes.removeAt(position)
+                adapter!!.notes.removeAt(adapter?.notes!!.indexOf(note))
                 adapter!!.notesFull.removeAt(position)
                 adapter!!.getCheckedNotes().remove(note)
                 adapter!!.notifyItemRemoved(position)
