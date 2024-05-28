@@ -387,11 +387,13 @@ class NotesAdapter(
      * which some of its notes might not be displayed on screen.
      * @param newNoteList The new note list containing the new data, to refresh/update to.
      */
-    fun updateNoteListAndNotesFull(newNoteList: List<Note>) {
+    fun updateNoteListAndNotesFull(newNoteList: List<Note>?) {
         val diffCallback = NoteDiffCallback(notes, newNoteList)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
         notes.clear()
-        notes.addAll(newNoteList)
+        if (newNoteList != null) {
+            notes.addAll(newNoteList)
+        }
         notesFull.clear()
         notesFull = ArrayList(notes)
         diffResult.dispatchUpdatesTo(this)

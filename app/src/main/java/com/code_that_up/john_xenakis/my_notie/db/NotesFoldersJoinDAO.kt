@@ -67,5 +67,5 @@ interface NotesFoldersJoinDAO {
      */
     @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
     @Query("SELECT * FROM folders INNER JOIN note_folder_join ON folders.folderId=note_folder_join.folderId WHERE note_folder_join.noteId=:noteId")
-    fun getFoldersFromNote(noteId: Int): List<Folder>
+    fun getFoldersFromNote(noteId: Int?): List<Folder>
 }

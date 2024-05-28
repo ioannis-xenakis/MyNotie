@@ -63,7 +63,7 @@ class NoteDiffCallback
     /**
      * The new note list state, after refreshing.
      */
-    private val newNoteList: List<Note>,
+    private val newNoteList: List<Note>?,
     /**
      * The Data Access Object for relationship between notes and folders.
      */
@@ -82,7 +82,7 @@ class NoteDiffCallback
      * @return The size number of the new note list.
      */
     override fun getNewListSize(): Int {
-        return newNoteList.size
+        return newNoteList!!.size
     }
 
     /**
@@ -92,7 +92,7 @@ class NoteDiffCallback
      * @return The boolean(yes/no true/false) state of, if the old note is the same or not with the new note.
      */
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return oldNoteList[oldItemPosition].id == newNoteList[newItemPosition].id
+        return oldNoteList[oldItemPosition].id == newNoteList?.get(newItemPosition)?.id
     }
 
     /**
@@ -103,10 +103,10 @@ class NoteDiffCallback
      */
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
         val oldNote = oldNoteList[oldItemPosition]
-        val newNote = newNoteList[newItemPosition]
+        val newNote = newNoteList?.get(newItemPosition)
         val foldersFromOldNote = notesFoldersJoinDAO?.getFoldersFromNote(oldNote.id)
-        val foldersFromNewNote = notesFoldersJoinDAO?.getFoldersFromNote(newNote.id)
-        return oldNote.noteTitle == newNote.noteTitle && oldNote.noteBodyText == newNote.noteBodyText && foldersFromNewNote == foldersFromOldNote
+        val foldersFromNewNote = notesFoldersJoinDAO?.getFoldersFromNote(newNote?.id)
+        return oldNote.noteTitle == newNote?.noteTitle && oldNote.noteBodyText == newNote?.noteBodyText && foldersFromNewNote == foldersFromOldNote
     }
 
     /**
@@ -116,18 +116,18 @@ class NoteDiffCallback
      */
     override fun getChangePayload(oldNotePosition: Int, newNotePosition: Int): Any? {
         val oldNote = oldNoteList[oldNotePosition]
-        val newNote = newNoteList[newNotePosition]
+        val newNote = newNoteList?.get(newNotePosition)
         return when {
-            oldNote.noteTitle != newNote.noteTitle -> {
-                NoteChangePayload.NoteTitle(newNote.noteTitle)
+            oldNote.noteTitle != newNote?.noteTitle -> {
+                NoteChangePayload.NoteTitle(newNote?.noteTitle)
             }
 
-            oldNote.noteBodyText != newNote.noteBodyText -> {
-                NoteChangePayload.NoteBodyText(newNote.noteBodyText)
+            oldNote.noteBodyText != newNote?.noteBodyText -> {
+                NoteChangePayload.NoteBodyText(newNote?.noteBodyText)
             }
 
-            oldNote.noteDate != newNote.noteDate -> {
-                NoteChangePayload.NoteDateEdited(newNote.noteDate)
+            oldNote.noteDate != newNote?.noteDate -> {
+                NoteChangePayload.NoteDateEdited(newNote?.noteDate)
             }
 
             else -> super.getChangePayload(oldNotePosition, newNotePosition)

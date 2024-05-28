@@ -327,7 +327,7 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
                     } else {
                         showPageTitleTopBar()
                     }
-                    refreshAllNewUncheckedNotes()
+                    adapter?.updateNoteListAndNotesFull(dao?.notes)
                     displaySelectedNotesCount()
                     pageTitleTopBar!!.setTitle(R.string.page_title)
                     navMenuItemCheckedId = ALL_NOTES_ID
@@ -348,7 +348,8 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
                             } else {
                                 showPageTitleTopBar()
                             }
-                            loadNotesFromFolder(folder)
+                            val notesFromFolder = notesFoldersDAO?.getNotesFromFolder(folder.id)
+                            adapter?.updateNoteListAndNotesFull(notesFromFolder)
                             displaySelectedNotesCount()
                             pageTitleTopBar!!.title = folder.folderName!!.trim { it <= ' ' }
                             navMenuItemCheckedId = id
@@ -519,7 +520,7 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
      * @param menuItem the *select all notes* button.
      */
     fun onSelectAllNotesButtonClick(@Suppress("UNUSED_PARAMETER") menuItem: MenuItem?) {
-        isNoteChecked = !isNoteChecked
+        isNoteChecked = !adapter?.getCheckedNotes()!!.containsAll(adapter?.notes!!)
         adapter!!.setAllCheckedNotes(isNoteChecked)
         displaySelectedNotesCount()
     }
@@ -587,12 +588,10 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
         savedNoteFullList: ArrayList<Note>? = arrayListOf(),
         savedCheckedNotes: ArrayList<Note>? = arrayListOf()
     ) {
-        val notes: ArrayList<Note>
-
-        if (savedNoteList != null) {
-            notes = ArrayList(savedNoteList)
+        val notes = if (savedNoteList != null) {
+            ArrayList(savedNoteList)
         } else {
-            notes = ArrayList(dao!!.notes!!)
+            ArrayList(dao!!.notes!!)
         }
 
         adapter = NotesAdapter(notes, this, this)
@@ -615,10 +614,10 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
     }
 
     /**
-     * Only refreshes the notes and not loads the whole adapter. Avoids calling setAdapter.
+     * Loads/displays/refreshes notes, with a notes list parameter.
+     * @param changedNotes The changed notes to update old notes.
      */
-    private fun onlyRefreshAndLoadAllNotes() {
-        val changedNotes = ArrayList(dao!!.notes!!)
+    private fun loadNotesWithList(changedNotes: ArrayList<Note>) {
         if (changedNotes.isNotEmpty()) {
             for (note in adapter?.notes!!) {
                 for (changedNote in changedNotes) {
@@ -639,57 +638,7 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
             displaySelectedNotesCount()
         }
 
-        val notesFoldersJoinDAO = NotesDB.getInstance(this)?.notesFoldersJoinDAO()
-        adapter?.updateNoteListAndNotesFull(changedNotes, notesFoldersJoinDAO)
-    }
-
-    /**
-     * Refreshes all new notes being unchecked, from database.
-     */
-    private fun refreshAllNewUncheckedNotes() {
-        val list = dao!!.notes
-        adapter!!.updateNoteListAndNotesFull(list!!)
-    }
-
-    /**
-     * Loads/displays/refreshes notes, only from a specific folder.
-     * @param folder The folder to display the notes from.
-     */
-    private fun loadNotesFromFolder(folder: Folder) {
-        val notesFoldersJoinDao = NotesDB.getInstance(this)?.notesFoldersJoinDAO()
-        val noteListFromFolder = ArrayList(notesFoldersJoinDao?.getNotesFromFolder(folder.id)!!)
-
-        for (note in adapter!!.notes) {
-            for (noteFromFolder in noteListFromFolder) {
-                if (note.id == noteFromFolder.id) {
-                    noteListFromFolder[noteListFromFolder.indexOf(noteFromFolder)] = note
-                }
-            }
-        }
-
-        displaySelectedNotesCount()
-
-        adapter?.updateNoteListAndNotesFull(noteListFromFolder)
-    }
-
-    /**
-     * Loads/displays/refreshes notes, only from a specific folder.
-     * @param folder The folder to display the notes from.
-     */
-    private fun loadNotesFromFolderWithDao(folder: Folder) {
-        val noteListFromFolder = ArrayList(notesFoldersDAO?.getNotesFromFolder(folder.id)!!)
-
-        for (note in adapter!!.notes) {
-            for (noteFromFolder in noteListFromFolder) {
-                if (note.id == noteFromFolder.id) {
-                    noteListFromFolder[noteListFromFolder.indexOf(noteFromFolder)] = note
-                }
-            }
-        }
-
-        displaySelectedNotesCount()
-
-        adapter!!.updateNoteListAndNotesFull(noteListFromFolder, notesFoldersDAO)
+        adapter!!.updateNoteListAndNotesFull(changedNotes, notesFoldersDAO)
     }
 
     /**
@@ -713,7 +662,8 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
     private fun ifNavMenuItemCheckedDo(folderList: List<Folder?>?) {
         when(val id = navMenuItemCheckedId) {
             ALL_NOTES_ID -> {
-                onlyRefreshAndLoadAllNotes()
+                val changedNotes = ArrayList(dao!!.notes!!)
+                loadNotesWithList(changedNotes)
                 pageTitleTopBar?.setTitle(R.string.page_title)
                 if (adapter?.getCheckedNotes()?.isNotEmpty() == true) {
                     showSelectNotesTopBar()
@@ -725,7 +675,8 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
             else -> {
                 for (folder in folderList!!) {
                     if (id == folder?.id) {
-                        loadNotesFromFolderWithDao(folder)
+                        val notesFromFolder = ArrayList(notesFoldersDAO?.getNotesFromFolder(folder.id)!!)
+                        loadNotesWithList(notesFromFolder)
                         pageTitleTopBar?.title = folder.folderName
                         if (adapter?.getCheckedNotes()?.isNotEmpty() == true) {
                             showSelectNotesTopBar()
