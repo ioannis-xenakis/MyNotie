@@ -130,7 +130,7 @@
                 android:inputType="text"
                 android:maxLines="1"
                 android:imeOptions="actionDone"
-                android:fontFamily="@font/roboto_regular" />
+                android:fontFamily="@font/segoe_ui_regular" />
 
         </com.google.android.material.textfield.TextInputLayout>
 

@@ -40,8 +40,7 @@
         <item name="tickColor">@color/white</item>
         <item name="colorControlNormal">@color/white</item>
         <item name="checkboxStyle">@style/CheckBoxStyle</item>
-        <item name="textAppearanceLargePopupMenu">@style/TextAppearance.MyNotie.Subtitle1</item>
-        <item name="textAppearanceSmallPopupMenu">@style/TextAppearance.MyNotie.Subtitle1</item>
+        <item name="toolbarStyle">@style/ToolbarStyle</item>
         <item name="popupMenuBackground">@drawable/popup_menu_background</item>
         <item name="chipStyle">@style/ChipStyle</item>
         <item name="chipGroupStyle">@style/ChipGroupStyle</item>
@@ -75,15 +74,15 @@
     </style>
 
     <style name="ChipTextAppearance" parent="TextAppearance.MaterialComponents.Chip">
-        <item name="fontFamily">@font/roboto_light</item>
+        <item name="fontFamily">@font/segoe_ui_light</item>
     </style>
 
     <style name="ChipShapeAppearance" parent="ShapeAppearance.MaterialComponents.SmallComponent">
         <item name="cornerFamily">rounded</item>
-        <item name="cornerSizeBottomLeft">4dp</item>
-        <item name="cornerSizeBottomRight">4dp</item>
-        <item name="cornerSizeTopLeft">4dp</item>
-        <item name="cornerSizeTopRight">14dp</item>
+        <item name="cornerSizeBottomLeft">10dp</item>
+        <item name="cornerSizeBottomRight">10dp</item>
+        <item name="cornerSizeTopLeft">10dp</item>
+        <item name="cornerSizeTopRight">10dp</item>
     </style>
 
     <style name="ShapeAppearance.Notes.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">
@@ -93,10 +92,10 @@
 
     <style name="ShapeAppearance.NoteEdittext.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
         <item name="cornerFamily">rounded</item>
-        <item name="cornerSizeBottomLeft">9dp</item>
-        <item name="cornerSizeBottomRight">9dp</item>
-        <item name="cornerSizeTopLeft">9dp</item>
-        <item name="cornerSizeTopRight">40dp</item>
+        <item name="cornerSizeBottomLeft">27dp</item>
+        <item name="cornerSizeBottomRight">27dp</item>
+        <item name="cornerSizeTopLeft">27dp</item>
+        <item name="cornerSizeTopRight">27dp</item>
     </style>
 
     <style name="ShapeAppearance.Edittext.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
@@ -108,13 +107,23 @@
     </style>
 
     <style name="TextAppearance.MyNotie.Subtitle1" parent="TextAppearance.MaterialComponents.Subtitle1">
-        <item name="fontFamily">@font/roboto_regular</item>
-        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="fontFamily">@font/segoe_ui_semibold</item>
+        <item name="android:fontFamily">@font/segoe_ui_semibold</item>
         <item name="android:textColor">@color/white</item>
     </style>
 
-    <style name="FontStyleRobotoRegular">
-        <item name="android:fontFamily">@font/roboto_regular</item>
+    <style name="ToolbarStyle" parent="Widget.AppCompat.Toolbar">
+        <item name="titleTextAppearance">@style/TitleTextAppearance</item>
+    </style>
+
+    <style name="TitleTextAppearance" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="fontFamily">@font/segoe_ui_bold</item>
+        <item name="android:fontFamily">@font/segoe_ui_bold</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="FontStyleSegoeUIBold">
+        <item name="android:fontFamily">@font/segoe_ui_bold</item>
     </style>
 
 </resources>

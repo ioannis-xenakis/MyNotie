@@ -15,15 +15,16 @@ import com.code_that_up.john_xenakis.my_notie.R
 import com.code_that_up.john_xenakis.my_notie.callbacks.MoreMenuButtonListener
 import com.code_that_up.john_xenakis.my_notie.callbacks.NoteEventListener
 import com.code_that_up.john_xenakis.my_notie.db.NotesDB
-import com.code_that_up.john_xenakis.my_notie.db.NotesFoldersJoinDAO
+import com.code_that_up.john_xenakis.my_notie.model.Folder
 import com.code_that_up.john_xenakis.my_notie.model.Note
 import com.code_that_up.john_xenakis.my_notie.utils.NoteChangePayload
+import com.code_that_up.john_xenakis.my_notie.utils.NoteCornerTreatment
 import com.code_that_up.john_xenakis.my_notie.utils.NoteDiffCallback
 import com.code_that_up.john_xenakis.my_notie.utils.NoteUtils
-import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.util.Locale
 
 /*
@@ -159,6 +160,8 @@ class NotesAdapter(
         hideNoteTitleIfEmpty(noteHolder)
         hideNoteBodyTextIfEmpty(noteHolder)
         addFolderChipsAtEachNote(noteHolder, note)
+
+        setNoteShapeBackground(noteHolder.noteCardView)
     }
 
     /**
@@ -210,7 +213,7 @@ class NotesAdapter(
         /**
          * moreMenu button (three vertical dots icon), that displays the vertical dropdown menu when clicked.
          */
-        var moreMenu: MaterialButton
+        var moreMenu: FloatingActionButton
 
         /**
          * Chip group that displays all folders(chips), in a note.
@@ -234,6 +237,16 @@ class NotesAdapter(
             moreMenu = itemView.findViewById(R.id.more_menu_button)
             folderChipGroup = itemView.findViewById(R.id.folder_chip_group)
         }
+    }
+
+    /**
+     * Sets the note shape.
+     * @param noteCardView The cardview of note. Basically the note itself.
+     */
+    private fun setNoteShapeBackground(noteCardView: MaterialCardView) {
+        noteCardView.shapeAppearanceModel = noteCardView.shapeAppearanceModel.toBuilder()
+            .setBottomRightCorner(NoteCornerTreatment())
+            .build()
     }
 
     /**
@@ -404,9 +417,15 @@ class NotesAdapter(
      * and the *full unfiltered note list*
      * which some of its notes might not be displayed on screen.
      * @param newNoteList The new note list containing the new data, to refresh/update to.
+     * @param oldFoldersFromNotes The old folders for each of the notes.
+     * @param newFoldersFromNotes The new folders for each of the notes.
      */
-    fun updateNoteListAndNotesFull(newNoteList: List<Note>, notesFoldersJoinDAO: NotesFoldersJoinDAO?) {
-        val diffCallback = NoteDiffCallback(notes, newNoteList, notesFoldersJoinDAO)
+    fun updateNoteListAndNotesFull(
+        newNoteList: List<Note>,
+        oldFoldersFromNotes: ArrayList<List<Folder>>,
+        newFoldersFromNotes: ArrayList<List<Folder>>
+    ) {
+        val diffCallback = NoteDiffCallback(notes, newNoteList, oldFoldersFromNotes, newFoldersFromNotes)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
         notes.clear()
         notes.addAll(newNoteList)

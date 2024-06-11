@@ -32,7 +32,7 @@
         <item name="android:colorBackground">@color/grey</item>
         <item name="colorOnBackground">@color/black</item>
         <item name="colorSurface">@color/white</item>
-        <item name="colorOnSurface">@color/black</item>
+        <item name="colorOnSurface">@color/lighter_black</item>
         <item name="dividerColor">@color/grey</item>
         <item name="tickColor">@color/green</item>
         <item name="colorControlNormal">@color/black</item>
@@ -42,6 +42,7 @@
         <item name="chipStyle">@style/ChipStyle</item>
         <item name="chipGroupStyle">@style/ChipGroupStyle</item>
         <item name="actionOverflowButtonStyle">@style/overflowButtonStyle</item>
+        <item name="toolbarStyle">@style/ToolbarStyle</item>
     </style>
 
     <style name="overflowButtonStyle" parent="Widget.AppCompat.ActionButton.Overflow">
@@ -63,15 +64,15 @@
     </style>
 
     <style name="ChipTextAppearance" parent="TextAppearance.MaterialComponents.Chip">
-        <item name="fontFamily">@font/roboto_light</item>
+        <item name="fontFamily">@font/segoe_ui_light</item>
     </style>
 
     <style name="ChipShapeAppearance" parent="ShapeAppearance.MaterialComponents.SmallComponent">
         <item name="cornerFamily">rounded</item>
-        <item name="cornerSizeBottomLeft">4dp</item>
-        <item name="cornerSizeBottomRight">4dp</item>
-        <item name="cornerSizeTopLeft">4dp</item>
-        <item name="cornerSizeTopRight">14dp</item>
+        <item name="cornerSizeBottomLeft">10dp</item>
+        <item name="cornerSizeBottomRight">10dp</item>
+        <item name="cornerSizeTopLeft">10dp</item>
+        <item name="cornerSizeTopRight">10dp</item>
     </style>
     
     <style name="ShapeAppearance.Notes.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">
@@ -81,10 +82,10 @@
 
     <style name="ShapeAppearance.NoteEdittext.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
         <item name="cornerFamily">rounded</item>
-        <item name="cornerSizeBottomLeft">9dp</item>
-        <item name="cornerSizeBottomRight">9dp</item>
-        <item name="cornerSizeTopLeft">9dp</item>
-        <item name="cornerSizeTopRight">40dp</item>
+        <item name="cornerSizeBottomLeft">27dp</item>
+        <item name="cornerSizeBottomRight">27dp</item>
+        <item name="cornerSizeTopLeft">27dp</item>
+        <item name="cornerSizeTopRight">27dp</item>
     </style>
 
     <style name="ShapeAppearance.Edittext.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
@@ -96,13 +97,23 @@
     </style>
 
     <style name="TextAppearance.MyNotie.Subtitle1" parent="TextAppearance.MaterialComponents.Subtitle1">
-        <item name="fontFamily">@font/roboto_regular</item>
-        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="fontFamily">@font/segoe_ui_semibold</item>
+        <item name="android:fontFamily">@font/segoe_ui_semibold</item>
         <item name="android:textColor">?attr/colorOnSurface</item>
     </style>
+
+    <style name="ToolbarStyle" parent="Widget.AppCompat.Toolbar">
+        <item name="titleTextAppearance">@style/TitleTextAppearance</item>
+    </style>
+
+    <style name="TitleTextAppearance" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="fontFamily">@font/segoe_ui_bold</item>
+        <item name="android:fontFamily">@font/segoe_ui_bold</item>
+        <item name="android:textSize">20sp</item>
+    </style>
     
-    <style name="FontStyleRobotoRegular">
-        <item name="android:fontFamily">@font/roboto_regular</item>
+    <style name="FontStyleSegoeUIBold">
+        <item name="android:fontFamily">@font/segoe_ui_bold</item>
     </style>
 
 </resources>

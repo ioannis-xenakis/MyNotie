@@ -76,5 +76,6 @@
     <string name="folder_name_hint_add_to_folders">Folder name.</string>
     <string name="content_description_add_to_folders_cancel_renaming_folder">Cancel renaming folder button.</string>
     <string name="content_description_add_to_folders_accept_renaming_folder">Accept renaming folder.</string>
+    <string name="content_description_note_more_menu_button">More menu button</string>
 
 </resources>

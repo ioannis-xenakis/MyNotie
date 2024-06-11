@@ -29,21 +29,16 @@
     android:focusable="true"
     android:checkable="true"
     android:foreground="?android:attr/selectableItemBackground"
-    app:contentPaddingLeft="@dimen/horizontal_content_space_in_note"
-    app:contentPaddingRight="@dimen/horizontal_content_space_in_note"
-    app:contentPaddingBottom="@dimen/vertical_content_space_in_note"
-    app:contentPaddingTop="@dimen/vertical_content_space_in_note"
     app:shapeAppearance="@style/ShapeAppearance.Notes.MediumComponent"
     app:cardBackgroundColor="?attr/colorSurface"
     app:cardElevation="2dp">
     <!-- Actual note that is added in notes list(RecyclerView called notes_list)
     from my notes page(MyNotesActivity and activity_my_notes layout.) -->
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/noteLinearLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content">
 
         <!-- Note title, note body text and note date. -->
         <LinearLayout
@@ -51,14 +46,26 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_weight="10.5">
+            android:layout_weight="10.5"
+            android:paddingStart="@dimen/horizontal_content_space_in_note"
+            android:paddingLeft="@dimen/horizontal_content_space_in_note"
+            android:paddingEnd="10dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="@dimen/vertical_content_space_in_note"
+            android:paddingTop="@dimen/vertical_content_space_in_note"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/more_menu_button"
+            app:layout_constraintEnd_toStartOf="@id/more_menu_button"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
             <!-- Note title text containing title of note. -->
             <TextView
                 android:id="@+id/note_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_medium"
+                android:fontFamily="@font/segoe_ui_bold"
                 android:text="@string/note_title"
                 android:textColor="?attr/colorOnSurface"
                 android:textSize="@dimen/note_title_text_size"
@@ -71,7 +78,7 @@
                 android:id="@+id/note_body_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_regular"
+                android:fontFamily="@font/segoe_ui_regular"
                 android:text="@string/note_body_text"
                 android:textColor="?attr/colorOnSurface"
                 android:textSize="@dimen/note_body_text_size"
@@ -91,7 +98,7 @@
                 android:id="@+id/note_date"
                 android:layout_width="wrap_content"
                 android:layout_height="16dp"
-                android:fontFamily="@font/roboto_light"
+                android:fontFamily="@font/segoe_ui_light"
                 android:text="@string/note_date_text"
                 android:textColor="?attr/colorOnSurface"
                 android:textSize="@dimen/note_date_text_size"
@@ -99,19 +106,22 @@
 
         </LinearLayout>
 
-        <!-- More menu button displaying dropdown menu:
-        Add to folder button.
-        Delete note(delete_only_this_note_button) button. -->
-        <Button
+        <!-- More menu button displaying dropdown menu:-->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/more_menu_button"
-            style="?attr/borderlessButtonStyle"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            app:icon="@drawable/more_vert"
-            app:iconTint="?attr/colorOnSurface"
-            android:layout_weight="1" />
+            app:fabCustomSize="40dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/content_description_note_more_menu_button"
+            android:src="@drawable/more_vert"
+            android:layout_marginBottom="3.5dp"
+            android:layout_marginEnd="3.5dp"
+            android:layout_marginRight="3.5dp"
+            app:elevation="2dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>

@@ -71,4 +71,11 @@ class Folder() : Parcelable {
             return Folder(parcel)
         }
     }
+
+    override fun equals(other: Any?): Boolean = (other is Folder)
+            && this.id == other.id
+
+    override fun hashCode(): Int {
+        return id
+    }
 }
