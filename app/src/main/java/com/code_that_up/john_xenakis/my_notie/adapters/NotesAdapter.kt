@@ -18,12 +18,13 @@ import com.code_that_up.john_xenakis.my_notie.db.NotesDB
 import com.code_that_up.john_xenakis.my_notie.db.NotesFoldersJoinDAO
 import com.code_that_up.john_xenakis.my_notie.model.Note
 import com.code_that_up.john_xenakis.my_notie.utils.NoteChangePayload
+import com.code_that_up.john_xenakis.my_notie.utils.NoteCornerTreatment
 import com.code_that_up.john_xenakis.my_notie.utils.NoteDiffCallback
 import com.code_that_up.john_xenakis.my_notie.utils.NoteUtils
-import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.util.Locale
 
 /*
@@ -159,6 +160,8 @@ class NotesAdapter(
         hideNoteTitleIfEmpty(noteHolder)
         hideNoteBodyTextIfEmpty(noteHolder)
         addFolderChipsAtEachNote(noteHolder, note)
+
+        setNoteShapeBackground(noteHolder.noteCardView)
     }
 
     /**
@@ -210,7 +213,7 @@ class NotesAdapter(
         /**
          * moreMenu button (three vertical dots icon), that displays the vertical dropdown menu when clicked.
          */
-        var moreMenu: MaterialButton
+        var moreMenu: FloatingActionButton
 
         /**
          * Chip group that displays all folders(chips), in a note.
@@ -234,6 +237,16 @@ class NotesAdapter(
             moreMenu = itemView.findViewById(R.id.more_menu_button)
             folderChipGroup = itemView.findViewById(R.id.folder_chip_group)
         }
+    }
+
+    /**
+     * Sets the note shape.
+     * @param noteCardView The cardview of note. Basically the note itself.
+     */
+    private fun setNoteShapeBackground(noteCardView: MaterialCardView) {
+        noteCardView.shapeAppearanceModel = noteCardView.shapeAppearanceModel.toBuilder()
+            .setBottomRightCorner(NoteCornerTreatment())
+            .build()
     }
 
     /**
