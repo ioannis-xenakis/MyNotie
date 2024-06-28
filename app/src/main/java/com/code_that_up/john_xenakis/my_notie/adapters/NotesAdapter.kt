@@ -15,7 +15,7 @@ import com.code_that_up.john_xenakis.my_notie.R
 import com.code_that_up.john_xenakis.my_notie.callbacks.MoreMenuButtonListener
 import com.code_that_up.john_xenakis.my_notie.callbacks.NoteEventListener
 import com.code_that_up.john_xenakis.my_notie.db.NotesDB
-import com.code_that_up.john_xenakis.my_notie.db.NotesFoldersJoinDAO
+import com.code_that_up.john_xenakis.my_notie.model.Folder
 import com.code_that_up.john_xenakis.my_notie.model.Note
 import com.code_that_up.john_xenakis.my_notie.utils.NoteChangePayload
 import com.code_that_up.john_xenakis.my_notie.utils.NoteCornerTreatment
@@ -417,9 +417,15 @@ class NotesAdapter(
      * and the *full unfiltered note list*
      * which some of its notes might not be displayed on screen.
      * @param newNoteList The new note list containing the new data, to refresh/update to.
+     * @param oldFoldersFromNotes The old folders for each of the notes.
+     * @param newFoldersFromNotes The new folders for each of the notes.
      */
-    fun updateNoteListAndNotesFull(newNoteList: List<Note>, notesFoldersJoinDAO: NotesFoldersJoinDAO?) {
-        val diffCallback = NoteDiffCallback(notes, newNoteList, notesFoldersJoinDAO)
+    fun updateNoteListAndNotesFull(
+        newNoteList: List<Note>,
+        oldFoldersFromNotes: ArrayList<List<Folder>>,
+        newFoldersFromNotes: ArrayList<List<Folder>>
+    ) {
+        val diffCallback = NoteDiffCallback(notes, newNoteList, oldFoldersFromNotes, newFoldersFromNotes)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
         notes.clear()
         notes.addAll(newNoteList)

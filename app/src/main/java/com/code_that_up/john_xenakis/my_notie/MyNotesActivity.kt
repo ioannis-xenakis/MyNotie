@@ -132,6 +132,16 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
     private var savedNoteList: ArrayList<Note>? = ArrayList()
 
     /**
+     * The old folders for each note.
+     */
+    private var foldersFromOldNotes: ArrayList<List<Folder>> = arrayListOf()
+
+    /**
+     * The new folders for each note.
+     */
+    private var foldersFromNewNotes: ArrayList<List<Folder>> = arrayListOf()
+
+    /**
      * Adapter for notes, which works as an exchange between the user interface and actual data.
      */
     private var adapter: NotesAdapter? = null
@@ -638,7 +648,9 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
             displaySelectedNotesCount()
         }
 
-        adapter!!.updateNoteListAndNotesFull(changedNotes, notesFoldersDAO)
+        fillFoldersFromNotes(foldersFromNewNotes)
+
+        adapter!!.updateNoteListAndNotesFull(changedNotes, foldersFromOldNotes, foldersFromNewNotes)
     }
 
     /**
@@ -686,6 +698,22 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
                         }
                     }
                 }
+            }
+        }
+    }
+
+    /**
+     * Fills the foldersFromNotes list.
+     * @param foldersFromNotes The foldersFromNotes list.
+     */
+    private fun fillFoldersFromNotes(foldersFromNotes: ArrayList<List<Folder>>) {
+        if (adapter?.notes != null) {
+            foldersFromNotes.clear()
+            for (note in adapter!!.notes) {
+                val foldersFromNote =
+                    NotesDB.getInstance(this)!!.notesFoldersJoinDAO()?.getFoldersFromNote(note.id)
+
+                foldersFromNotes.add(foldersFromNote!!)
             }
         }
     }
@@ -751,6 +779,14 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
         val folderList = NotesDB.getInstance(this)!!.foldersDAO()!!.allFolders
         updateFoldersInNavDrawer(folderList)
         ifNavMenuItemCheckedDo(folderList)
+    }
+
+    /**
+     * onPause,runs/is called when the app is paused/navigates to another activity.
+     */
+    override fun onPause() {
+        super.onPause()
+        fillFoldersFromNotes(foldersFromOldNotes)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
