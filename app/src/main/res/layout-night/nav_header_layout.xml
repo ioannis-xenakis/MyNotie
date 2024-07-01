@@ -45,7 +45,7 @@
         android:layout_marginLeft="17dp"
         android:layout_marginTop="15dp"
         android:layout_marginBottom="12dp"
-        android:fontFamily="@font/roboto_medium"
+        android:fontFamily="@font/segoe_ui_bold"
         android:text="@string/app_name"
         android:textColor="?attr/colorOnPrimary"
         android:textSize="@dimen/app_name_text_size"
