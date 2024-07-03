@@ -40,6 +40,8 @@
         <item name="tickColor">@color/white</item>
         <item name="colorControlNormal">@color/white</item>
         <item name="checkboxStyle">@style/CheckBoxStyle</item>
+        <item name="textAppearanceLargePopupMenu">@style/TextAppearance.MyNotie.Subtitle1</item>
+        <item name="textAppearanceSmallPopupMenu">@style/TextAppearance.MyNotie.Subtitle1</item>
         <item name="toolbarStyle">@style/ToolbarStyle</item>
         <item name="popupMenuBackground">@drawable/popup_menu_background</item>
         <item name="chipStyle">@style/ChipStyle</item>
