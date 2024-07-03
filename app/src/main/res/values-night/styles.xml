@@ -27,7 +27,9 @@
         <item name="floatingActionButtonStyle">@style/Widget.Design.FloatingActionButton</item>
         <item name="colorPrimary">@color/white</item>
         <item name="colorPrimaryDark">@color/black</item>
-        <item name="colorAccent">@color/black</item>
+        <item name="colorAccent">@color/white</item>
+        <item name="colorSecondary">@color/black</item>
+        <item name="colorOnSecondary">@color/white</item>
         <item name="colorPrimarySurface">@color/black</item>
         <item name="colorOnPrimarySurface">@color/white</item>
         <item name="colorOnPrimary">@color/white</item>
@@ -40,6 +42,8 @@
         <item name="tickColor">@color/white</item>
         <item name="colorControlNormal">@color/white</item>
         <item name="checkboxStyle">@style/CheckBoxStyle</item>
+        <item name="textAppearanceLargePopupMenu">@style/TextAppearance.MyNotie.Subtitle1</item>
+        <item name="textAppearanceSmallPopupMenu">@style/TextAppearance.MyNotie.Subtitle1</item>
         <item name="toolbarStyle">@style/ToolbarStyle</item>
         <item name="popupMenuBackground">@drawable/popup_menu_background</item>
         <item name="chipStyle">@style/ChipStyle</item>
@@ -107,8 +111,8 @@
     </style>
 
     <style name="TextAppearance.MyNotie.Subtitle1" parent="TextAppearance.MaterialComponents.Subtitle1">
-        <item name="fontFamily">@font/segoe_ui_semibold</item>
-        <item name="android:fontFamily">@font/segoe_ui_semibold</item>
+        <item name="fontFamily">@font/segoe_ui_regular</item>
+        <item name="android:fontFamily">@font/segoe_ui_regular</item>
         <item name="android:textColor">@color/white</item>
     </style>
 

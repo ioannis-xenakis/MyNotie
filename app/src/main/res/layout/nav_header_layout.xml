@@ -24,16 +24,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?attr/colorPrimary">
+    android:background="?android:attr/colorBackground">
 
     <ImageView
         android:id="@+id/app_logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="17dp"
-        android:layout_marginLeft="17dp"
-        android:layout_marginTop="26dp"
+        android:layout_marginTop="41dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:src="@drawable/logo_mynotie"
         android:contentDescription="@string/content_description_app_logo" />
@@ -42,15 +43,16 @@
         android:id="@+id/app_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="17dp"
-        android:layout_marginLeft="17dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="12dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="10dp"
         android:fontFamily="@font/segoe_ui_bold"
         android:text="@string/app_name"
-        android:textColor="?attr/colorOnPrimary"
+        android:textColor="?attr/colorOnSurface"
         android:textSize="@dimen/app_name_text_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/app_logo"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
@@ -74,5 +76,6 @@
         android:insetLeft="0dp"
         android:insetRight="0dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

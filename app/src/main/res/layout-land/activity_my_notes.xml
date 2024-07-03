@@ -129,6 +129,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:fabCustomSize="63.96dp"
+            app:backgroundTint="?attr/colorSecondary"
             android:src="@drawable/add_note_icon"
             app:layout_anchor="@id/bottom_app_bar"
             android:contentDescription="@string/content_description_add_new_note" />

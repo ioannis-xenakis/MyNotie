@@ -110,4 +110,11 @@ class Note(): Parcelable
             return Note(parcel)
         }
     }
+
+    override fun equals(other: Any?): Boolean = (other is Note)
+            && this.id == other.id
+
+    override fun hashCode(): Int {
+        return id
+    }
 }
