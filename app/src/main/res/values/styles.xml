@@ -97,8 +97,8 @@
     </style>
 
     <style name="TextAppearance.MyNotie.Subtitle1" parent="TextAppearance.MaterialComponents.Subtitle1">
-        <item name="fontFamily">@font/segoe_ui_semibold</item>
-        <item name="android:fontFamily">@font/segoe_ui_semibold</item>
+        <item name="fontFamily">@font/segoe_ui_regular</item>
+        <item name="android:fontFamily">@font/segoe_ui_regular</item>
         <item name="android:textColor">?attr/colorOnSurface</item>
     </style>
 
