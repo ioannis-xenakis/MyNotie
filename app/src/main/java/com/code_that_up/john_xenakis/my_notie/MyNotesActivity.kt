@@ -218,7 +218,7 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
         dao = NotesDB.getInstance(this)!!.notesDAO()
         @Suppress("DEPRECATION")
         savedNoteList = savedInstanceState
-            ?.getParcelableArrayList<Note>(NOTE_LIST_KEY)
+            ?.getParcelableArrayList(NOTE_LIST_KEY)
         @Suppress("DEPRECATION")
         savedNoteFullList = savedInstanceState
             ?.getParcelableArrayList(NOTE_FULL_LIST_KEY)
@@ -871,8 +871,8 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
                 return@setOnMenuItemClickListener true
             } else if (itemId == R.id.delete_only_this_note_button) {
                 dao!!.deleteNote(note)
-                adapter!!.notes.removeAt(adapter?.notes!!.indexOf(note))
-                adapter!!.notesFull.removeAt(position)
+                adapter!!.notes.removeAt(position)
+                adapter!!.notesFull.remove(note)
                 adapter!!.getCheckedNotes().remove(note)
                 adapter!!.notifyItemRemoved(position)
                 if (note.isChecked) displaySelectedNotesCount()
