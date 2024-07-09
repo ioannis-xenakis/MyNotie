@@ -117,6 +117,7 @@
             android:layout_marginBottom="3.5dp"
             android:layout_marginEnd="3.5dp"
             android:layout_marginRight="3.5dp"
+            app:backgroundTint="?attr/colorSecondary"
             app:elevation="2dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
