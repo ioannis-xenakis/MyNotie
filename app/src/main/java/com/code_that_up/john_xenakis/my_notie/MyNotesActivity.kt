@@ -21,9 +21,9 @@ import androidx.appcompat.widget.Toolbar
 import androidx.appcompat.widget.TooltipCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.code_that_up.john_xenakis.my_notie.adapters.NotesAdapter
 import com.code_that_up.john_xenakis.my_notie.adapters.NotesAdapter.NoteHolder
 import com.code_that_up.john_xenakis.my_notie.callbacks.MoreMenuButtonListener
@@ -164,9 +164,17 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
     private var myFoldersSubMenu: SubMenu? = null
 
     /**
-     * The layoutManager **lays out** and manages all notes in an grid/order, in *notes list*, for *My notes* page.
+     * The linearLayoutManager **lays out** and manages all notes
+     * in a linear order, single note at a time,
+     * in *notes list*, for *My notes* page.
      */
-    private var layoutManager: LinearLayoutManager? = null
+    private var linearLayoutManager: LinearLayoutManager? = null
+
+    /**
+     * The staggered grid layout manager, *lays out* all notes in a grid,
+     * in  *notes list*, for *My notes* page.
+     */
+    private var staggeredGridLayoutManager: StaggeredGridLayoutManager? = null
 
     /**
      * The group/layout for the side navigation drawer.
@@ -199,21 +207,24 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
         recyclerView = findViewById(R.id.notes_list)
         val orientation = resources.configuration.orientation
         if (orientation == Configuration.ORIENTATION_PORTRAIT && smallestScreenWidth < 600) {
-            layoutManager = LinearLayoutManager(this)
+            linearLayoutManager = LinearLayoutManager(this)
+            recyclerView!!.layoutManager = linearLayoutManager
         } else if (orientation == Configuration.ORIENTATION_LANDSCAPE && smallestScreenWidth < 600) {
-            layoutManager = GridLayoutManager(this, 2)
+            staggeredGridLayoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
             noteSpacing(recyclerView, 2)
+            recyclerView!!.layoutManager = staggeredGridLayoutManager
         }
 
         //For different screen orientations(Portrait or Landscape). Mostly for android tablets and bigger device screen sizes.
         if (orientation == Configuration.ORIENTATION_PORTRAIT && smallestScreenWidth >= 600) {
-            layoutManager = GridLayoutManager(this, 2)
+            staggeredGridLayoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
             noteSpacing(recyclerView, 2)
+            recyclerView!!.layoutManager = staggeredGridLayoutManager
         } else if (orientation == Configuration.ORIENTATION_LANDSCAPE && smallestScreenWidth >= 600) {
-            layoutManager = GridLayoutManager(this, 3)
+            staggeredGridLayoutManager = StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL)
             noteSpacing(recyclerView, 3)
+            recyclerView!!.layoutManager = staggeredGridLayoutManager
         }
-        recyclerView!!.layoutManager = layoutManager
 
         dao = NotesDB.getInstance(this)!!.notesDAO()
         @Suppress("DEPRECATION")
@@ -233,6 +244,7 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
             savedCheckedNotes = intent.extras?.getParcelableArrayList(CHECKED_NOTES_KEY)
         }
         loadNotes(savedNoteList, savedNoteFullList, savedCheckedNotes)
+
 
         /*
           Note search functionality for search edittext on search top bar.
@@ -654,6 +666,49 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
     }
 
     /**
+     * Saves the note scroll position number, into *outState* Bundle.
+     * @param outState The bundle that the scroll position, saves into.
+     */
+    private fun saveNoteScrollPosition(outState: Bundle) {
+        if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT &&
+            resources.configuration.smallestScreenWidthDp < 600) {
+            outState.putInt(RV_SCROLL_POSITION_KEY, linearLayoutManager?.findFirstVisibleItemPosition()!!)
+        } else {
+            outState.putInt(RV_SCROLL_POSITION_KEY,
+                staggeredGridLayoutManager
+                    ?.findFirstVisibleItemPositions(null)
+                    ?.first()!!
+            )
+        }
+    }
+
+    /**
+     * Gets and returns the count number of notes that is visible.
+     * @return The count number of notes that is visible.
+     */
+    private fun getVisibleNotesCount(): Int {
+        return if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT &&
+            resources.configuration.smallestScreenWidthDp < 600) {
+            linearLayoutManager!!.childCount
+        } else {
+            staggeredGridLayoutManager!!.childCount
+        }
+    }
+
+    /**
+     * Gets the count number of the notes total.
+     * @return The count number of notes total.
+     */
+    private fun getTotalNotesCount(): Int {
+        return if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT &&
+            resources.configuration.smallestScreenWidthDp < 600) {
+            linearLayoutManager!!.itemCount
+        } else {
+            staggeredGridLayoutManager!!.itemCount
+        }
+    }
+
+    /**
      * Updates the folders in Navigation Drawer(Navigation View).
      * @param folderList The list of folders.
      */
@@ -725,8 +780,8 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
      */
     private fun showHideBottomAppBar() {
         val bottomAppBar = findViewById<BottomAppBar>(R.id.bottom_app_bar)
-        val visibleNotesCount = layoutManager!!.childCount
-        val totalNotesCount = layoutManager!!.itemCount
+        val visibleNotesCount = getVisibleNotesCount()
+        val totalNotesCount = getTotalNotesCount()
         if (visibleNotesCount < totalNotesCount) {
             bottomAppBar.hideOnScroll = true
         } else {
@@ -794,7 +849,7 @@ class MyNotesActivity : AppCompatActivity(), NoteEventListener, MoreMenuButtonLi
         outState.putBoolean(IS_NOTE_CHECKED_KEY, isNoteChecked)
         outState.putParcelableArrayList(NOTE_FULL_LIST_KEY, adapter?.notesFull)
         outState.putParcelableArrayList(CHECKED_NOTES_KEY, adapter?.getCheckedNotes())
-        outState.putInt(RV_SCROLL_POSITION_KEY, layoutManager?.findFirstVisibleItemPosition()!!)
+        saveNoteScrollPosition(outState)
         outState.putString(TOP_BAR_TITLE_KEY, pageTitleTopBar!!.title.toString())
         outState.putInt(NAV_MENU_ITEM_ID_KEY, navMenuItemCheckedId)
         super.onSaveInstanceState(outState)
