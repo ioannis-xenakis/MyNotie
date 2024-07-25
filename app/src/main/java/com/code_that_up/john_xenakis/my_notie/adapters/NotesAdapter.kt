@@ -421,16 +421,19 @@ class NotesAdapter(
      * @param newFoldersFromNotes The new folders for each of the notes.
      */
     fun updateNoteListAndNotesFull(
-        newNoteList: List<Note>,
+        newNoteList: ArrayList<Note>,
         oldFoldersFromNotes: ArrayList<List<Folder>>,
         newFoldersFromNotes: ArrayList<List<Folder>>
     ) {
-        val diffCallback = NoteDiffCallback(notes, newNoteList, oldFoldersFromNotes, newFoldersFromNotes)
-        val diffResult = DiffUtil.calculateDiff(diffCallback)
-        notes.clear()
-        notes.addAll(newNoteList)
-        notesFull.clear()
+        val oldNotes = ArrayList<Note>(notes)
+        notes = newNoteList
         notesFull = ArrayList(notes)
+        val diffCallback = NoteDiffCallback(
+            oldNoteList = oldNotes,
+            newNoteList = newNoteList,
+            foldersFromOldNote = oldFoldersFromNotes,
+            foldersFromNewNote = newFoldersFromNotes)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
         diffResult.dispatchUpdatesTo(this)
     }
 
