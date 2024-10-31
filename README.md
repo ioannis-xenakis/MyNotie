@@ -3,7 +3,8 @@
 [![Download app from Google Play](/badges/download-google-play.svg)](https://play.google.com/store/apps/details?id=com.code_that_up.john_xenakis.my_notie)
 [![Download app from Github](/badges/download-github.svg)](https://github.com/ioannis-xenakis/MyNotie/releases/latest/)
 
-An android notepad for taking notes, write what you want and save them to see them later.
+A simplistic android notepad for taking notes, write what you want and save them to see them later.
+Quick, easy and simple. No bloated features and app.
 
 ### Screenshots
 <div style="display:flex;">
@@ -15,7 +16,7 @@ An android notepad for taking notes, write what you want and save them to see th
 
 ### Current features
 - List notes.
-- Delete/add notes.
+- Delete/add/edit notes.
 - Select all/multiple notes at once.
 - Add each note to multiple folders.
 - Delete/add/rename folders.
